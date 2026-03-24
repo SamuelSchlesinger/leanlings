@@ -25,3 +25,7 @@ def chainedDivide : Option Nat := sorry
 
 -- This should return none (division by zero in the chain)
 def failingDivide : Option Nat := sorry
+
+-- Don't change below this line!
+#guard chainedDivide == some 5
+#guard failingDivide == none

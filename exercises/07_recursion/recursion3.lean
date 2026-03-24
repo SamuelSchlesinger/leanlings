@@ -18,3 +18,7 @@
 
 def reverse (l : List α) : List α :=
   sorry
+
+-- Don't change below this line!
+#guard reverse [1, 2, 3] == [3, 2, 1]
+#guard reverse ([] : List Nat) == []

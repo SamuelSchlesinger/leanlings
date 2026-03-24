@@ -16,3 +16,8 @@ def myContains [BEq α] (x : α) (l : List α) : Bool := sorry
 
 -- Remove duplicates from a list (needs BEq)
 def myDedup [BEq α] (l : List α) : List α := sorry
+
+-- Don't change below this line!
+#guard myContains 3 [1, 2, 3] == true
+#guard myContains 4 [1, 2, 3] == false
+#guard myContains 1 ([] : List Nat) == false

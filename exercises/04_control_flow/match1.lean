@@ -17,3 +17,7 @@
 
 def getOrDefault (opt : Option Nat) (default : Nat) : Nat :=
   sorry
+
+-- Don't change below this line!
+#guard getOrDefault (some 42) 0 == 42
+#guard getOrDefault none 99 == 99

@@ -18,3 +18,7 @@ def doubled : List Nat := [1, 2, 3].map sorry
 
 -- Keep only even numbers: [1, 2, 3, 4, 5, 6] → [2, 4, 6]
 def evens : List Nat := [1, 2, 3, 4, 5, 6].filter sorry
+
+-- Don't change below this line!
+#guard doubled == [2, 4, 6]
+#guard evens == [2, 4, 6]

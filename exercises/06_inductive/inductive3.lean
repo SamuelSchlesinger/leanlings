@@ -31,3 +31,7 @@ def isNum : Expr → Bool := sorry
 
 -- Construct the expression representing (2 + 3) * 4
 def sampleExpr : Expr := sorry
+
+-- Don't change below this line!
+#guard isNum (.num 5) == true
+#guard isNum (.add (.num 1) (.num 2)) == false

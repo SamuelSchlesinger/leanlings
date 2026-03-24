@@ -27,3 +27,7 @@ inductive Direction where
 
 open Direction in
 def opposite (d : Direction) : Direction := sorry
+
+-- Don't change below this line!
+open Direction in
+#guard opposite north == south && opposite south == north && opposite east == west && opposite west == east

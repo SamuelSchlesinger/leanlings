@@ -13,3 +13,8 @@
 -/
 
 def classify (n : Int) : String := sorry
+
+-- Don't change below this line!
+#guard classify 5 == "positive"
+#guard classify 0 == "zero"
+#guard classify (-3) == "negative"

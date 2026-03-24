@@ -22,3 +22,10 @@ def arraySum (a : Array Nat) : Nat := sorry
 
 -- Keep only elements greater than a threshold
 def filterAbove (a : Array Nat) (threshold : Nat) : Array Nat := sorry
+
+-- Don't change below this line!
+#guard doubleArray #[1, 2, 3] == #[2, 4, 6]
+#guard doubleArray #[] == #[]
+#guard arraySum #[1, 2, 3, 4] == 10
+#guard arraySum #[] == 0
+#guard filterAbove #[1, 5, 3, 8, 2] 3 == #[5, 8]

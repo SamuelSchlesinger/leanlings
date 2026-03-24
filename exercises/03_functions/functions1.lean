@@ -9,3 +9,7 @@
 -/
 
 def triple (n : Nat) : Nat := sorry
+
+-- Don't change below this line!
+#guard triple 0 == 0
+#guard triple 4 == 12

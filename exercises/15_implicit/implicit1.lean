@@ -24,3 +24,8 @@ def mySwap {α β : Type} (p : α × β) : β × α := sorry
 
 -- Apply a function to both elements of a pair
 def mapPair {α β γ : Type} (f : α → γ) (g : β → γ) (p : α × β) : γ × γ := sorry
+
+-- Don't change below this line!
+#guard myFst (1, "hello") == 1
+#guard mySwap (1, 2) == (2, 1)
+#guard mapPair (· + 1) (· * 2) (3, 4) == (4, 8)

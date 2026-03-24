@@ -25,3 +25,9 @@ inductive Result where
 def getValueOr (r : Result) (default : Nat) : Nat := sorry
 
 def isOk : Result → Bool := sorry
+
+-- Don't change below this line!
+#guard getValueOr (.ok 42) 0 == 42
+#guard getValueOr (.error "oops") 99 == 99
+#guard isOk (.ok 5) == true
+#guard isOk (.error "nope") == false

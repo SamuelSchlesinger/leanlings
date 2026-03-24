@@ -14,3 +14,6 @@
 
 def difference_of_squares : Nat :=
   sorry
+
+-- Don't change below this line!
+#guard difference_of_squares == 91

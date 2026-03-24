@@ -21,3 +21,9 @@ def doubler : Nat → Nat := sorry
 
 -- An anonymous function that checks if a number is zero
 def isZero : Nat → Bool := sorry
+
+-- Don't change below this line!
+#guard doubler 5 == 10
+#guard doubler 0 == 0
+#guard isZero 0 == true
+#guard isZero 5 == false

@@ -10,3 +10,6 @@
 -/
 
 def answer : Nat := sorry
+
+-- Don't change below this line!
+#guard answer == 42

@@ -34,3 +34,8 @@ def sampleTree : Tree Nat :=
 -- 7. Prove the size of the sample tree
 theorem sample_size : sampleTree.size = 3 := by
   sorry
+
+-- Don't change below this line!
+#guard sampleTree.size == 3
+#guard (Tree.leaf : Tree Nat).size == 0
+#guard sampleTree.toList == [1, 2, 3]

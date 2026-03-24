@@ -14,3 +14,7 @@
 -/
 
 def average (a b : Nat) : Nat := sorry
+
+-- Don't change below this line!
+#guard average 4 6 == 5
+#guard average 10 20 == 15

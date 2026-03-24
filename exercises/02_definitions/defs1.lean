@@ -24,3 +24,8 @@ def helloLength : Nat := sorry
 -- Hint: try `#eval (List.range 5).length`
 -- List.range 5 produces [0, 1, 2, 3, 4]
 def rangeLength : Nat := sorry
+
+-- Don't change below this line!
+#guard powerOfTwo == 1024
+#guard helloLength == 5
+#guard rangeLength == 5

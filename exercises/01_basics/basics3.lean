@@ -12,3 +12,6 @@
 -/
 
 def hello : String := sorry
+
+-- Don't change below this line!
+#guard hello == "Hello, Lean!"

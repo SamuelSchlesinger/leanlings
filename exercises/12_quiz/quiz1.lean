@@ -26,3 +26,9 @@ def countIf (pred : α → Bool) : List α → Nat := sorry
 -- Manhattan distance from a point to itself is 0
 theorem manhattan_self (p : Point) : manhattan p p = 0 := by
   sorry
+
+-- Don't change below this line!
+#guard manhattan ⟨0, 0⟩ ⟨3, 4⟩ == 7
+#guard manhattan ⟨5, 5⟩ ⟨5, 5⟩ == 0
+#guard countIf (· > 3) [1, 5, 2, 7] == 2
+#guard countIf (· == 0) [0, 1, 0, 0] == 3

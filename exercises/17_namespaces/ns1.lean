@@ -31,3 +31,8 @@ end MyMath
 
 -- Use `open MyMath in` to call square and cube without prefix
 def sumOfPowers (n : Nat) : Nat := sorry
+
+-- Don't change below this line!
+#guard MyMath.square 5 == 25
+#guard MyMath.cube 3 == 27
+#guard sumOfPowers 2 == 12

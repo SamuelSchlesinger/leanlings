@@ -12,11 +12,14 @@ def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
     cmd := "lean"
     args := #[exercise.path.toString]
   }
-  if output.exitCode != 0 then
-    return .compileError output.stderr
+  -- Check for sorry first — if sorry is present, that's the primary issue
+  -- (test failures caused by sorry are noise the user doesn't need to see)
   if containsSubstr output.stderr "declaration uses `sorry`" ||
      containsSubstr output.stdout "declaration uses `sorry`" then
     return .hasSorry
+  -- No sorry — check for compilation or test errors
+  if output.exitCode != 0 then
+    return .compileError output.stderr
   return .success
 
 /-- Display the result of checking an exercise -/

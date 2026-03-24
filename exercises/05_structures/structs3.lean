@@ -29,3 +29,9 @@ def white : RGBColor := sorry
 
 -- Black: use all defaults
 def black : RGBColor := sorry
+
+-- Don't change below this line!
+#guard pureRed.red == 255
+#guard pureRed.green == 0
+#guard white == { red := 255, green := 255, blue := 255 : RGBColor }
+#guard black == ({} : RGBColor)

@@ -17,3 +17,8 @@ structure Person where
 def fullName (p : Person) : String := sorry
 
 def isAdult (p : Person) : Bool := sorry
+
+-- Don't change below this line!
+#guard fullName { firstName := "Jane", lastName := "Doe", age := 25 } == "Jane Doe"
+#guard isAdult { firstName := "A", lastName := "B", age := 18 } == true
+#guard isAdult { firstName := "A", lastName := "B", age := 17 } == false

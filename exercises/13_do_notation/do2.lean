@@ -18,3 +18,8 @@ def checkSmall (n : Int) : Except String Int :=
 
 -- Validate that a number is both positive and small
 def validate (n : Int) : Except String Int := sorry
+
+-- Don't change below this line!
+#guard validate 50 == .ok 50
+#guard validate (-1) == .error "must be positive"
+#guard validate 200 == .error "must be less than 100"
