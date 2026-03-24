@@ -9,28 +9,6 @@ progression. Each exercise gives you a file with `sorry` placeholders to fill
 in. A watch-mode compiler checks your work on every save and advances you to
 the next exercise automatically.
 
-## Why leanlings?
-
-The Lean 4 ecosystem has excellent learning resources, but they tend to fall
-into two camps: books you read alongside an editor, or browser games focused
-exclusively on proofs. Leanlings occupies a different point in the design
-space:
-
-| | CLI runner | Watch mode | Programming | Proving | No IDE required |
-|---|---|---|---|---|---|
-| **Leanlings** | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** |
-| [Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/) | — | — | Yes | — | — |
-| [Theorem Proving in Lean 4](https://lean-lang.org/theorem_proving_in_lean4/) | — | — | — | Yes | — |
-| [Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/) | — | — | — | Yes | — |
-| [Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/NNG4) | — | — | — | Yes | Yes |
-| [Mechanics of Proof](https://hrmacbeth.github.io/math2001/) | — | — | — | Yes | — |
-| [Tutorials4](https://github.com/leanprover-community/tutorials4) | — | — | — | Yes | — |
-| [Glimpse of Lean](https://github.com/PatrickMassot/GlimpseOfLean) | — | — | — | Yes | — |
-
-**In short:** leanlings is the only tool that walks you from `"Hello, Lean!"`
-through inductive types, monads, and tactic proofs to induction on binary
-trees, all inside a terminal with instant feedback.
-
 ## What you'll learn
 
 The 70 exercises are organized into 27 units across three arcs:
@@ -80,34 +58,43 @@ lake exe leanlings reset     # reset current exercise
 lake exe leanlings verify    # check all exercises
 ```
 
-## Other resources
+## Great resources for learning Lean 4
 
-Leanlings is one entry point among many. Depending on where you are and what
-you want to learn, these may serve you better — or pair well alongside
-leanlings:
+The Lean community has produced wonderful learning materials. Here are some
+favorites — reach for whichever fits where you are right now:
 
-- **[Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/)** —
-  The best resource for learning Lean as a programming language. Book format,
-  thorough coverage of monads, type classes, and IO.
-- **[Theorem Proving in Lean 4](https://lean-lang.org/theorem_proving_in_lean4/)** —
-  The canonical reference for dependent type theory and proofs in Lean.
-- **[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/)** —
-  Exercise-driven introduction to formalizing real mathematics with Mathlib.
-  Hundreds of exercises, assumes some math background.
 - **[Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/NNG4)** —
-  Browser-based, no install needed. Excellent first taste of tactic proofs.
+  The best place to start if you've never seen a proof assistant. Runs in the
+  browser, no install needed, and teaches tactic proofs through a beautifully
+  paced game.
+- **[Functional Programming in Lean](https://lean-lang.org/functional_programming_in_lean/)** —
+  The go-to book for learning Lean as a programming language. Deep, clear
+  coverage of monads, type classes, and IO. Reach for this when you want to
+  understand *why* things work, not just *how*.
+- **[Theorem Proving in Lean 4](https://lean-lang.org/theorem_proving_in_lean4/)** —
+  The canonical reference for dependent type theory and the proof side of Lean.
+  Essential reading once you're comfortable with the basics.
+- **[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/)** —
+  Hands-on exercises for formalizing real mathematics with Mathlib. If you have
+  some math background and want to formalize it, start here.
 - **[Mechanics of Proof](https://hrmacbeth.github.io/math2001/)** —
-  Undergraduate textbook pairing prose proofs with Lean. Gentle pace.
-- **[Hitchhiker's Guide to Logical Verification](https://lean-forward.github.io/hitchhikers-guide/2024/)** —
-  Graduate-level CS textbook covering semantics, Hoare logic, and more.
-- **[Tutorials4](https://github.com/leanprover-community/tutorials4)** —
-  Focused exercise set for tactic basics, good alongside TPIL.
+  A gentle undergraduate textbook that teaches proof writing in prose and Lean
+  side by side. Great if you're new to proofs in general.
 - **[Glimpse of Lean](https://github.com/PatrickMassot/GlimpseOfLean)** —
-  Fast-paced sampler of Lean proving across several math topics.
+  A fast-paced sampler you can finish in an afternoon. Perfect if you want a
+  quick taste of several mathematical topics in Lean.
+- **[Tutorials4](https://github.com/leanprover-community/tutorials4)** —
+  Focused tactic exercises adapted from an undergraduate real analysis course.
+  Pairs nicely with Theorem Proving in Lean 4.
+- **[Hitchhiker's Guide to Logical Verification](https://lean-forward.github.io/hitchhikers-guide/2024/)** —
+  A graduate-level CS textbook covering semantics, Hoare logic, and more.
+  Reach for this when you're ready to go deep on verification.
 - **[Lean Game Server](https://adam.math.hhu.de/)** —
-  Hosts the Natural Number Game and several other browser-based proof games.
+  Hosts the Natural Number Game and several other browser-based proof games
+  on topics like set theory and logic.
 - **[Metaprogramming in Lean 4](https://leanprover-community.github.io/lean4-metaprogramming-book/)** —
-  For writing custom tactics, macros, and elaborators. Advanced.
+  For when you want to write your own tactics, macros, and elaborators.
+  Advanced, but very rewarding.
 
 ## License
 
