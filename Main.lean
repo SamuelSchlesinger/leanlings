@@ -11,6 +11,7 @@ def showHelp : IO Unit := do
   IO.println "  watch        Watch mode — auto-check on file changes"
   IO.println "  verify       Check all exercises"
   IO.println "  hint         Show a hint for the current exercise"
+  IO.println "  solution     Show the solution for the current exercise"
   IO.println "  list         List all exercises with status"
   IO.println "  next         Move to the next exercise"
   IO.println "  reset        Reset the current exercise (requires git)"
@@ -113,7 +114,7 @@ def resetExercise (name : String) : IO UInt32 := do
       return 0
     else
       IO.println s!"{UI.red "Error"}: Could not reset. Make sure you're in a git repository."
-      IO.println s!"  You can manually look at solutions/{ex.dir}/{ex.name}.lean"
+      IO.println s!"  You can manually look at .solutions/{ex.dir}/{ex.name}.lean"
       return 1
   | none =>
     IO.println s!"{UI.red "Error"}: exercise '{name}' not found"

@@ -70,6 +70,8 @@ def exercises : Array Exercise := #[
     hint := "Recursion on List also needs two cases:\n• empty list []: what's the base value?\n• head :: tail: how do you combine the head with the recursive result?" },
   { name := "recursion3", dir := "07_recursion",
     hint := "The accumulator starts empty and builds up the result.\nFor reversing, what should you do with each head element?" },
+  { name := "recursion4", dir := "07_recursion",
+    hint := "Match on each constructor: `.num n`, `.add a b`, `.mul a b`.\nFor recursive constructors, call the function on each sub-expression.\nThis is structural recursion — every call is on a smaller piece." },
 
   -- 08_proving_code
   { name := "proving1", dir := "08_proving_code",
@@ -111,7 +113,7 @@ def exercises : Array Exercise := #[
 
   -- 13_quiz
   { name := "quiz1", dir := "13_quiz",
-    hint := "Combine what you've learned: structures for data,\n`if/else` for safe Nat subtraction, recursion on lists,\nand `simp` for the proof." },
+    hint := "This quiz has no hints — read each comment carefully.\nYou have all the tools: structs, inductives, pattern matching,\nrecursion, higher-order functions, typeclasses, and tactic proofs." },
 
   -- 14_do_notation
   { name := "do1", dir := "14_do_notation",
@@ -193,7 +195,7 @@ def exercises : Array Exercise := #[
 
   -- 26_final_quiz
   { name := "quiz3", dir := "26_final_quiz",
-    hint := "`Tree.size` counts nodes recursively: 0 for leaf,\n1 + left + right for node.\n`Tree.toList` collects values via in-order traversal." }
+    hint := "For functions: recurse on `.leaf` and `.node l v r`.\nFor induction proofs: `induction t` then `simp [f, g, ...]`.\nFor the existential: provide a `⟨witness, proof⟩` pair." }
 ]
 
 def getExercise (name : String) : Option Exercise :=

@@ -15,7 +15,7 @@ structure Person where
   firstName : String
   lastName : String
   age : Nat
-  deriving BEq
+  deriving BEq  -- auto-generates `==`; you'll learn how in unit 12
 
 def fullName (p : Person) : String := sorry
 

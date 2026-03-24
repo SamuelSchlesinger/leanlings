@@ -41,7 +41,7 @@ def Rating.toNat : Rating → Nat
   | .stars n => n
   | .unrated => 0
 
-def Book.isLong (b : Book) : Bool := decide (b.pages > 300)
+def Book.isLong (b : Book) : Bool := b.pages > 300
 
 def Book.isWorthReading (b : Book) : Bool :=
   if b.rating.toNat > 3 then true
