@@ -149,7 +149,12 @@ partial def watchLoop (state : AppState) (lastContent : String) (firstRun : Bool
     return 0
   match Config.getExercise state.currentExercise with
   | some ex =>
-    let content ← IO.FS.readFile ex.path
+    let content ← try
+      IO.FS.readFile ex.path
+    catch _ =>
+      -- File may be mid-write; retry on next poll
+      IO.sleep 500
+      return ← watchLoop state lastContent false
     if content != lastContent || firstRun then
       IO.print UI.clearScreen
       IO.println s!"{UI.bold "Leanlings"} — Watch Mode\n"
