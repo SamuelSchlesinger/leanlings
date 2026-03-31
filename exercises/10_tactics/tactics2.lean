@@ -20,6 +20,10 @@ theorem and_intro (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
 -- For the next theorem, you can access parts of `h : P ∧ Q`
 -- using `h.left` (or `h.1`) and `h.right` (or `h.2`).
 
--- Combine constructor and apply
+-- Use constructor and the .left/.right accessors together
 theorem and_swap (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  sorry
+
+-- Combine constructor and apply
+theorem and_map (P Q R : Prop) (h : P ∧ Q) (f : Q → R) : P ∧ R := by
   sorry
