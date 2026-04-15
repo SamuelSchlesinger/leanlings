@@ -22,6 +22,7 @@ def validate (n : Int) : Except String Int := do
   sorry
 
 -- Don't change below this line!
+deriving instance BEq for Except
 #guard validate 50 == .ok 50
 #guard validate (-1) == .error "must be positive"
 #guard validate 200 == .error "must be less than 100"
