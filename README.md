@@ -9,9 +9,24 @@ progression. Each exercise gives you a file with `sorry` placeholders to fill
 in. A watch-mode compiler checks your work on every save and advances you to
 the next exercise automatically.
 
+## Courses
+
+Leanlings is organized into **courses**, each a self-contained progression of
+exercises living under `courses/<id>/`. The `intro` course (described below) is
+the default. List what's available and switch between them at any time:
+
+```
+lake exe leanlings courses        # list courses with per-course progress
+lake exe leanlings course <id>    # switch to another course
+```
+
+Progress is tracked separately per course, so you can move between them without
+losing your place. Each course has `exercises/` (the files you edit) and
+`solutions/` (reference answers) under its directory.
+
 ## What you'll learn
 
-The 70 exercises are organized into 27 units across three arcs:
+The `intro` course's 70 exercises are organized into 27 units across three arcs:
 
 **Arc 1 — Programming fundamentals** (units 0–7, 14–18)
 Strings, arithmetic, functions, control flow, structures, inductive types,
@@ -55,7 +70,9 @@ lake exe leanlings solution  # show the solution
 lake exe leanlings list      # list all exercises
 lake exe leanlings next      # skip to next exercise
 lake exe leanlings reset     # reset current exercise
-lake exe leanlings verify    # check all exercises
+lake exe leanlings verify    # check all exercises in the current course
+lake exe leanlings courses   # list available courses
+lake exe leanlings course X  # switch to course X
 ```
 
 ## Great resources for learning Lean 4

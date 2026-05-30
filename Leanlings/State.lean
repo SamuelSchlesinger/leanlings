@@ -1,9 +1,15 @@
 import Leanlings.Exercise
+import Leanlings.Course
 
 namespace Leanlings
 
-/-- Persistent state tracking exercise progress -/
+/-- Persistent state tracking progress across courses.
+
+`completed` entries are namespaced as `"<courseId>/<exerciseName>"` so progress
+in one course never collides with another. `currentExercise` is a bare name
+within `currentCourse`. -/
 structure AppState where
+  currentCourse : String
   currentExercise : String
   completed : Array String
   deriving Repr
@@ -12,61 +18,82 @@ namespace AppState
 
 def stateFile : System.FilePath := ".leanlings-state"
 
-def initial (exercises : Array Exercise) : AppState :=
-  { currentExercise := (exercises.getD 0 default).name, completed := #[] }
+/-- The key under which an exercise's completion is recorded. -/
+def key (courseId name : String) : String := s!"{courseId}/{name}"
 
-/-- Load state from disk, or return initial state if no state file exists -/
-def load (exercises : Array Exercise) : IO AppState := do
+def initial (course : Course) : AppState :=
+  { currentCourse := course.id,
+    currentExercise := (course.exercises.getD 0 default).name,
+    completed := #[] }
+
+/-- Load state from disk, or return initial state if no (valid) state file exists.
+
+A stored course or exercise that no longer exists is repaired to a sensible
+default rather than failing. -/
+def load (courses : Array Course) (defaultCourse : Course) : IO AppState := do
   try
     let content ← IO.FS.readFile stateFile
     let lines := (content.splitOn "\n").filter (· != "")
     match lines with
-    | current :: rest =>
+    | course :: current :: rest =>
       let completed := (rest.filter (· != "---")).toArray
-      let validCompleted := completed.filter (fun name => exercises.any (·.name == name))
-      let validCurrent := if exercises.any (·.name == current) then current
-                          else match exercises.findSome? (fun ex => if !validCompleted.contains ex.name then some ex.name else none) with
-                               | some name => name
-                               | none => (exercises.getD 0 default).name
-      pure { currentExercise := validCurrent, completed := validCompleted }
-    | [] => pure (initial exercises)
+      let validCourse := if courses.any (·.id == course) then course else defaultCourse.id
+      let activeCourse := (courses.find? (·.id == validCourse)).getD defaultCourse
+      let validCurrent :=
+        if activeCourse.exercises.any (·.name == current) then current
+        else match activeCourse.exercises.findSome? (fun ex =>
+               if !completed.contains (key validCourse ex.name) then some ex.name else none) with
+             | some name => name
+             | none => (activeCourse.exercises.getD 0 default).name
+      pure { currentCourse := validCourse, currentExercise := validCurrent, completed }
+    | _ => pure (initial defaultCourse)
   catch _ =>
-    pure (initial exercises)
+    pure (initial defaultCourse)
 
 /-- Save state to disk -/
 def save (state : AppState) : IO Unit := do
   let completedStr := state.completed.foldl (fun acc s => acc ++ s ++ "\n") ""
-  let content := s!"{state.currentExercise}\n---\n{completedStr}"
+  let content := s!"{state.currentCourse}\n{state.currentExercise}\n---\n{completedStr}"
   IO.FS.writeFile stateFile content
 
-/-- Check if an exercise has been completed -/
-def isCompleted (state : AppState) (name : String) : Bool :=
-  state.completed.contains name
+/-- Check if an exercise in the given course has been completed -/
+def isCompleted (state : AppState) (courseId name : String) : Bool :=
+  state.completed.contains (key courseId name)
 
-/-- Mark an exercise as completed -/
-def markCompleted (state : AppState) (name : String) : AppState :=
-  if state.completed.contains name then state
-  else { state with completed := state.completed.push name }
+/-- Mark an exercise in the given course as completed -/
+def markCompleted (state : AppState) (courseId name : String) : AppState :=
+  let k := key courseId name
+  if state.completed.contains k then state
+  else { state with completed := state.completed.push k }
 
-/-- Find the next pending exercise -/
-def findNextPending (state : AppState) (exercises : Array Exercise) : Option String :=
-  exercises.findSome? fun ex =>
-    if !state.completed.contains ex.name then some ex.name else none
+/-- Switch the active course, moving to its first pending exercise. -/
+def switchCourse (state : AppState) (course : Course) : AppState :=
+  let current := match course.exercises.findSome? (fun ex =>
+                   if !state.completed.contains (key course.id ex.name) then some ex.name else none) with
+                 | some name => name
+                 | none => (course.exercises.getD 0 default).name
+  { state with currentCourse := course.id, currentExercise := current }
 
-/-- Mark current exercise done and advance to next pending -/
-def advance (state : AppState) (exercises : Array Exercise) : AppState :=
-  let state := state.markCompleted state.currentExercise
-  match state.findNextPending exercises with
+/-- Find the next pending exercise in the given course -/
+def findNextPending (state : AppState) (course : Course) : Option String :=
+  course.exercises.findSome? fun ex =>
+    if !state.completed.contains (key course.id ex.name) then some ex.name else none
+
+/-- Mark current exercise done and advance to next pending in the course -/
+def advance (state : AppState) (course : Course) : AppState :=
+  let state := state.markCompleted course.id state.currentExercise
+  match state.findNextPending course with
   | some next => { state with currentExercise := next }
   | none => state
 
-/-- Count completed exercises -/
-def countDone (state : AppState) : Nat :=
-  state.completed.size
+/-- Count completed exercises in the given course -/
+def countDone (state : AppState) (course : Course) : Nat :=
+  course.exercises.foldl (fun n ex =>
+    if state.completed.contains (key course.id ex.name) then n + 1 else n) 0
 
-/-- Check if all exercises are done -/
-def allDone (state : AppState) (exercises : Array Exercise) : Bool :=
-  exercises.all (fun ex => state.completed.contains ex.name)
+/-- Check if all exercises in the given course are done -/
+def allDone (state : AppState) (course : Course) : Bool :=
+  course.exercises.all (fun ex => state.completed.contains (key course.id ex.name))
 
 end AppState
 end Leanlings

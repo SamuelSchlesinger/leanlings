@@ -29,7 +29,7 @@ jobs:
       - name: Verify all solutions
         run: |
           failed=0
-          for f in .solutions/**/*.lean; do
+          for f in $(find courses -path '*/solutions/*/*.lean' | sort); do
             if ! lean "$f" 2>&1; then
               echo "FAIL: $f"
               failed=$((failed + 1))

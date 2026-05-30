@@ -1,8 +1,9 @@
 import Leanlings.Exercise
+import Leanlings.Course
 
 namespace Leanlings.Config
 
-def exercises : Array Exercise := #[
+private def introExercises : Array Exercise := #[
   -- 00_intro
   { name := "intro1", dir := "00_intro",
     hint := "In Lean, strings are written between double quotes, like \"hello\".\nWhat string does the #guard check for?" },
@@ -198,10 +199,7 @@ def exercises : Array Exercise := #[
     hint := "For functions: recurse on `.leaf` and `.node l v r`.\nFor induction proofs: `induction t` then `simp [f, g, ...]`.\nFor the existential: provide a `⟨witness, proof⟩` pair." }
 ]
 
-def getExercise (name : String) : Option Exercise :=
-  exercises.find? (·.name == name)
-
-def welcomeMessage : String :=
+private def introWelcome : String :=
   "Welcome to Leanlings!\n\n" ++
   "Leanlings will teach you Lean 4 through small exercises.\n\n" ++
   "Here's how it works:\n" ++
@@ -211,7 +209,7 @@ def welcomeMessage : String :=
   "4. Run `lake exe leanlings next` to advance\n\n" ++
   "Or use `lake exe leanlings watch` for auto-checking!\n"
 
-def finalMessage : String :=
+private def introFinal : String :=
   "Congratulations! You've completed all Leanlings exercises!\n\n" ++
   "You now have a solid foundation in Lean 4, including:\n" ++
   "  - Basic types, definitions, and functions\n" ++
@@ -232,5 +230,21 @@ def finalMessage : String :=
   "  - Functional Programming in Lean: https://lean-lang.org/functional_programming_in_lean/\n" ++
   "  - Mathematics in Lean: https://leanprover-community.github.io/mathematics_in_lean/\n" ++
   "  - Mathlib (Lean's math library): https://leanprover-community.github.io/mathlib4_docs/\n"
+
+/-- The introductory course: programming and proof fundamentals in Lean 4. -/
+def intro : Course :=
+  mkCourse "intro" "Introduction to Lean 4"
+    "Programming and theorem proving fundamentals — 70 exercises across 27 units."
+    introExercises (welcome := introWelcome) (final := introFinal)
+
+/-- All available courses, in display order. -/
+def courses : Array Course := #[intro]
+
+/-- The course used when none is selected or a stored selection is invalid. -/
+def defaultCourse : Course := intro
+
+/-- Find a course by its id. -/
+def getCourse (id : String) : Option Course :=
+  courses.find? (·.id == id)
 
 end Leanlings.Config

@@ -2,6 +2,13 @@ import Leanlings
 
 open Leanlings
 
+/-- Load progress state together with the active course, repairing a stale or
+missing course selection to the default. Every command starts here. -/
+def loadActive : IO (AppState × Course) := do
+  let state ← AppState.load Config.courses Config.defaultCourse
+  let course := (Config.getCourse state.currentCourse).getD Config.defaultCourse
+  return (state, course)
+
 def showHelp : IO Unit := do
   IO.println "Usage: lake exe leanlings [command]\n"
   IO.println "Commands:"
@@ -9,28 +16,31 @@ def showHelp : IO Unit := do
   IO.println "  run          Check the current exercise"
   IO.println "  run <name>   Check a specific exercise"
   IO.println "  watch        Watch mode — auto-check on file changes"
-  IO.println "  verify       Check all exercises"
+  IO.println "  verify       Check all exercises in the current course"
   IO.println "  hint         Show a hint for the current exercise"
   IO.println "  solution     Show the solution for the current exercise"
-  IO.println "  list         List all exercises with status"
+  IO.println "  list         List exercises in the current course with status"
   IO.println "  next         Move to the next exercise"
   IO.println "  reset        Reset the current exercise (requires git)"
   IO.println "  reset <name> Reset a specific exercise"
+  IO.println "  courses      List available courses"
+  IO.println "  course <id>  Switch to another course"
   IO.println "  help         Show this help"
 
 def showStatus : IO Unit := do
-  let state ← AppState.load Config.exercises
-  let done := state.countDone
-  let total := Config.exercises.size
+  let (state, course) ← loadActive
+  let done := state.countDone course
+  let total := course.exercises.size
   IO.println s!"\n{UI.bold "Leanlings"} — Learn Lean 4 one exercise at a time\n"
+  IO.println s!"{UI.dim "Course"}: {UI.bold course.title}"
   IO.println (UI.progressBar done total)
   IO.println ""
   if done == 0 then
-    IO.println Config.welcomeMessage
-  if state.allDone Config.exercises then
-    IO.println Config.finalMessage
+    IO.println course.welcome
+  if state.allDone course then
+    IO.println course.final
   else
-    match Config.getExercise state.currentExercise with
+    match course.getExercise state.currentExercise with
     | some ex =>
       IO.println s!"Current exercise: {UI.bold ex.name}"
       IO.println s!"  → {ex.path}"
@@ -41,31 +51,31 @@ def showStatus : IO Unit := do
       IO.println s!"Error: exercise '{state.currentExercise}' not found"
 
 def runExercise (name : String) : IO UInt32 := do
-  match Config.getExercise name with
+  let (state, course) ← loadActive
+  match course.getExercise name with
   | some ex =>
     IO.println s!"Checking {UI.bold ex.name}...\n"
     let status ← Runner.checkExercise ex
     Runner.displayResult ex status
     match status with
     | .success =>
-      let state ← AppState.load Config.exercises
-      let state := state.markCompleted name
+      let state := state.markCompleted course.id name
       state.save
-      IO.println s!"\n{UI.progressBar state.countDone Config.exercises.size}"
+      IO.println s!"\n{UI.progressBar (state.countDone course) course.exercises.size}"
       IO.println s!"\nRun `lake exe leanlings next` to continue."
       return 0
     | _ => return 1
   | none =>
-    IO.println s!"{UI.red "Error"}: exercise '{name}' not found"
+    IO.println s!"{UI.red "Error"}: exercise '{name}' not found in course '{course.id}'"
     return 1
 
 def runCurrent : IO UInt32 := do
-  let state ← AppState.load Config.exercises
+  let (state, _) ← loadActive
   runExercise state.currentExercise
 
 def showHint : IO Unit := do
-  let state ← AppState.load Config.exercises
-  match Config.getExercise state.currentExercise with
+  let (state, course) ← loadActive
+  match course.getExercise state.currentExercise with
   | some ex =>
     IO.println s!"\n{UI.cyan "Hint"} for {UI.bold ex.name}:\n"
     IO.println ex.hint
@@ -73,26 +83,26 @@ def showHint : IO Unit := do
     IO.println "Error: current exercise not found"
 
 def listExercises : IO Unit := do
-  let state ← AppState.load Config.exercises
-  IO.println s!"\n{UI.bold "Exercises"}:\n"
-  for ex in Config.exercises do
-    let marker := if state.isCompleted ex.name then UI.green "✓"
+  let (state, course) ← loadActive
+  IO.println s!"\n{UI.bold "Exercises"} — {course.title}:\n"
+  for ex in course.exercises do
+    let marker := if state.isCompleted course.id ex.name then UI.green "✓"
                   else if state.currentExercise == ex.name then UI.yellow "→"
                   else "  "
     IO.println s!" {marker} {ex.name}"
   IO.println ""
-  IO.println (UI.progressBar state.countDone Config.exercises.size)
+  IO.println (UI.progressBar (state.countDone course) course.exercises.size)
 
 def nextExercise : IO Unit := do
-  let state ← AppState.load Config.exercises
-  if !state.isCompleted state.currentExercise then
+  let (state, course) ← loadActive
+  if !state.isCompleted course.id state.currentExercise then
     IO.println s!"{UI.yellow "!"} Warning: current exercise '{state.currentExercise}' is not yet completed."
     IO.println "  Skipping to next exercise anyway."
-  let idx := Config.exercises.findIdx? (·.name == state.currentExercise)
+  let idx := course.exercises.findIdx? (·.name == state.currentExercise)
   match idx with
   | some i =>
-    if i + 1 < Config.exercises.size then
-      let next := Config.exercises[i + 1]!
+    if i + 1 < course.exercises.size then
+      let next := course.exercises[i + 1]!
       let state := { state with currentExercise := next.name }
       state.save
       IO.println s!"Current exercise: {UI.bold next.name}"
@@ -103,7 +113,8 @@ def nextExercise : IO Unit := do
     IO.println "Error: could not find current exercise"
 
 def resetExercise (name : String) : IO UInt32 := do
-  match Config.getExercise name with
+  let (_, course) ← loadActive
+  match course.getExercise name with
   | some ex =>
     let result ← IO.Process.output {
       cmd := "git"
@@ -114,73 +125,76 @@ def resetExercise (name : String) : IO UInt32 := do
       return 0
     else
       IO.println s!"{UI.red "Error"}: Could not reset. Make sure you're in a git repository."
-      IO.println s!"  You can manually look at .solutions/{ex.dir}/{ex.name}.lean"
+      IO.println s!"  You can manually look at {ex.solutionPath}"
       return 1
   | none =>
-    IO.println s!"{UI.red "Error"}: exercise '{name}' not found"
+    IO.println s!"{UI.red "Error"}: exercise '{name}' not found in course '{course.id}'"
     return 1
 
 def verifyAll : IO UInt32 := do
-  IO.println s!"\n{UI.bold "Verifying all exercises"}...\n"
+  let (state, course) ← loadActive
+  IO.println s!"\n{UI.bold "Verifying all exercises"} — {course.title}...\n"
+  -- Recompute this course's completion from scratch, preserving other courses.
+  let others := state.completed.filter (fun k => !k.startsWith s!"{course.id}/")
+  let mut state := { state with completed := others }
   let mut doneCount : Nat := 0
-  let mut state := { (← AppState.load Config.exercises) with completed := #[] }
-  for ex in Config.exercises do
+  for ex in course.exercises do
     let status ← Runner.checkExercise ex
     match status with
     | .success =>
       IO.println s!"  {UI.green "✓"} {ex.name}"
       doneCount := doneCount + 1
-      state := state.markCompleted ex.name
+      state := state.markCompleted course.id ex.name
     | .compileError _ =>
       IO.println s!"  {UI.red "✗"} {ex.name}"
     | .hasSorry =>
       IO.println s!"  {UI.yellow "!"} {ex.name}"
   state.save
-  IO.println s!"\n{UI.progressBar doneCount Config.exercises.size}"
-  if doneCount == Config.exercises.size then
-    IO.println s!"\n{Config.finalMessage}"
+  IO.println s!"\n{UI.progressBar doneCount course.exercises.size}"
+  if doneCount == course.exercises.size then
+    IO.println s!"\n{course.final}"
   else
-    IO.println s!"\n{doneCount}/{Config.exercises.size} exercises completed."
+    IO.println s!"\n{doneCount}/{course.exercises.size} exercises completed."
   return 0
 
-partial def watchLoop (state : AppState) (lastContent : String) (firstRun : Bool) : IO UInt32 := do
-  if state.allDone Config.exercises then
+partial def watchLoop (course : Course) (state : AppState) (lastContent : String) (firstRun : Bool) : IO UInt32 := do
+  if state.allDone course then
     IO.print UI.clearScreen
-    IO.println Config.finalMessage
+    IO.println course.final
     return 0
-  match Config.getExercise state.currentExercise with
+  match course.getExercise state.currentExercise with
   | some ex =>
     let content ← try
       IO.FS.readFile ex.path
     catch _ =>
       -- File may be mid-write; retry on next poll
       IO.sleep 500
-      return ← watchLoop state lastContent false
+      return ← watchLoop course state lastContent false
     if content != lastContent || firstRun then
       IO.print UI.clearScreen
-      IO.println s!"{UI.bold "Leanlings"} — Watch Mode\n"
-      IO.println s!"{UI.progressBar state.countDone Config.exercises.size}\n"
+      IO.println s!"{UI.bold "Leanlings"} — Watch Mode ({course.title})\n"
+      IO.println s!"{UI.progressBar (state.countDone course) course.exercises.size}\n"
       IO.println s!"Checking {UI.bold ex.name}...\n"
       let status ← Runner.checkExercise ex
       Runner.displayResult ex status
       match status with
       | .success =>
-        let state := state.advance Config.exercises
+        let state := state.advance course
         state.save
-        if state.allDone Config.exercises then
-          IO.println s!"\n{Config.finalMessage}"
+        if state.allDone course then
+          IO.println s!"\n{course.final}"
           return 0
         IO.println s!"\nMoving to next exercise: {UI.bold state.currentExercise}"
         IO.sleep 500
-        watchLoop state "" true
+        watchLoop course state "" true
       | _ =>
         IO.println s!"\n{UI.dim "Edit the file and save to re-check."}"
         IO.println s!"{UI.dim "Run `lake exe leanlings hint` in another terminal for a hint."}"
         IO.sleep 500
-        watchLoop state content false
+        watchLoop course state content false
     else
       IO.sleep 500
-      watchLoop state lastContent false
+      watchLoop course state lastContent false
   | none =>
     IO.println s!"Error: exercise '{state.currentExercise}' not found"
     return 1
@@ -188,18 +202,46 @@ partial def watchLoop (state : AppState) (lastContent : String) (firstRun : Bool
 def watchMode : IO UInt32 := do
   IO.println s!"{UI.bold "Leanlings"} — Watch Mode"
   IO.println "Watching for file changes... (Ctrl+C to quit)\n"
-  let state ← AppState.load Config.exercises
-  watchLoop state "" true
+  let (state, course) ← loadActive
+  watchLoop course state "" true
 
 def showSolution : IO Unit := do
-  let state ← AppState.load Config.exercises
-  match Config.getExercise state.currentExercise with
+  let (state, course) ← loadActive
+  match course.getExercise state.currentExercise with
   | some ex =>
     IO.println s!"\n{UI.yellow "Solution"} for {UI.bold ex.name}:\n"
     let content ← IO.FS.readFile ex.solutionPath
     IO.println content
   | none =>
     IO.println "Error: current exercise not found"
+
+def listCourses : IO Unit := do
+  let (state, _) ← loadActive
+  IO.println s!"\n{UI.bold "Courses"}:\n"
+  for c in Config.courses do
+    let marker := if c.id == state.currentCourse then UI.yellow "→" else "  "
+    let done := state.countDone c
+    IO.println s!" {marker} {UI.bold c.id}  ({done}/{c.exercises.size})  {c.title}"
+    IO.println s!"      {UI.dim c.description}"
+  IO.println ""
+  IO.println "Switch with: lake exe leanlings course <id>"
+
+def selectCourse (id : String) : IO UInt32 := do
+  match Config.getCourse id with
+  | some course =>
+    let state ← AppState.load Config.courses Config.defaultCourse
+    let state := state.switchCourse course
+    state.save
+    IO.println s!"{UI.green "✓"} Switched to course {UI.bold course.title}"
+    IO.println s!"Current exercise: {UI.bold state.currentExercise}"
+    match course.getExercise state.currentExercise with
+    | some ex => IO.println s!"  → {ex.path}"
+    | none => pure ()
+    return 0
+  | none =>
+    IO.println s!"{UI.red "Error"}: course '{id}' not found"
+    IO.println "Run `lake exe leanlings courses` to see available courses."
+    return 1
 
 def main (args : List String) : IO UInt32 := do
   match args with
@@ -213,9 +255,11 @@ def main (args : List String) : IO UInt32 := do
   | ["list"] => listExercises; return 0
   | ["next"] => nextExercise; return 0
   | ["reset"] =>
-    let state ← AppState.load Config.exercises
+    let (state, _) ← loadActive
     resetExercise state.currentExercise
   | ["reset", name] => resetExercise name
+  | ["courses"] => listCourses; return 0
+  | ["course", id] => selectCourse id
   | ["help"] | ["-h"] | ["--help"] => showHelp; return 0
   | _ =>
     IO.println s!"{UI.red "Error"}: Unknown command"
