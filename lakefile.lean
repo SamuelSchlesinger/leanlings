@@ -32,3 +32,24 @@ lean_lib «NNG» where
     Glob.submodules `AdvMultiplication,
     Glob.submodules `Algorithm
   ]
+
+-- The `algebra` course (a from-scratch Bourbaki-style algebraic hierarchy) is
+-- likewise a self-contained Lean library: its solutions form one import-chain
+-- proving theorems generically over the typeclasses in `AlgebraLib`. See
+-- courses/algebra/.
+@[default_target]
+lean_lib «Algebra» where
+  srcDir := "courses/algebra/solutions"
+  globs := #[
+    Glob.one `AlgebraCourse,
+    Glob.submodules `AlgebraLib,
+    Glob.submodules `Magma,
+    Glob.submodules `Semigroup,
+    Glob.submodules `Monoid,
+    Glob.submodules `Group,
+    Glob.submodules `CommGroup,
+    Glob.submodules `Hom,
+    Glob.submodules `Ring,
+    Glob.submodules `CommRing,
+    Glob.submodules `Field
+  ]

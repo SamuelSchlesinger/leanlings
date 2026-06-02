@@ -34,6 +34,12 @@ Available courses:
   has **no Mathlib dependency** — the `MyNat` development is pure core Lean. It is
   used under the Apache-2.0 license; see `courses/nng/NOTICE` for attribution and
   the modifications made.
+- **`algebra`** — Abstract algebra à la Bourbaki: climb the algebraic hierarchy
+  one axiom at a time — magma, semigroup, monoid, group, commutative group,
+  homomorphisms, ring, commutative ring, field — proving each level's basic
+  theory from its axioms. The whole hierarchy is built from scratch in core Lean
+  (`AlgebraLib`), with **no Mathlib dependency**; each exercise proves a theorem
+  that holds in *every* structure of that kind.
 
 ## What you'll learn
 

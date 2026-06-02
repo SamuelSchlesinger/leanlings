@@ -436,7 +436,134 @@ def nng : Course :=
     "Build ℕ from scratch and prove its basic theory — 78 levels across 9 worlds."
     nngExercises (welcome := nngWelcome) (final := nngFinal)
 
-def courses : Array Course := #[intro, nng]
+
+private def algebraExercises : Array Exercise := #[
+  -- Magma
+  { name := "bool_and", dir := "Magma",
+    hint := "A magma's `*` is just its operation; on `Bool` it is `&&`, and `true && false = false`. Try `rfl`." },
+  { name := "bool_comm", dir := "Magma",
+    hint := "`Bool` has finitely many values, so `decide` can check every case." },
+  { name := "bool_assoc", dir := "Magma",
+    hint := "`decide` again — it checks all 8 combinations." },
+  -- Semigroup
+  { name := "reassoc", dir := "Semigroup",
+    hint := "`mul_assoc` turns `x * y * z` into `x * (y * z)`. Apply it twice." },
+  { name := "reassoc_back", dir := "Semigroup",
+    hint := "`rw [← mul_assoc]` re-associates the other way." },
+  { name := "reassoc_pair", dir := "Semigroup",
+    hint := "One backward `mul_assoc` does it." },
+  { name := "assoc_symm", dir := "Semigroup",
+    hint := "`mul_assoc` rewrites the right-hand side." },
+  -- Monoid
+  { name := "id_unique_left", dir := "Monoid",
+    hint := "Apply `h` to `1`, then simplify `e * 1` with `mul_one`." },
+  { name := "id_unique_right", dir := "Monoid",
+    hint := "Apply `h` to `1`, then simplify `1 * e` with `one_mul`." },
+  { name := "one_idempotent", dir := "Monoid",
+    hint := "`one_mul` or `mul_one` closes this immediately." },
+  { name := "bool_one", dir := "Monoid",
+    hint := "The identity of `Bool` under `&&` is `true`, so this is `rfl`." },
+  -- Group
+  { name := "mul_left_cancel", dir := "Group",
+    hint := "Multiply both sides on the left by `a⁻¹`. A `calc` chain through `a⁻¹ * (a * b)` works." },
+  { name := "mul_right_cancel", dir := "Group",
+    hint := "Mirror of `mul_left_cancel`: multiply on the right by `c⁻¹`." },
+  { name := "inv_mul_cancel_left", dir := "Group",
+    hint := "Re-associate, then `a⁻¹ * a = 1`." },
+  { name := "mul_inv_cancel_left", dir := "Group",
+    hint := "Re-associate, then `a * a⁻¹ = 1`." },
+  { name := "inv_one", dir := "Group",
+    hint := "From `1⁻¹ * 1 = 1`, simplify the left side with `mul_one`." },
+  { name := "inv_inv", dir := "Group",
+    hint := "`a⁻¹⁻¹` is the inverse of `a⁻¹`; show it equals `a` by inserting `a⁻¹ * a = 1`." },
+  { name := "eq_inv_of_mul_eq_one", dir := "Group",
+    hint := "Multiply `h` on the left by `a⁻¹`." },
+  { name := "inv_eq_of_mul_eq_one", dir := "Group",
+    hint := "This is the previous lemma, flipped with `.symm`." },
+  { name := "mul_inv_rev", dir := "Group",
+    hint := "Show `(a * b) * (b⁻¹ * a⁻¹) = 1`, then use `eq_inv_of_mul_eq_one`. (\"Socks and shoes\".)" },
+  { name := "inv_inj", dir := "Group",
+    hint := "Apply `inv_inv` to rewrite `a` as `a⁻¹⁻¹`, use `h`, then `inv_inv` again." },
+  -- CommGroup
+  { name := "mul_inv", dir := "CommGroup",
+    hint := "Use `mul_inv_rev`, then commutativity to swap the factors." },
+  { name := "mul_left_comm", dir := "CommGroup",
+    hint := "Re-associate to expose `a * b`, swap it, then re-associate back." },
+  { name := "mul_right_comm", dir := "CommGroup",
+    hint := "Re-associate to expose `b * c`, swap it, then re-associate back." },
+  { name := "mul_inv_cancel_right", dir := "CommGroup",
+    hint := "Re-associate, then `b * b⁻¹ = 1`." },
+  -- Hom
+  { name := "map_one", dir := "Hom",
+    hint := "`f 1 = f (1 * 1) = f 1 * f 1`, so `f 1` is idempotent; cancel it." },
+  { name := "map_inv", dir := "Hom",
+    hint := "Show `f a * f a⁻¹ = f (a * a⁻¹) = f 1 = 1`, then use `eq_inv_of_mul_eq_one`." },
+  { name := "map_mul_inv", dir := "Hom",
+    hint := "Use `map_mul` to split, then `map_inv` on the second factor." },
+  -- Ring
+  { name := "add_neg_cancel", dir := "Ring",
+    hint := "The axiom gives `-a + a = 0`; commute first." },
+  { name := "add_left_cancel", dir := "Ring",
+    hint := "Add `-a` on the left of both sides — the additive analogue of `mul_left_cancel`." },
+  { name := "add_right_cancel", dir := "Ring",
+    hint := "Add `-c` on the right; uses `add_neg_cancel`." },
+  { name := "zero_mul", dir := "Ring",
+    hint := "`0 * a + 0 * a = (0 + 0) * a = 0 * a`, so cancel one copy with `add_left_cancel`." },
+  { name := "mul_zero", dir := "Ring",
+    hint := "Mirror of `zero_mul`, using `left_distrib`." },
+  { name := "neg_mul", dir := "Ring",
+    hint := "Both `-a * b` and `-(a * b)` add to `a * b` to give `0`; cancel on the right." },
+  { name := "mul_neg", dir := "Ring",
+    hint := "Mirror of `neg_mul`, using `left_distrib` and `mul_zero`." },
+  { name := "neg_neg", dir := "Ring",
+    hint := "`- -a` is the additive inverse of `-a`; the additive analogue of `inv_inv`." },
+  { name := "neg_mul_neg", dir := "Ring",
+    hint := "Pull both negations out with `neg_mul` and `mul_neg`, then cancel with `neg_neg`." },
+  { name := "mul_add_mul", dir := "Ring",
+    hint := "Distribute the right factor, then each piece. (No commutativity needed yet.)" },
+  -- CommRing
+  { name := "mul_rotate", dir := "CommRing",
+    hint := "Re-associate, then commute the whole product." },
+  { name := "sq_expand", dir := "CommRing",
+    hint := "Expand with `mul_add_mul`, then commute the `b * a` term to `a * b`." },
+  -- Field
+  { name := "mul_inv_cancel", dir := "Field",
+    hint := "This is exactly the field axiom for nonzero `a`." },
+  { name := "inv_mul_cancel", dir := "Field",
+    hint := "Commute, then apply the field axiom." },
+  { name := "field_inv_one", dir := "Field",
+    hint := "`1 * 1⁻¹ = 1`, and `1 * 1⁻¹ = 1⁻¹`." },
+  { name := "inv_ne_zero", dir := "Field",
+    hint := "If `a⁻¹ = 0` then `a * a⁻¹ = a * 0 = 0`, contradicting `a * a⁻¹ = 1` (since `0 ≠ 1`)." },
+  { name := "mul_ne_zero", dir := "Field",
+    hint := "If `a * b = 0` and `a ≠ 0`, multiply by `a⁻¹` to force `b = 0`." },
+  { name := "mul_eq_zero", dir := "Field",
+    hint := "Case on whether `a = 0`. If not, multiply by `a⁻¹` to get `b = 0`. (Uses classical case analysis.)" },
+]
+
+private def algebraWelcome : String :=
+  "Welcome to Abstract Algebra!\n\n" ++
+  "Following Bourbaki, you'll climb the algebraic hierarchy one axiom at a time —\n" ++
+  "magma, semigroup, monoid, group, commutative group, then rings and fields —\n" ++
+  "proving the basic theory of each from its axioms alone.\n\n" ++
+  "Everything is built from scratch in core Lean (no Mathlib): the structures live\n" ++
+  "in `AlgebraLib`, and each exercise asks you to prove a theorem that holds in\n" ++
+  "*every* structure of that kind. Replace the `sorry` with a proof.\n"
+
+private def algebraFinal : String :=
+  "Congratulations! You've climbed the algebraic hierarchy from magmas to fields,\n" ++
+  "proving — from the axioms — cancellation, uniqueness and laws of inverses,\n" ++
+  "homomorphism properties, the sign rules of rings, and that a field has no zero\n" ++
+  "divisors. You now have a working, formal grasp of the Bourbaki tower.\n"
+
+/-- Abstract algebra a la Bourbaki: a from-scratch climb up the algebraic
+hierarchy, magmas through fields, proving each level's theory from its axioms. -/
+def algebra : Course :=
+  mkCourse "algebra" "Abstract Algebra"
+    "Climb the Bourbaki hierarchy — magma to field — proving each level from its axioms."
+    algebraExercises (welcome := algebraWelcome) (final := algebraFinal)
+
+def courses : Array Course := #[intro, nng, algebra]
 
 /-- The course used when none is selected or a stored selection is invalid. -/
 def defaultCourse : Course := intro
