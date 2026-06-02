@@ -1,2 +1,2 @@
 import AlgebraLib.Prelude
-import Field.mul_eq_zero
+import Field.field_mul_left_cancel

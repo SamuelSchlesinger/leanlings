@@ -1,4 +1,4 @@
-import Hom.map_mul_inv
+import Hom.map_div
 
 namespace Algebra
 

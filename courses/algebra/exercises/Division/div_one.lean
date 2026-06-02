@@ -1,0 +1,8 @@
+import Division.div_self
+
+namespace Algebra
+
+theorem div_one {G : Type _} [Group G] (a : G) : a / 1 = a := by
+  sorry
+
+end Algebra

@@ -1,4 +1,4 @@
-import Ring.mul_add_mul
+import Ring.sub_mul
 
 namespace Algebra
 

@@ -48,6 +48,7 @@ lean_lib «Algebra» where
     Glob.submodules `Monoid,
     Glob.submodules `Group,
     Glob.submodules `CommGroup,
+    Glob.submodules `Division,
     Glob.submodules `Hom,
     Glob.submodules `Ring,
     Glob.submodules `CommRing,

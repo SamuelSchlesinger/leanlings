@@ -1,4 +1,4 @@
-import Semigroup.assoc_symm
+import Semigroup.reassoc_mixed
 
 namespace Algebra
 

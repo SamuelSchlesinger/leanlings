@@ -42,6 +42,11 @@ class Group (α : Type u) extends Monoid α, Inv α where
 class CommGroup (α : Type u) extends Group α where
   mul_comm : ∀ a b : α, a * b = b * a
 
+/-- In a group, division is multiplication by the inverse: `a / b = a * b⁻¹`. -/
+instance instGroupDiv (α : Type u) [Group α] : Div α := ⟨fun a b => a * b⁻¹⟩
+
+theorem div_eq {α : Type u} [Group α] (a b : α) : a / b = a * b⁻¹ := rfl
+
 -- The associativity / identity lemmas are unique to the multiplicative tower,
 -- so we expose them unqualified. (Inverse and commutativity laws are referred to
 -- by their qualified names — `Group.inv_mul_cancel`, `CommGroup.mul_comm`, … —
@@ -65,6 +70,11 @@ class Ring (α : Type u) extends Monoid α, Add α, Zero α, Neg α where
   add_comm : ∀ a b : α, a + b = b + a
   left_distrib : ∀ a b c : α, a * (b + c) = a * b + a * c
   right_distrib : ∀ a b c : α, (a + b) * c = a * c + b * c
+
+/-- In a ring, subtraction is addition of the negation: `a - b = a + -b`. -/
+instance instRingSub (α : Type u) [Ring α] : Sub α := ⟨fun a b => a + -b⟩
+
+theorem sub_eq {α : Type u} [Ring α] (a b : α) : a - b = a + -b := rfl
 
 /-- A **commutative ring**. -/
 class CommRing (α : Type u) extends Ring α where
