@@ -24,5 +24,10 @@ def path (e : Exercise) : System.FilePath :=
 def solutionPath (e : Exercise) : System.FilePath :=
   s!"courses/{e.course}/solutions/{e.dir}/{e.name}.lean"
 
+/-- Hidden correctness checks (`#guard`s) for an exercise, kept out of the file
+the learner edits so the expected answers aren't given away. May not exist. -/
+def testPath (e : Exercise) : System.FilePath :=
+  s!"courses/{e.course}/tests/{e.dir}/{e.name}.lean"
+
 end Exercise
 end Leanlings

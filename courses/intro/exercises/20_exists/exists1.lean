@@ -16,8 +16,11 @@
 
   Or in tactic mode:
     exact ⟨witness, proof⟩
-    -- or --
-    use witness  -- then prove P witness
+    -- or, to leave the proof of `P witness` as a follow-up goal --
+    refine ⟨witness, ?_⟩  -- then prove P witness
+
+  (Mathlib's `use` tactic does the same thing, but it isn't part of
+  core Lean, so we use the anonymous constructor ⟨_, _⟩ here.)
 
   TODO: Prove these existential statements.
 -/

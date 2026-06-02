@@ -16,7 +16,3 @@
 -/
 
 def factorial : Nat → Nat := sorry
-
--- Don't change below this line!
-#guard factorial 0 == 1
-#guard factorial 5 == 120

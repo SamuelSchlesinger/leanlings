@@ -23,8 +23,3 @@ def evens : List Nat := [1, 2, 3, 4, 5, 6].filter sorry
 
 -- Sum all elements using foldl
 def total : Nat := [10, 20, 30].foldl sorry sorry
-
--- Don't change below this line!
-#guard doubled == [2, 4, 6]
-#guard evens == [2, 4, 6]
-#guard total == 60

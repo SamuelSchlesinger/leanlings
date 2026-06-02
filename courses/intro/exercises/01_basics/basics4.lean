@@ -18,8 +18,3 @@ def or_result : Bool := sorry
 
 -- NOT false is true
 def not_result : Bool := sorry
-
--- Don't change below this line!
-#guard and_result == true
-#guard or_result == true
-#guard not_result == true

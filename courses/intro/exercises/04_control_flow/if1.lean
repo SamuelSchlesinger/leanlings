@@ -16,8 +16,3 @@
 -/
 
 def abs (n : Int) : Int := sorry
-
--- Don't change below this line!
-#guard abs 5 == 5
-#guard abs (-3) == 3
-#guard abs 0 == 0

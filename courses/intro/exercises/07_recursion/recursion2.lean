@@ -13,7 +13,3 @@
 -/
 
 def sum : List Nat → Nat := sorry
-
--- Don't change below this line!
-#guard sum [] == 0
-#guard sum [1, 2, 3] == 6

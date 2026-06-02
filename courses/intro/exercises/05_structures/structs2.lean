@@ -24,9 +24,3 @@ def isAdult (p : Person) : Bool := sorry
 -- Return a new Person with age incremented by 1.
 -- Use `{ p with ... }` to copy all fields except the one you change.
 def birthday (p : Person) : Person := sorry
-
--- Don't change below this line!
-#guard fullName { firstName := "Jane", lastName := "Doe", age := 25 } == "Jane Doe"
-#guard isAdult { firstName := "A", lastName := "B", age := 18 } == true
-#guard isAdult { firstName := "A", lastName := "B", age := 17 } == false
-#guard birthday { firstName := "A", lastName := "B", age := 25 } == { firstName := "A", lastName := "B", age := 26 }

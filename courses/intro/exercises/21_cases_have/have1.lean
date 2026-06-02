@@ -19,6 +19,10 @@
 theorem chain (P Q R : Prop) (hpq : P → Q) (hqr : Q → R) (hp : P) : R := by
   sorry
 
--- Use have to establish an intermediate fact
+-- Use `have` to establish an intermediate fact.
+-- Recall `¬¬P` unfolds to `(¬P) → False`, so start with `intro hn` to get
+-- `hn : ¬P`. Then `¬P` is itself `P → False`, so `hn hp : False`.
+-- Name that contradiction with `have contra : False := hn hp`, then close
+-- the goal with it.
 theorem double_neg_intro (P : Prop) (hp : P) : ¬¬P := by
   sorry

@@ -15,7 +15,3 @@
 def product : Nat := sorry
 
 def power : Nat := sorry
-
--- Don't change below this line!
-#guard product == 42
-#guard power == 1024

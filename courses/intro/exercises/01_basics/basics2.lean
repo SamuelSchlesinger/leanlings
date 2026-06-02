@@ -13,6 +13,3 @@ def myNat : Nat := sorry
 def myString : String := sorry
 
 def myBool : Bool := sorry
-
--- Don't change below this line!
-#guard myString.length > 0

@@ -28,18 +28,26 @@ jobs:
 
       # The `nng` course's solutions form a Lean library, so they are already
       # compiled (and thus verified) by `lake build` above. Here we check the
-      # standalone `intro` solutions, which are compiled file-by-file.
+      # standalone `intro` solutions, compiled file-by-file together with each
+      # exercise's hidden correctness checks (courses/intro/tests/), so the
+      # reference answers are verified to actually satisfy the `#guard`s.
       - name: Verify intro solutions
         run: |
           failed=0
           for f in $(find courses/intro/solutions -path '*/*.lean' | sort); do
-            if ! lean "$f" 2>&1; then
+            rel=${f#courses/intro/solutions/}
+            test="courses/intro/tests/$rel"
+            tmp=$(mktemp /tmp/leanlings-XXXXXX.lean)
+            cat "$f" > "$tmp"
+            if [ -f "$test" ]; then printf '\n\n' >> "$tmp"; cat "$test" >> "$tmp"; fi
+            if ! lean "$tmp" 2>&1; then
               echo "FAIL: $f"
               failed=$((failed + 1))
             fi
+            rm -f "$tmp"
           done
           if [ $failed -gt 0 ]; then
             echo "$failed solution(s) failed"
             exit 1
           fi
-          echo "All solutions verified"
+          echo "All intro solutions verified against their checks"

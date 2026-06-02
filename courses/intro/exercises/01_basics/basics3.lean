@@ -16,7 +16,3 @@ def hello : String := sorry
 -- Use `s!"..."` with `{name}` to interpolate a variable
 def name := "Lean"
 def greeting : String := sorry
-
--- Don't change below this line!
-#guard hello == "Hello, Lean!"
-#guard greeting == "Hello, Lean!"

@@ -16,7 +16,7 @@
 -/
 
 -- Error: "type mismatch" — "yes" is a String, but Bool is expected.
--- Fix: change the value to a Bool.
+-- Fix: change the value to a Bool. The two Bool values are `true` and `false`.
 def isReady : Bool := "yes"
 
 -- Error: "type mismatch" — true is a Bool, but Nat is expected.
@@ -26,8 +26,3 @@ def count : Nat := true
 -- Error: "type mismatch" — "hello" is a String, but Nat is expected.
 -- Fix: this time, change the TYPE annotation to match the value.
 def message : Nat := "hello"
-
--- Don't change below this line!
-#guard isReady == true
-#guard count > 0
-#guard message == "hello"
