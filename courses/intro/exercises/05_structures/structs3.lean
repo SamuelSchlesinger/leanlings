@@ -1,0 +1,33 @@
+/- # Structures 3: Default Values
+
+  Structure fields can have default values:
+
+    structure Config where
+      width : Nat := 80
+      height : Nat := 24
+
+  You can omit defaulted fields when constructing:
+    let c : Config := {}              -- all defaults
+    let c : Config := { width := 120 } -- override one
+
+  `deriving Repr` lets you print with `#eval`.
+  `deriving BEq` lets you compare with `==`.
+  (You'll learn to write your own instances later.)
+
+  TODO: Create RGBColor instances using defaults.
+-/
+
+structure RGBColor where
+  red : Nat := 0
+  green : Nat := 0
+  blue : Nat := 0
+  deriving Repr, BEq
+
+-- Pure red: red=255, green and blue use defaults
+def pureRed : RGBColor := sorry
+
+-- White: all channels at 255
+def white : RGBColor := sorry
+
+-- Black: use all defaults
+def black : RGBColor := sorry
