@@ -90,11 +90,11 @@ theorem science_ne_history : Genre.science ≠ Genre.history := by
   nomatch h
 
 theorem genre_cases (g : Genre) :
-    g = .science ∨ g = .history ∨ g = .fantasy := by
-  cases g with
-  | science => exact Or.inl rfl
-  | history => exact Or.inr (Or.inl rfl)
-  | fantasy => exact Or.inr (Or.inr rfl)
+    g = .science ∨ g = .history ∨ g = .fantasy :=
+  match g with
+  | .science => Or.inl rfl
+  | .history => Or.inr (Or.inl rfl)
+  | .fantasy => Or.inr (Or.inr rfl)
 
 def pageCount : List Book → Nat
   | [] => 0

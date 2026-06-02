@@ -1,3 +1,6 @@
+/- Division world.
+   In a group, `a / b` is notation for `a * b⁻¹`. Unfold it with
+   `div_eq : a / b = a * b⁻¹`, then use the group lemmas you already have. -/
 import CommGroup.mul_mul_mul_comm
 
 namespace Algebra

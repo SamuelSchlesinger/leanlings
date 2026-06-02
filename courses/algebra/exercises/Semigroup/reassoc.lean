@@ -1,3 +1,6 @@
+/- Semigroup world.
+   A semigroup is a magma whose operation is associative. The one new fact is
+   `mul_assoc : a * b * c = a * (b * c)` (available unqualified). -/
 import Magma.bool_assoc
 
 namespace Algebra

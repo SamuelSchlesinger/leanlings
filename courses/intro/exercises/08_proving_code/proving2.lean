@@ -9,6 +9,7 @@
 
   Useful tactics:
   • `rfl` — closes the goal when both sides are equal
+  • `unfold f` — replaces `f` with its definition, so you can keep working
   • `simp [f]` — unfolds function `f` and simplifies
   • `omega` — solves arithmetic about natural numbers
 

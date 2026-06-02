@@ -8,4 +8,4 @@ theorem myAdd_zero (n : Nat) : myAdd n 0 = n := by
 theorem myAdd_zero_left (n : Nat) : myAdd 0 n = n := by
   induction n with
   | zero => rfl
-  | succ n ih => simp [myAdd, ih]
+  | succ n ih => unfold myAdd; rw [ih]

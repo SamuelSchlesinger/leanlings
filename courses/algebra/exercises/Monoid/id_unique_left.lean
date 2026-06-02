@@ -1,3 +1,6 @@
+/- Monoid world.
+   A monoid adds a two-sided identity `1`, with `one_mul : 1 * a = a` and
+   `mul_one : a * 1 = a` (both available unqualified). -/
 import Semigroup.reassoc_mixed
 
 namespace Algebra

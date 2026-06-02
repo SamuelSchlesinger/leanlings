@@ -1,3 +1,5 @@
+/- Commutative ring world.
+   Everything from rings, plus `CommRing.mul_comm : a * b = b * a`. -/
 import Ring.sub_mul
 
 namespace Algebra

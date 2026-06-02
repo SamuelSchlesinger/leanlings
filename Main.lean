@@ -15,10 +15,12 @@ def showHelp : IO Unit := do
   IO.println "  (none)       Show current exercise and status"
   IO.println "  run          Check the current exercise"
   IO.println "  run <name>   Check a specific exercise"
-  IO.println "  watch        Watch mode — auto-check on file changes"
+  IO.println "  watch        Watch mode, auto-checks on save"
   IO.println "  verify       Check all exercises in the current course"
   IO.println "  hint         Show a hint for the current exercise"
+  IO.println "  hint <name>  Show a hint for a specific exercise"
   IO.println "  solution     Show the solution for the current exercise"
+  IO.println "  solution <n> Show the solution for a specific exercise"
   IO.println "  list         List exercises in the current course with status"
   IO.println "  next         Move to the next exercise"
   IO.println "  reset        Reset the current exercise (requires git)"
@@ -73,14 +75,15 @@ def runCurrent : IO UInt32 := do
   let (state, _) ← loadActive
   runExercise state.currentExercise
 
-def showHint : IO Unit := do
+def showHint (target : Option String) : IO Unit := do
   let (state, course) ← loadActive
-  match course.getExercise state.currentExercise with
+  let name := target.getD state.currentExercise
+  match course.getExercise name with
   | some ex =>
     IO.println s!"\n{UI.cyan "Hint"} for {UI.bold ex.name}:\n"
     IO.println ex.hint
   | none =>
-    IO.println "Error: current exercise not found"
+    IO.println s!"{UI.red "Error"}: exercise '{name}' not found in course '{course.id}'"
 
 def listExercises : IO Unit := do
   let (state, course) ← loadActive
@@ -210,15 +213,16 @@ def watchMode : IO UInt32 := do
   let (state, course) ← loadActive
   watchLoop course state "" true
 
-def showSolution : IO Unit := do
+def showSolution (target : Option String) : IO Unit := do
   let (state, course) ← loadActive
-  match course.getExercise state.currentExercise with
+  let name := target.getD state.currentExercise
+  match course.getExercise name with
   | some ex =>
     IO.println s!"\n{UI.yellow "Solution"} for {UI.bold ex.name}:\n"
     let content ← IO.FS.readFile ex.solutionPath
     IO.println content
   | none =>
-    IO.println "Error: current exercise not found"
+    IO.println s!"{UI.red "Error"}: exercise '{name}' not found in course '{course.id}'"
 
 def listCourses : IO Unit := do
   let (state, _) ← loadActive
@@ -255,8 +259,10 @@ def main (args : List String) : IO UInt32 := do
   | ["run", name] => runExercise name
   | ["watch"] => watchMode
   | ["verify"] => verifyAll
-  | ["hint"] => showHint; return 0
-  | ["solution"] => showSolution; return 0
+  | ["hint"] => showHint none; return 0
+  | ["hint", name] => showHint (some name); return 0
+  | ["solution"] => showSolution none; return 0
+  | ["solution", name] => showSolution (some name); return 0
   | ["list"] => listExercises; return 0
   | ["next"] => nextExercise; return 0
   | ["reset"] =>

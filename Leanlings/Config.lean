@@ -102,7 +102,7 @@ private def introExercises : Array Exercise := #[
 
   -- 11_induction
   { name := "induction1", dir := "11_induction",
-    hint := "The first theorem is true by definition — try `rfl`.\nFor the second, use `induction n with`, then handle the\n`zero` and `succ` cases separately." },
+    hint := "The first theorem is true by definition — try `rfl`.\nFor the second, use `induction n with`, then handle the `zero` and `succ`\ncases. In the `succ` case, `unfold myAdd` exposes the recursive equation\n(or use `simp [myAdd]`), then rewrite with the induction hypothesis `ih`." },
   { name := "induction2", dir := "11_induction",
     hint := "Induct on the first list. In each case, try `simp [myLength]`\nand use the induction hypothesis." },
 
@@ -156,7 +156,7 @@ private def introExercises : Array Exercise := #[
   { name := "exists1", dir := "20_exists",
     hint := "Provide a witness and proof with `⟨witness, proof⟩`.\nFor `exists_greater`, what number is always greater than `n`?" },
   { name := "exists2", dir := "20_exists",
-    hint := "Extract the witness and proof with `let ⟨w, hw⟩ := h`.\nIn tactic mode: `cases h with | intro w hw => ...`" },
+    hint := "Pull the witness out with `let ⟨n, hn⟩ := h`, giving `n` and `hn : P n`.\n  First proof: hand them back with `exact ⟨n, hn⟩`. Second: `n > 0` gives\n  `n + 1 > 1`, so `exact ⟨n + 1, by omega⟩`." },
 
   -- 21_cases_have
   { name := "cases1", dir := "21_cases_have",

@@ -1,3 +1,7 @@
+/- Homomorphism world.
+   A `GroupHom G H` bundles a function `f.toFun` with the law
+   `f.map_mul : f.toFun (a * b) = f.toFun a * f.toFun b`. Here you prove that
+   homomorphisms also preserve `1` and inverses. -/
 import Division.div_mul_cancel
 
 namespace Algebra

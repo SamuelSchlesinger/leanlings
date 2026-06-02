@@ -108,6 +108,8 @@ theorem science_ne_history : Genre.science ≠ Genre.history := by
   sorry
 
 -- 18. Every genre is science, history, or fantasy.
+-- Pattern-match on `g` (a `match g with | .science => ... | ...`); each branch
+-- is then an equality you can close with `rfl`, wrapped in `Or.inl`/`Or.inr`.
 theorem genre_cases (g : Genre) :
     g = .science ∨ g = .history ∨ g = .fantasy := by
   sorry

@@ -1,3 +1,5 @@
+/- Commutative group world.
+   Everything from groups, plus `CommGroup.mul_comm : a * b = b * a`. -/
 import Group.conj_cancel
 
 namespace Algebra
