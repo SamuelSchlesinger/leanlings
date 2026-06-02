@@ -238,7 +238,205 @@ def intro : Course :=
     introExercises (welcome := introWelcome) (final := introFinal)
 
 /-- All available courses, in display order. -/
-def courses : Array Course := #[intro]
+
+private def nngExercises : Array Exercise := #[
+  -- Tutorial
+  { name := "rfl", dir := "Tutorial",
+    hint := "In order to use the tactic `rfl` you can enter it in the text box\n  under the goal and hit \"Execute\"." },
+  { name := "rw", dir := "Tutorial",
+    hint := "First execute `rw [h]` to replace the `y` with `x + 7`." },
+  { name := "two_eq_ss0", dir := "Tutorial",
+    hint := "Start with `rw [two_eq_succ_one]` to begin to break `2` down into its definition." },
+  { name := "rw_backwards", dir := "Tutorial",
+    hint := "Try `rw [← one_eq_succ_zero]` to change `succ 0` into `1`." },
+  { name := "add_zero", dir := "Tutorial",
+    hint := "`rw [add_zero]` will change `b + 0` into `b`." },
+  { name := "add_zero2", dir := "Tutorial",
+    hint := "Try `rw [add_zero c]`." },
+  { name := "succ_eq_add_one", dir := "Tutorial",
+    hint := "Start by unravelling the `1`." },
+  { name := "twoaddtwo", dir := "Tutorial",
+    hint := "`nth_rewrite 2 [two_eq_succ_one]` is I think quicker than `rw [two_eq_succ_one]`." },
+  -- Addition
+  { name := "zero_add", dir := "Addition",
+    hint := "You can start a proof by induction on `n` by typing:\n  `induction n with d hd`." },
+  { name := "succ_add", dir := "Addition",
+    hint := "You might want to think about whether induction\n  on `a` or `b` is the best idea." },
+  { name := "add_comm", dir := "Addition",
+    hint := "Induction on `a` or `b` -- it's all the same in this one." },
+  { name := "add_assoc", dir := "Addition",
+    hint := "Remember that when Lean writes `a + b + c`, it means `(a + b) + c`.\n  If you are not sure where the brackets are in an expression, just hover\n  your cursor over it and look at what gets highlighted. For example,\n  hover over both `+` symbols on the left hand side of the goal and\n  you'll see where the invisible brackets are." },
+  { name := "add_right_comm", dir := "Addition",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- Multiplication
+  { name := "mul_one", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "zero_mul", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "succ_mul", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_comm", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "one_mul", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "two_mul", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_add", dir := "Multiplication",
+    hint := "You can do induction on any of the three variables. Some choices\n  are harder to push through than others. Can you do the inductive step in\n  5 rewrites only?" },
+  { name := "add_mul", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_assoc", dir := "Multiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- Power
+  { name := "zero_pow_zero", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "zero_pow_succ", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "pow_one", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "one_pow", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "pow_two", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "pow_add", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_pow", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "pow_pow", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "add_sq", dir := "Power",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- Implication
+  { name := "exact", dir := "Implication",
+    hint := "The goal in this level is one of our hypotheses. Solve the goal by executing `exact h1`." },
+  { name := "exact2", dir := "Implication",
+    hint := "You can use `rw [zero_add] at {h}` to rewrite at `{h}` instead\n  of at the goal." },
+  { name := "apply", dir := "Implication",
+    hint := "Start with `apply h2 at h1`. This will change `h1` to `y = 42`." },
+  { name := "succ_inj", dir := "Implication",
+    hint := "Let's first get `h` into the form `succ x = succ 3` so we can\n  apply `succ_inj`. First execute `rw [four_eq_succ_three] at h`\n  to change the 4 on the right hand side." },
+  { name := "succ_inj2", dir := "Implication",
+    hint := "Start with `apply succ_inj` to apply `succ_inj` to the *goal*." },
+  { name := "intro", dir := "Implication",
+    hint := "Start with `intro h` to assume the hypothesis and call its proof `h`." },
+  { name := "intro2", dir := "Implication",
+    hint := "Start with `intro h` to assume the hypothesis." },
+  { name := "ne", dir := "Implication",
+    hint := "Remember that `h2` is a proof of `x = y → False`. Try\n  `apply`ing `h2` either `at h1` or directly to the goal." },
+  { name := "zero_ne_one", dir := "Implication",
+    hint := "Start with `intro h`." },
+  { name := "one_ne_zero", dir := "Implication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "two_add_two_ne_five", dir := "Implication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- AdvAddition
+  { name := "add_right_cancel", dir := "AdvAddition",
+    hint := "Start with induction on `n`." },
+  { name := "add_left_cancel", dir := "AdvAddition",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "add_left_eq_self", dir := "AdvAddition",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "add_right_eq_self", dir := "AdvAddition",
+    hint := "This state is not provable! Did you maybe use `rw [add_left_eq_self] at h`\n    instead of `apply [add_left_eq_self] at h`? You can complare the two in the inventory." },
+  { name := "add_right_eq_zero", dir := "AdvAddition",
+    hint := "Here we want to deal with the cases `b = 0` and `b ≠ 0` separately,\n  so start with `cases b with d`." },
+  { name := "add_left_eq_zero", dir := "AdvAddition",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- LessOrEqual
+  { name := "le_refl", dir := "LessOrEqual",
+    hint := "The reason `{x} ≤ {x}` is because `{x} = {x} + 0`.\n  So you should start this proof with `use 0`." },
+  { name := "zero_le", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "le_succ_self", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "le_trans", dir := "LessOrEqual",
+    hint := "Start with `cases {hxy} with a ha`." },
+  { name := "le_zero", dir := "LessOrEqual",
+    hint := "You want to use `add_right_eq_zero`, which you already\n  proved, but you'll have to start with `symm at` your hypothesis." },
+  { name := "le_antisymm", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "or_symm", dir := "LessOrEqual",
+    hint := "We don't know whether to go left or right yet. So start with `cases {h} with hx hy`." },
+  { name := "le_total", dir := "LessOrEqual",
+    hint := "Start with `induction {y} with d hd`." },
+  { name := "succ_le_succ", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "le_one", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "le_two", dir := "LessOrEqual",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  -- AdvMultiplication
+  { name := "mul_le_mul_right", dir := "AdvMultiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_left_ne_zero", dir := "AdvMultiplication",
+    hint := "We want to reduce this to a hypothesis `b = 0` and a goal `a * b = 0`,\n  which is logically equivalent but much easier to prove. Remember that `X ≠ 0`\n  is notation for `X = 0 → False`. Click on `Show more help!` if you need hints." },
+  { name := "eq_succ_of_ne_zero", dir := "AdvMultiplication",
+    hint := "Start with `cases a with d` to do a case split on `a = 0` and `a = succ d`." },
+  { name := "one_le_of_ne_zero", dir := "AdvMultiplication",
+    hint := "Use the previous lemma with `apply eq_succ_of_ne_zero at ha`." },
+  { name := "le_mul_right", dir := "AdvMultiplication",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "mul_right_eq_one", dir := "AdvMultiplication",
+    hint := "We want to use `le_mul_right`, but we need a hypothesis `x * y ≠ 0`\n  which we don't have. Yet. Execute `have h2 : x * y ≠ 0` (you can type `≠` with `\\\ne`).\n  You'll be asked to\n  prove it, and then you'll have a new hypothesis which you can apply\n  `le_mul_right` to." },
+  { name := "mul_ne_zero", dir := "AdvMultiplication",
+    hint := "Start with `apply eq_succ_of_ne_zero at ha` and `... at hb`" },
+  { name := "mul_eq_zero", dir := "AdvMultiplication",
+    hint := "Start with `have h2 := mul_ne_zero a b`." },
+  { name := "mul_left_cancel", dir := "AdvMultiplication",
+    hint := "The way to start this proof is `induction b with d hd generalizing c`." },
+  { name := "mul_right_eq_self", dir := "AdvMultiplication",
+    hint := "Reduce to the previous lemma with `nth_rewrite 2 [← mul_one a] at h`" },
+  -- Algorithm
+  { name := "add_left_comm", dir := "Algorithm",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "add_algo1", dir := "Algorithm",
+    hint := "Start with `repeat rw [add_assoc]` to push all the brackets to the right." },
+  { name := "add_algo2", dir := "Algorithm",
+    hint := "Solve this level in one line with `simp only [add_left_comm, add_comm]`" },
+  { name := "add_algo3", dir := "Algorithm",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "pred", dir := "Algorithm",
+    hint := "Start with `rw [← pred_succ a]` and take it from there." },
+  { name := "succ_ne_zero", dir := "Algorithm",
+    hint := "Start with `intro h` (remembering that `X ≠ Y` is just notation\n  for `X = Y → False`)." },
+  { name := "succ_ne_succ", dir := "Algorithm",
+    hint := "Start with `contrapose! h`, to change the goal into its\n  contrapositive, namely a hypothesis of `succ m = succ n` and a goal of `m = n`." },
+  { name := "decide", dir := "Algorithm",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+  { name := "decide2", dir := "Algorithm",
+    hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
+]
+
+private def nngWelcome : String :=
+  "Welcome to the Natural Number Game!\n\n" ++
+  "You will build the natural numbers from scratch — starting from `0` and\n" ++
+  "`succ` — and prove theorems about addition, multiplication, powers, and\n" ++
+  "inequalities, one tactic at a time.\n\n" ++
+  "Each exercise file opens with an explanation; replace the `sorry` with a proof,\n" ++
+  "then run `lake exe leanlings run` (or use watch mode).\n\n" ++
+  "This course is a port of the Natural Number Game by Kevin Buzzard, Mohammad\n" ++
+  "Pedramfar and contributors (https://github.com/leanprover-community/NNG4),\n" ++
+  "used under the Apache-2.0 license. See courses/nng/NOTICE.\n"
+
+private def nngFinal : String :=
+  "Congratulations! You've completed the Natural Number Game port!\n\n" ++
+  "You built ℕ from the Peano axioms and proved, among other things:\n" ++
+  "  - 0 + n = n, commutativity and associativity of addition\n" ++
+  "  - commutativity and associativity of multiplication, distributivity\n" ++
+  "  - laws of powers\n" ++
+  "  - injectivity of succ and the basic theory of ≤\n\n" ++
+  "For the full interactive experience (with the original tactic descriptions and\n" ++
+  "the worlds you skipped here), play the original at\n" ++
+  "https://adam.math.hhu.de/#/g/leanprover-community/nng4\n"
+
+/-- The Natural Number Game: building ℕ and its basic theory from the Peano
+axioms. Ported from leanprover-community/NNG4 (Apache-2.0). -/
+def nng : Course :=
+  mkCourse "nng" "Natural Number Game"
+    "Build ℕ from scratch and prove its basic theory — 78 levels across 9 worlds."
+    nngExercises (welcome := nngWelcome) (final := nngFinal)
+
+def courses : Array Course := #[intro, nng]
 
 /-- The course used when none is selected or a stored selection is invalid. -/
 def defaultCourse : Course := intro

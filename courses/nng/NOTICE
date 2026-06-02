@@ -1,0 +1,43 @@
+leanlings "nng" course
+=======================
+
+This course is a derivative work of the Natural Number Game (NNG4):
+
+    https://github.com/leanprover-community/NNG4
+    Copyright the Natural Number Game contributors
+    (Kevin Buzzard, Mohammad Pedramfar, and others)
+
+The Natural Number Game is licensed under the Apache License, Version 2.0. A
+copy of that license is included alongside this file as `LICENSE`. You may
+obtain a copy of the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Modifications
+-------------
+
+This course is NOT the original game. It has been substantially modified for
+use inside leanlings, a standalone command-line exercise runner. In particular:
+
+  * The dependency on Mathlib and on the `lean4game` GameServer framework has
+    been removed. The `MyNat` development under `solutions/MyNatLib/` is a
+    rewrite using only core Lean 4, and the small tactic conveniences the game
+    relies on (`induction … with`, `cases … with`, `use`, `apply … at`,
+    `nth_rewrite`, `symm at`) are reimplemented there in core Lean.
+
+  * Each game "level" has been converted from the GameServer DSL
+    (`Statement`/`Hint`/`Branch`/…) into a plain leanlings exercise (the file
+    you edit, under `exercises/`) plus a reference solution (under
+    `solutions/`). The instructional text from each level's `Introduction`
+    is preserved as a comment at the top of the corresponding exercise.
+
+  * A few proofs were rewritten to avoid Mathlib-only tactics (`tauto`,
+    `contrapose`, `decide`) using equivalent core-Lean reasoning.
+
+  * The joke "Fermat's Last Theorem" level (whose intended solution is the
+    game's `xyzzy`/`sorry` cheat) has been omitted. Some advanced/WIP worlds
+    from the original are not included.
+
+Individual ported files carry a short header noting this provenance, per
+section 4(b) of the License. Original tactic/theorem documentation and the full
+interactive experience remain available in the upstream game.

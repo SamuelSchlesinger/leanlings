@@ -26,10 +26,13 @@ jobs:
       - name: Build
         run: lake build
 
-      - name: Verify all solutions
+      # The `nng` course's solutions form a Lean library, so they are already
+      # compiled (and thus verified) by `lake build` above. Here we check the
+      # standalone `intro` solutions, which are compiled file-by-file.
+      - name: Verify intro solutions
         run: |
           failed=0
-          for f in $(find courses -path '*/solutions/*/*.lean' | sort); do
+          for f in $(find courses/intro/solutions -path '*/*.lean' | sort); do
             if ! lean "$f" 2>&1; then
               echo "FAIL: $f"
               failed=$((failed + 1))

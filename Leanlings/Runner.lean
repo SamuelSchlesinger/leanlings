@@ -6,11 +6,16 @@ namespace Leanlings.Runner
 private def containsSubstr (s sub : String) : Bool :=
   (s.splitOn sub).length > 1
 
-/-- Check a single exercise by running `lean` on it -/
+/-- Check a single exercise by running `lean` on it.
+
+We invoke it through `lake env lean` so that exercises which `import` a course
+library (e.g. the `nng` course's `MyNat` development) resolve against the built
+package. Exercises that import nothing (the `intro` course) are unaffected.
+Requires the project to have been built (`lake build`). -/
 def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
   let output ← IO.Process.output {
-    cmd := "lean"
-    args := #[exercise.path.toString]
+    cmd := "lake"
+    args := #["env", "lean", exercise.path.toString]
   }
   -- Check for sorry first — if sorry is present, that's the primary issue
   -- (test failures caused by sorry are noise the user doesn't need to see)

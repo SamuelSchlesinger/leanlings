@@ -24,6 +24,17 @@ Progress is tracked separately per course, so you can move between them without
 losing your place. Each course has `exercises/` (the files you edit) and
 `solutions/` (reference answers) under its directory.
 
+Available courses:
+
+- **`intro`** — Learn Lean 4 as a programming language and proof assistant (the
+  default; described below).
+- **`nng`** — A port of the [Natural Number Game](https://adam.math.hhu.de/#/g/leanprover-community/nng4):
+  build ℕ from the Peano axioms and prove its basic theory across 78 levels in 9
+  worlds (addition, multiplication, powers, ≤, …). Unlike the original, this port
+  has **no Mathlib dependency** — the `MyNat` development is pure core Lean. It is
+  used under the Apache-2.0 license; see `courses/nng/NOTICE` for attribution and
+  the modifications made.
+
 ## What you'll learn
 
 The `intro` course's 70 exercises are organized into 27 units across three arcs:
