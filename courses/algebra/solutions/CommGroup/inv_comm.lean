@@ -1,4 +1,4 @@
-import CommGroup.mul_inv_cancel_right
+import CommGroup.mul_right_comm
 
 namespace Algebra
 

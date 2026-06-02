@@ -1,4 +1,4 @@
-import Monoid.bool_one
+import Group.inv_one
 
 namespace Algebra
 

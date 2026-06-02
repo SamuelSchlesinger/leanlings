@@ -1,4 +1,4 @@
-import Group.mul_right_cancel
+import Monoid.bool_one
 
 namespace Algebra
 

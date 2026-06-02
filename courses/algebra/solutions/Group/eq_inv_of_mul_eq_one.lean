@@ -1,4 +1,4 @@
-import Group.inv_inv
+import Group.inv_inj
 
 namespace Algebra
 

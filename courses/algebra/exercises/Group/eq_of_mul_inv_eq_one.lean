@@ -1,4 +1,4 @@
-import Group.inv_mul_cancel_right
+import Group.mul_inv_rev
 
 namespace Algebra
 
