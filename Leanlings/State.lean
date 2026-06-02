@@ -66,6 +66,10 @@ def markCompleted (state : AppState) (courseId name : String) : AppState :=
   if state.completed.contains k then state
   else { state with completed := state.completed.push k }
 
+/-- Mark an exercise as not completed (used by `reset`). -/
+def markIncomplete (state : AppState) (courseId name : String) : AppState :=
+  { state with completed := state.completed.filter (· != key courseId name) }
+
 /-- Switch the active course, moving to its first pending exercise. -/
 def switchCourse (state : AppState) (course : Course) : AppState :=
   let current := match course.exercises.findSome? (fun ex =>

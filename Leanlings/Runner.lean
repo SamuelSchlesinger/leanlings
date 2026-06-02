@@ -16,7 +16,8 @@ private def runLean (path : System.FilePath) : IO ExerciseStatus := do
      containsSubstr output.stdout "declaration uses `sorry`" then
     return .hasSorry
   if output.exitCode != 0 then
-    return .compileError output.stderr
+    -- Lean writes its diagnostics to stdout; include stderr too just in case.
+    return .compileError (output.stdout ++ output.stderr)
   return .success
 
 /-- Check a single exercise.

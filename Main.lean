@@ -95,13 +95,13 @@ def listExercises : IO Unit := do
 
 def nextExercise : IO Unit := do
   let (state, course) ← loadActive
-  if !state.isCompleted course.id state.currentExercise then
-    IO.println s!"{UI.yellow "!"} Warning: current exercise '{state.currentExercise}' is not yet completed."
-    IO.println "  Skipping to next exercise anyway."
   let idx := course.exercises.findIdx? (·.name == state.currentExercise)
   match idx with
   | some i =>
     if i + 1 < course.exercises.size then
+      if !state.isCompleted course.id state.currentExercise then
+        IO.println s!"{UI.yellow "!"} Warning: current exercise '{state.currentExercise}' is not yet completed."
+        IO.println "  Skipping to next exercise anyway."
       let next := course.exercises[i + 1]!
       let state := { state with currentExercise := next.name }
       state.save
@@ -113,7 +113,7 @@ def nextExercise : IO Unit := do
     IO.println "Error: could not find current exercise"
 
 def resetExercise (name : String) : IO UInt32 := do
-  let (_, course) ← loadActive
+  let (state, course) ← loadActive
   match course.getExercise name with
   | some ex =>
     let result ← IO.Process.output {
@@ -121,6 +121,11 @@ def resetExercise (name : String) : IO UInt32 := do
       args := #["checkout", "--", ex.path.toString]
     }
     if result.exitCode == 0 then
+      -- The file is back to `sorry`, so it's no longer solved: clear its
+      -- completion and make it the current exercise again.
+      let state := (state.markIncomplete course.id name)
+      let state := { state with currentExercise := name }
+      state.save
       IO.println s!"{UI.green "✓"} Reset {ex.name} to original state"
       return 0
     else

@@ -6,8 +6,7 @@ namespace MyNat
 
 /-
 If `a` and `b` are numbers, then `succ_inj a b` is a proof
-that `succ a = succ b` implies `a = b`. Click on this theorem in the *Peano*
-tab for more information.
+that `succ a = succ b` implies `a = b`.
 
 Peano had this theorem as an axiom, but in Algorithm World
 we will show how to prove it in Lean. Right now let's just assume it,

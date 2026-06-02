@@ -7,8 +7,8 @@ namespace MyNat
 /-
 [boss battle music]
 
-Look in your inventory to see the proofs you have available.
-These should be enough.
+You've already proved `zero_add` and `succ_add`; with the axioms `add_zero`
+and `add_succ`, those should be enough.
 -/
 /-- On the set of natural numbers, addition is commutative.
 In other words, if `a` and `b` are arbitrary natural numbers, then

@@ -242,7 +242,7 @@ def intro : Course :=
 private def nngExercises : Array Exercise := #[
   -- Tutorial
   { name := "rfl", dir := "Tutorial",
-    hint := "In order to use the tactic `rfl` you can enter it in the text box\n  under the goal and hit \"Execute\"." },
+    hint := "The whole proof is `rfl`. It closes any goal of the form `X = X`." },
   { name := "rw", dir := "Tutorial",
     hint := "First execute `rw [h]` to replace the `y` with `x + 7`." },
   { name := "two_eq_ss0", dir := "Tutorial",
@@ -337,7 +337,7 @@ private def nngExercises : Array Exercise := #[
   { name := "add_left_eq_self", dir := "AdvAddition",
     hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
   { name := "add_right_eq_self", dir := "AdvAddition",
-    hint := "This state is not provable! Did you maybe use `rw [add_left_eq_self] at h`\n    instead of `apply [add_left_eq_self] at h`? You can complare the two in the inventory." },
+    hint := "Rewrite with `add_comm` to turn `x + y` into `y + x`, then this is exactly\n  the `add_left_eq_self` you just proved." },
   { name := "add_right_eq_zero", dir := "AdvAddition",
     hint := "Here we want to deal with the cases `b = 0` and `b ≠ 0` separately,\n  so start with `cases b with d`." },
   { name := "add_left_eq_zero", dir := "AdvAddition",
@@ -369,7 +369,7 @@ private def nngExercises : Array Exercise := #[
   { name := "mul_le_mul_right", dir := "AdvMultiplication",
     hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
   { name := "mul_left_ne_zero", dir := "AdvMultiplication",
-    hint := "We want to reduce this to a hypothesis `b = 0` and a goal `a * b = 0`,\n  which is logically equivalent but much easier to prove. Remember that `X ≠ 0`\n  is notation for `X = 0 → False`. Click on `Show more help!` if you need hints." },
+    hint := "We want to reduce this to a hypothesis `b = 0` and a goal `a * b = 0`,\n  which is logically equivalent but much easier to prove. Remember that `X ≠ 0`\n  is notation for `X = 0 → False`." },
   { name := "eq_succ_of_ne_zero", dir := "AdvMultiplication",
     hint := "Start with `cases a with d` to do a case split on `a = 0` and `a = succ d`." },
   { name := "one_le_of_ne_zero", dir := "AdvMultiplication",
@@ -377,13 +377,13 @@ private def nngExercises : Array Exercise := #[
   { name := "le_mul_right", dir := "AdvMultiplication",
     hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
   { name := "mul_right_eq_one", dir := "AdvMultiplication",
-    hint := "We want to use `le_mul_right`, but we need a hypothesis `x * y ≠ 0`\n  which we don't have. Yet. Execute `have h2 : x * y ≠ 0` (you can type `≠` with `\\\ne`).\n  You'll be asked to\n  prove it, and then you'll have a new hypothesis which you can apply\n  `le_mul_right` to." },
+    hint := "We want to use `le_mul_right`, but we need a hypothesis `x * y ≠ 0`\n  which we don't have. Yet. Introduce it inline with\n  `have h2 : x * y ≠ 0 := by rewrite [h]; exact one_ne_zero` (you can type `≠` with `\\\ne`).\n  then `apply le_mul_right at h2`." },
   { name := "mul_ne_zero", dir := "AdvMultiplication",
     hint := "Start with `apply eq_succ_of_ne_zero at ha` and `... at hb`" },
   { name := "mul_eq_zero", dir := "AdvMultiplication",
     hint := "Start with `have h2 := mul_ne_zero a b`." },
   { name := "mul_left_cancel", dir := "AdvMultiplication",
-    hint := "The way to start this proof is `induction b with d hd generalizing c`." },
+    hint := "Generalize `c` and induct on `b`:\n  `induction b using MyNat.rec' generalizing c with`\n  `| zero => ...`\n  `| succ d hd => ...`" },
   { name := "mul_right_eq_self", dir := "AdvMultiplication",
     hint := "Reduce to the previous lemma with `nth_rewrite 2 [← mul_one a] at h`" },
   -- Algorithm
@@ -400,7 +400,7 @@ private def nngExercises : Array Exercise := #[
   { name := "succ_ne_zero", dir := "Algorithm",
     hint := "Start with `intro h` (remembering that `X ≠ Y` is just notation\n  for `X = Y → False`)." },
   { name := "succ_ne_succ", dir := "Algorithm",
-    hint := "Start with `contrapose! h`, to change the goal into its\n  contrapositive, namely a hypothesis of `succ m = succ n` and a goal of `m = n`." },
+    hint := "`succ m ≠ succ n` unfolds to `succ m = succ n → False`, so `intro hs`.\n  Then `apply succ_inj at hs` gives `m = n`, which contradicts `h`." },
   { name := "decide", dir := "Algorithm",
     hint := "Read the explanation at the top of the exercise file, then fill in the proof." },
   { name := "decide2", dir := "Algorithm",
@@ -530,9 +530,9 @@ private def algebraExercises : Array Exercise := #[
   { name := "map_inv", dir := "Hom",
     hint := "Show `f a * f a⁻¹ = f (a * a⁻¹) = f 1 = 1`, then use `eq_inv_of_mul_eq_one`." },
   { name := "map_mul_inv", dir := "Hom",
-    hint := "Use `map_mul` to split, then `map_inv` on the second factor." },
+    hint := "Use `f.map_mul` to split, then `map_inv` on the second factor." },
   { name := "map_div", dir := "Hom",
-    hint := "Unfold both `/`s with `div_eq`, then `map_mul` and `map_inv`." },
+    hint := "Unfold both `/`s with `div_eq`, then `f.map_mul` and `map_inv`." },
   -- Ring
   { name := "add_neg_cancel", dir := "Ring",
     hint := "The axiom gives `-a + a = 0`; commute first." },
@@ -600,8 +600,12 @@ private def algebraWelcome : String :=
   "Everything is built from scratch in core Lean (no Mathlib): the structures live\n" ++
   "in `AlgebraLib`, and each exercise asks you to prove a theorem that holds in\n" ++
   "*every* structure of that kind. Replace the `sorry` with a proof.\n\n" ++
-  "This course assumes the proof tactics from the `intro` course — especially\n" ++
-  "`rw`, `calc`, `intro`, `exact`, and `rcases`. If those are new to you, do the\n" ++
+  "Naming: the axioms are referred to by their full names, like\n" ++
+  "`Group.inv_mul_cancel`, `CommGroup.mul_comm`, `Ring.add_assoc`. Only\n" ++
+  "`mul_assoc`, `one_mul`, and `mul_one` are available unqualified. (Run\n" ++
+  "`lake exe leanlings solution` if you get stuck on which lemma to use.)\n\n" ++
+  "This course assumes the proof tactics from the `intro` course, especially\n" ++
+  "`rw`, `calc`, `intro`, `exact`, and `cases`. If those are new to you, do the\n" ++
   "`intro` course first (`lake exe leanlings course intro`).\n"
 
 private def algebraFinal : String :=

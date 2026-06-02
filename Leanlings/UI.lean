@@ -11,7 +11,9 @@ def clearScreen : String := "\x1b[2J\x1b[H"
 
 def progressBar (done total : Nat) : String :=
   let width := 30
-  let filled := if total > 0 then done * width / total else 0
+  -- Show at least one filled block once any progress is made, so a learner who
+  -- has solved a few exercises sees movement even when done/total rounds to 0.
+  let filled := if total > 0 && done > 0 then max 1 (done * width / total) else 0
   let empty := width - filled
   let bar := String.ofList (List.replicate filled '█') ++
              String.ofList (List.replicate empty '░')
