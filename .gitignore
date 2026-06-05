@@ -1,3 +1,4 @@
 .lake/
 .leanlings-state
 .leanlings-check.lean
+.claude/settings.local.json
