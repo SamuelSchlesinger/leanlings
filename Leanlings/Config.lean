@@ -574,21 +574,21 @@ private def algebraExercises : Array Exercise := #[
   { name := "sq_expand", dir := "CommRing",
     hint := "Expand with `mul_add_mul`, then commute the `b * a` term to `a * b`." },
   -- Field
-  { name := "mul_inv_cancel", dir := "Field",
+  { name := "mul_inv_cancel", dir := "RealField",
     hint := "This is exactly the field axiom for nonzero `a`." },
-  { name := "inv_mul_cancel", dir := "Field",
+  { name := "inv_mul_cancel", dir := "RealField",
     hint := "Commute, then apply the field axiom." },
-  { name := "field_inv_one", dir := "Field",
+  { name := "field_inv_one", dir := "RealField",
     hint := "`1 * 1⁻¹ = 1`, and `1 * 1⁻¹ = 1⁻¹`." },
-  { name := "inv_ne_zero", dir := "Field",
+  { name := "inv_ne_zero", dir := "RealField",
     hint := "If `a⁻¹ = 0` then `a * a⁻¹ = a * 0 = 0`, contradicting `a * a⁻¹ = 1` (since `0 ≠ 1`)." },
-  { name := "mul_ne_zero", dir := "Field",
+  { name := "mul_ne_zero", dir := "RealField",
     hint := "If `a * b = 0` and `a ≠ 0`, multiply by `a⁻¹` to force `b = 0`." },
-  { name := "mul_eq_zero", dir := "Field",
+  { name := "mul_eq_zero", dir := "RealField",
     hint := "Case on whether `a = 0`. If not, multiply by `a⁻¹` to get `b = 0`. (Uses classical case analysis.)" },
-  { name := "mul_self_eq_zero", dir := "Field",
+  { name := "mul_self_eq_zero", dir := "RealField",
     hint := "`mul_eq_zero` gives `a = 0 ∨ a = 0`; either branch is `a = 0`." },
-  { name := "field_mul_left_cancel", dir := "Field",
+  { name := "field_mul_left_cancel", dir := "RealField",
     hint := "For nonzero `a`, multiply both sides by `a⁻¹`. (Cancellation needs `a ≠ 0` in a field.)" },
 ]
 
@@ -621,7 +621,190 @@ def algebra : Course :=
     "Climb the Bourbaki hierarchy — magma to field — proving each level from its axioms."
     algebraExercises (welcome := algebraWelcome) (final := algebraFinal)
 
-def courses : Array Course := #[intro, nng, algebra]
+
+private def analysisExercises : Array Exercise := #[
+  -- Setoid
+  { name := "r_refl", dir := "Setoid",
+    hint := "`PreRat.r a a` unfolds to `a.num * a.den = a.num * a.den`. One tactic proves any `X = X`." },
+  { name := "r_symm", dir := "Setoid",
+    hint := "`unfold PreRat.r at *` gives integer equations; `omega` finishes." },
+  { name := "r_trans", dir := "Setoid",
+    hint := "After the given `apply`, prove `a.num*c.den*b.den = c.num*a.den*b.den` with a `calc` that uses `Int.mul_right_comm` and rewrites by `hab`/`hbc`." },
+  -- WellDef
+  { name := "add_resp", dir := "WellDef",
+    hint := "`simp only [PreRat.r, PreRat.add] at *` then `grind`." },
+  { name := "mul_resp", dir := "WellDef",
+    hint := "Same as `add_resp` with `PreRat.mul`." },
+  { name := "neg_resp", dir := "WellDef",
+    hint := "Same pattern with `PreRat.neg`." },
+  { name := "lt_imp", dir := "WellDef",
+    hint := "Scale `h` by `Int.mul_pos c.den_pos d.den_pos`, rewrite with two `grind`-proved equalities, then cancel via `Int.mul_lt_mul_right`." },
+  { name := "le_imp", dir := "WellDef",
+    hint := "Mirror of `lt_imp` with `Int.mul_le_mul_of_nonneg_right` and `Int.mul_le_mul_right`." },
+  -- Rat
+  { name := "add_comm", dir := "Rat",
+    hint := "`induction x using MyRat.ind`, `induction y`, `rw [add_mk, add_mk, mk_eq]`, `grind`." },
+  { name := "add_assoc", dir := "Rat",
+    hint := "Three inductions; `rw` `add_mk` four times, then `mk_eq`, `grind`." },
+  { name := "zero_add", dir := "Rat",
+    hint := "`rw [zero_def, add_mk, mk_eq]; grind`." },
+  { name := "add_zero", dir := "Rat",
+    hint := "Like `zero_add`." },
+  { name := "neg_add_cancel", dir := "Rat",
+    hint := "Expose `-x` with `neg_mk` and `0` with `zero_def`, then `mk_eq`, `grind`." },
+  { name := "neg_neg", dir := "Rat",
+    hint := "Two `neg_mk`s, then `mk_eq`, `grind`." },
+  { name := "mul_comm", dir := "Rat",
+    hint := "Like `add_comm` with `mul_mk`." },
+  { name := "mul_assoc", dir := "Rat",
+    hint := "Like `add_assoc` with `mul_mk`." },
+  { name := "one_mul", dir := "Rat",
+    hint := "`rw [one_def, mul_mk, mk_eq]; grind`." },
+  { name := "mul_one", dir := "Rat",
+    hint := "Like `one_mul`." },
+  { name := "mul_zero", dir := "Rat",
+    hint := "`rw [zero_def, mul_mk, mk_eq]; grind`." },
+  { name := "left_distrib", dir := "Rat",
+    hint := "Use both `add_mk` and `mul_mk`, then `mk_eq`, `grind`." },
+  { name := "right_distrib", dir := "Rat",
+    hint := "Like `left_distrib`." },
+  { name := "mul_inv_cancel", dir := "Rat",
+    hint := "After the given `ha`, `rw [inv_mk_of_ne hb ha, mul_mk, one_def, mk_eq]`, add `Int.sign_mul_natAbs a`, then `grind`." },
+  -- RatOrder
+  { name := "lt_irrefl", dir := "RatOrder",
+    hint := "`induction`, `rw [lt_mk]`, `omega`." },
+  { name := "lt_trans", dir := "RatOrder",
+    hint := "Scale both hypotheses by positive denominators, chain with `Int.lt_trans`, cancel with `Int.mul_lt_mul_right`. `grind` proves the rearrangement equalities." },
+  { name := "lt_trichotomy", dir := "RatOrder",
+    hint := "`simp only [lt_mk, mk_eq]` then `omega`." },
+  { name := "le_refl", dir := "RatOrder",
+    hint := "`rw [le_mk]; omega`." },
+  { name := "le_trans", dir := "RatOrder",
+    hint := "Like `lt_trans` with the `≤` lemmas (`Int.mul_le_mul_of_nonneg_right`, `Int.le_trans`)." },
+  { name := "add_lt_add_left", dir := "RatOrder",
+    hint := "Reduce to integers, rewrite both sides as `P + Q` with `P` equal, and `omega` with `Q₁ < Q₂` from scaling `h` by `b*b`." },
+  { name := "add_le_add_left", dir := "RatOrder",
+    hint := "Like `add_lt_add_left` with `Int.mul_le_mul_of_nonneg_right`." },
+  { name := "mul_pos", dir := "RatOrder",
+    hint := "`0 < mk a b` is `0 < a`; use `Int.mul_pos` for `0 < a*c`." },
+  { name := "abs_nonneg", dir := "RatOrder",
+    hint := "`rw [abs_mk, zero_def, le_mk]; omega` (`natAbs` ≥ 0)." },
+  { name := "abs_neg", dir := "RatOrder",
+    hint := "Use `Int.natAbs_neg` in the `rw` chain after `mk_eq`." },
+  { name := "abs_mul", dir := "RatOrder",
+    hint := "Use `Int.natAbs_mul`, then `push_cast`, then `grind`." },
+  { name := "abs_add_le", dir := "RatOrder",
+    hint := "Prove the un-scaled `key` (via `Int.natAbs_add_le`, `Int.natAbs_mul`, and `den.natAbs = den`), then scale by `b*d ≥ 0`." },
+  { name := "abs_lt", dir := "RatOrder",
+    hint := "`simp only [abs_mk, neg_mk, lt_mk, Int.neg_mul]`, `by_cases 0 ≤ a`, rewrite `↑a.natAbs * d`, then `omega` with the sign of `a*d`." },
+  { name := "archimedean", dir := "RatOrder",
+    hint := "Witness `a.natAbs + 1`; after `ofInt_def, lt_mk, push_cast`, use `Int.mul_le_mul_of_nonneg_left` and `omega`." },
+  { name := "exists_between", dir := "RatOrder",
+    hint := "Midpoint `(a*d + c*b) / (2*b*d)`; each inequality follows from scaling `h` and `omega`." },
+  -- Cauchy
+  { name := "const_isCauchy", dir := "Cauchy",
+    hint := "`intro ε hε; refine ⟨0, ...⟩; simp only [constSeq]; rw [MyRat.sub_self, MyRat.abs_zero]; exact hε`." },
+  { name := "add_isCauchy", dir := "Cauchy",
+    hint := "After the given setup, `calc` via `MyRat.add_sub_add`, `abs_add_le`, `MyRat.add_lt_add`, ending `= ε` by `hδδ`. Use the `Nat.le_max_*`/`Nat.le_trans` bounds." },
+  { name := "neg_isCauchy", dir := "Cauchy",
+    hint := "Same `N`; `rw [MyRat.neg_sub_neg, MyRat.abs_sub_comm]; exact hN ...`." },
+  { name := "equiv_refl", dir := "Cauchy",
+    hint := "Like `const_isCauchy`: `f n - f n = 0`." },
+  { name := "equiv_symm", dir := "Cauchy",
+    hint := "Reuse `N`; `rw [MyRat.abs_sub_comm]`." },
+  { name := "equiv_trans", dir := "Cauchy",
+    hint := "`exists_half`, `Nat.max`, then `calc` with `MyRat.abs_sub_le` and `MyRat.add_lt_add`." },
+  -- Real
+  { name := "add_comm", dir := "Real",
+    hint := "`induction x using MyReal.ind`, `induction y`, `rw [add_mk, add_mk]`, then `exact eq_of_equiv (equiv_of_eq (fun n => MyRat.add_comm _ _))`." },
+  { name := "add_assoc", dir := "Real",
+    hint := "Three inductions, `add_mk` ×4, then `eq_of_equiv (equiv_of_eq (fun n => MyRat.add_assoc _ _ _))`." },
+  { name := "zero_add", dir := "Real",
+    hint := "`rw [zero_def, add_mk]`, then `MyRat.zero_add` pointwise." },
+  { name := "add_zero", dir := "Real",
+    hint := "Like `zero_add`." },
+  { name := "neg_add_cancel", dir := "Real",
+    hint := "`rw [neg_mk, add_mk, zero_def]`, then `MyRat.neg_add_cancel` pointwise." },
+  { name := "mul_comm", dir := "Real",
+    hint := "`rw [mul_mk, mul_mk]`, then `MyRat.mul_comm` pointwise." },
+  { name := "mul_assoc", dir := "Real",
+    hint := "`mul_mk` ×4, then `MyRat.mul_assoc` pointwise." },
+  { name := "one_mul", dir := "Real",
+    hint := "`rw [one_def, mul_mk]`, then `MyRat.one_mul` pointwise." },
+  { name := "mul_one", dir := "Real",
+    hint := "Like `one_mul`." },
+  { name := "left_distrib", dir := "Real",
+    hint := "`add_mk`, `mul_mk` ×3, `add_mk`, then `MyRat.left_distrib` pointwise." },
+  { name := "ofRat_add", dir := "Real",
+    hint := "`rw [ofRat_def ×3, add_mk]`, then `eq_of_equiv (equiv_of_eq (fun n => rfl))`." },
+  { name := "ofRat_mul", dir := "Real",
+    hint := "Like `ofRat_add` with `mul_mk`." },
+  -- Capstone
+  { name := "ofRat_pos", dir := "Capstone",
+    hint := "`rw [lt_def, sub_zero, ofRat_def, isPos_mk]`; the eventual lower bound for `ofRat q` is `q` itself: `⟨q, hq, 0, fun n _ => by simp only [constSeq]; exact MyRat.le_refl q⟩`." },
+  { name := "cauchy_seq_converges", dir := "Capstone",
+    hint := "After the skeleton the goal is `δ ≤ ε - |f k - f n|`. Note `|f k - f n| ≤ δ` (`MyRat.le_of_lt (hN k n hk hn)`), then `rw [MyRat.le_sub_iff, ← hδδ]` and `exact MyRat.add_le_add_left δ _`." },
+  -- Metric
+  { name := "tendsto_const", dir := "Metric",
+    hint := "`intro ε hε; refine ⟨0, fun n _ => ?_⟩; rw [dist_self]; exact MyReal.ofRat_pos hε`." },
+  { name := "converges_isCauchySeq", dir := "Metric",
+    hint := "Split `ε` with `MyRat.exists_half`. Then `calc dist (x m) (x n) ≤ dist (x m) L + dist L (x n) := dist_triangle _ _ _`, `_ < ofRat η + ofRat η := MyReal.add_lt_add (hN m hm) (by rw [dist_comm]; exact hN n hn)`, `_ = ofRat ε := by rw [← MyReal.ofRat_add, hηη]`." },
+  -- Field
+  { name := "mul_inv_cancel", dir := "RealField",
+    hint := "`induction x using MyReal.ind`. Get `hnn : ¬ CauSeq.Null ⟨f, hf⟩` from `hx` via `mk_eq_zero_iff`, then `⟨q, hq, N, hN⟩ := CauSeq.apart hnn`. `rw [inv_mk_of_not_null hnn, mul_mk, one_def]`, `apply eq_of_equiv`; for `n ≥ N`, `f n ≠ 0` so `f n * (f n)⁻¹ = 1` (`MyRat.mul_inv_cancel`), giving difference `0`." },
+  -- Complete
+  { name := "approx", dir := "Complete",
+    hint := "`induction x using MyReal.ind`. `cauchy_seq_converges f hf ε hε` gives `N`; use `q := f N`, then `rw [MyReal.abs_sub_comm]` and apply the bound at `N`." },
+  { name := "complete", dir := "Complete",
+    hint := "Two ε–N proofs. For `IsCauchy q`: split `ε` twice (`exists_half`), get `K0` from `tolSeq_lt`, `K1` from `hx`; bound `|q m - q n|` by converting to ℝ (`ofRat_lt_iff`, `ofRat_abs`, `ofRat_sub`) and a 3-term triangle (`abs_sub_le`, `add_le_add_left`, `MyReal.add_lt_add`). For convergence: `|x k - L| ≤ |x k - ofRat (q k)| + |ofRat (q k) - L|`, with the second term from `cauchy_seq_converges q hqcauchy`." }
+]
+
+private def analysisWelcome : String :=
+  "Welcome to Real Analysis from Scratch!\n\n" ++
+  "You will build the rational and real numbers from the ground up — no Mathlib —\n" ++
+  "and develop their theory through Cauchy sequences toward the completeness of ℝ.\n\n" ++
+  "The path: construct ℚ as a quotient of fractions (proving the equivalence\n" ++
+  "relation and that the operations are well defined), develop its ordered-field\n" ++
+  "theory (order, absolute value, the Archimedean property, density), build Cauchy\n" ++
+  "sequences, and assemble ℝ as their quotient.\n\n" ++
+  "Two ideas recur. (1) A statement about ℚ reduces, via `mk_eq` and the\n" ++
+  "computation lemmas, to one about integers that `grind`/`omega` close. (2) A\n" ++
+  "statement about ℝ reduces, via the quotient, to one about its Cauchy-sequence\n" ++
+  "representatives — often pointwise to the ℚ fact you already proved.\n\n" ++
+  "Each level opens with an explanation and names the lemmas you need. Replace the\n" ++
+  "`sorry` with a proof, then run `lake exe leanlings run` (or use watch mode).\n" ++
+  "This course assumes the tactics from the `intro` course (`rw`, `calc`,\n" ++
+  "`induction`, `omega`); quotients are introduced as you go.\n"
+
+private def analysisFinal : String :=
+  "Congratulations! You built ℚ and ℝ from scratch.\n\n" ++
+  "Along the way you proved:\n" ++
+  "  - that cross-multiplication is an equivalence relation, and that +, ×, −, <,\n" ++
+  "    ≤ respect it, so they descend to the quotient ℚ;\n" ++
+  "  - the ordered-field theory of ℚ: the field axioms, trichotomy, the triangle\n" ++
+  "    inequality, the Archimedean property, and density;\n" ++
+  "  - that constant, sum, negation sequences are Cauchy and that `CauchyEquiv` is\n" ++
+  "    an equivalence relation;\n" ++
+  "  - the ring theory of ℝ, built as the quotient of Cauchy sequences, with ℚ\n" ++
+  "    embedded as the constant sequences;\n" ++
+  "  - the capstone: ℝ is complete over ℚ — every Cauchy sequence of rationals\n" ++
+  "    converges, in ℝ, to the real number it represents;\n" ++
+  "  - the basics of abstract metric spaces (with ℝ as the example): that a\n" ++
+  "    convergent sequence is Cauchy, proven from the axioms alone;\n" ++
+  "  - that ℝ is a field — every nonzero real has a multiplicative inverse;\n" ++
+  "  - and the summit: ℝ is Cauchy-complete — every Cauchy sequence of reals\n" ++
+  "    converges — proven by rational approximation.\n\n" ++
+  "You have built the real numbers from nothing and proved they are a complete\n" ++
+  "ordered field. That is the foundation the whole of real analysis rests on.\n"
+
+/-- Real analysis from scratch: construct ℚ and ℝ (via Cauchy sequences) in core
+Lean, then develop their theory. -/
+def analysis : Course :=
+  mkCourse "analysis" "Real Analysis from Scratch"
+    "Construct ℚ, then ℝ via Cauchy sequences — no Mathlib — and prove their theory."
+    analysisExercises (welcome := analysisWelcome) (final := analysisFinal)
+
+def courses : Array Course := #[intro, nng, algebra, analysis]
 
 /-- The course used when none is selected or a stored selection is invalid. -/
 def defaultCourse : Course := intro

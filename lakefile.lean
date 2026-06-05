@@ -54,3 +54,25 @@ lean_lib «Algebra» where
     Glob.submodules `CommRing,
     Glob.submodules `Field
   ]
+
+-- The `analysis` course (a from-scratch construction of ℚ, then ℝ via Cauchy
+-- sequences, then metric spaces and real analysis) is likewise a self-contained
+-- Lean library: `AnalysisLib` holds the ℚ construction, and the solution chain
+-- builds the theory up to the completeness of ℝ. See courses/analysis/.
+@[default_target]
+lean_lib «Analysis» where
+  srcDir := "courses/analysis/solutions"
+  globs := #[
+    Glob.one `AnalysisCourse,
+    Glob.submodules `AnalysisLib,
+    Glob.submodules `Setoid,
+    Glob.submodules `WellDef,
+    Glob.submodules `Rat,
+    Glob.submodules `RatOrder,
+    Glob.submodules `Cauchy,
+    Glob.submodules `Real,
+    Glob.submodules `Metric,
+    Glob.submodules `Capstone,
+    Glob.submodules `RealField,
+    Glob.submodules `Complete
+  ]

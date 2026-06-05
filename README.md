@@ -7,7 +7,7 @@ Each exercise is a Lean file with a `sorry` (or a deliberate mistake) for you to
 fix. Run it in watch mode and the compiler rechecks your work every time you
 save, then moves you on to the next exercise.
 
-There are three courses and 219 exercises in total. None of them depend on
+There are four courses and 281 exercises in total. None of them depend on
 Mathlib; everything is plain core Lean 4.
 
 ## Courses
@@ -42,6 +42,16 @@ you edit) and a `solutions/` directory (reference answers).
   each level's basic theory from its axioms. The hierarchy is defined from
   scratch in core Lean (`AlgebraLib`), and each exercise proves a theorem that
   holds in every structure of that kind.
+- `analysis` (62 exercises): real analysis from the ground up. You construct the
+  rational numbers as a quotient of fractions — proving cross-multiplication is
+  an equivalence relation and that the arithmetic and order respect it — then
+  develop ℚ's ordered-field theory (field axioms, order, absolute value, the
+  triangle inequality, the Archimedean property, density), build Cauchy
+  sequences, and assemble the real numbers as their quotient, with ℚ embedded as
+  the constant sequences. The construction lives in `AnalysisLib` plus a chain of
+  infrastructure modules; each exercise reduces a fact about ℚ to one about ℤ
+  (closed by `grind`/`omega`) or a fact about ℝ to one about its
+  Cauchy-sequence representatives. There is more on this course below.
 
 ## The intro course
 
@@ -59,6 +69,42 @@ Putting it together (units 24 to 26): proofs about natural number arithmetic
 and list operations, ending with a capstone on binary trees that combines
 recursive functions with induction. Three quizzes (units 13, 19, and 26) review
 what came before.
+
+## The analysis course
+
+Its 62 exercises run across ten worlds, each building on the last.
+
+Constructing ℚ (worlds `Setoid`, `WellDef`): a rational is a fraction with a
+positive denominator, and `PreRat.r a b := a.num * b.den = b.num * a.den` says two
+fractions are equal. You prove `r` is an equivalence relation, and that `+`, `×`,
+`−`, `<`, `≤` respect it — exactly what lets them descend to the quotient `MyRat`
+(assembled for you in the infrastructure modules `Rat.Quotient` and `Rat.Ops`).
+
+The theory of ℚ (worlds `Rat`, `RatOrder`): the field axioms, then the order,
+the absolute value and its triangle inequality, the Archimedean property, and the
+density of ℚ in itself. Each reduces, through `mk_eq` and the computation lemmas,
+to an integer fact that `grind`/`omega` close.
+
+Constructing ℝ (worlds `Cauchy`, `Real`): you prove the constant, sum, and
+negation of Cauchy sequences are Cauchy and that the "difference tends to zero"
+relation is an equivalence; then `MyReal` is built as the quotient (with the
+harder boundedness and product facts given in `Cauchy.Mul`), and you prove its
+ring theory, each fact reducing pointwise to the ℚ theorem you already proved.
+
+The construction is deliberately split so that the conceptually central steps —
+the equivalence relations and well-definedness behind each quotient — are yours
+to prove, while the fiddliest bookkeeping is provided. There is no Mathlib and no
+`ring`/`linarith`: `grind` plays the role of `ring` and `omega` that of
+`linarith`, both over `ℤ`, with a small curated lemma toolkit for the rest.
+
+The capstone (world `Capstone`) is the payoff: ℝ is complete over ℚ — every
+Cauchy sequence of rationals converges, in ℝ, to the real number it represents.
+A `Metric` world introduces abstract metric spaces (with ℝ as the example) and
+proves, generically from the axioms, that a convergent sequence is Cauchy; and a
+`Field` world proves every nonzero real has a multiplicative inverse. The summit
+is the `Complete` world: ℝ is Cauchy-complete — every Cauchy sequence of reals
+converges — proven by rational approximation. The whole tower, ℚ to a complete
+ordered field, is built from nothing but core Lean.
 
 ## Getting started
 
