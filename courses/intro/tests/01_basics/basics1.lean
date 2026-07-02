@@ -1,3 +1,3 @@
 -- Hidden correctness checks for this exercise (not shown to the learner).
-#guard product == 72
-#guard power == 81
+#guard product == 42
+#guard power == 1024

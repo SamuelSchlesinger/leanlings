@@ -16,11 +16,12 @@
 -/
 
 -- Error: "type mismatch" — "yes" is a String, but Bool is expected.
--- Fix: change the value to a Bool. The two Bool values are `true` and `false`.
+-- Fix: change the value to a Bool. The two Bool values are `true` and
+--      `false` — pick the one that means "yes".
 def isReady : Bool := "yes"
 
 -- Error: "type mismatch" — true is a Bool, but Nat is expected.
--- Fix: change the value to a Nat.
+-- Fix: change the value to a Nat greater than zero (say, 1).
 def count : Nat := true
 
 -- Error: "type mismatch" — "hello" is a String, but Nat is expected.
