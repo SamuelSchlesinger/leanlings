@@ -8,8 +8,9 @@
     #eval 6 * 7     -- 42
     #eval 2 ^ 10    -- 1024
 
-  TODO: Replace each `sorry` with an arithmetic expression
-        that gives the right value.
+  TODO: Replace each `sorry` below:
+  • `product` should equal 72 — write it as a product of two numbers.
+  • `power` should equal 81 — write it using `^`.
 -/
 
 def product : Nat := sorry
