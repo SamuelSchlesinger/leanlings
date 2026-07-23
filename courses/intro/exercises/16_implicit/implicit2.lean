@@ -20,5 +20,6 @@
 -- Check if a list contains an element (needs BEq)
 def myContains [BEq α] (x : α) (l : List α) : Bool := sorry
 
--- Remove duplicates from a list (needs BEq)
+-- Remove duplicates, keeping each value's last occurrence and preserving order
+-- (needs BEq). For example: myDedup [1, 2, 1, 3, 2] = [1, 3, 2].
 def myDedup [BEq α] (l : List α) : List α := sorry

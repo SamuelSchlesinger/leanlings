@@ -14,9 +14,17 @@ structure Exercise where
   /-- The id of the course this exercise belongs to. Stamped by `mkCourse`. -/
   course : String := ""
   hint : String := ""
+  /-- Exact stdout expected when this exercise is executed with `lean --run`.
+  Most exercises are compile-time tasks and leave this unset. -/
+  expectedOutput : Option String := none
   deriving Repr, BEq, Inhabited
 
 namespace Exercise
+
+/-- The exercise's course-local, unambiguous identifier. Bare names remain
+accepted by the CLI when they identify exactly one exercise in a course. -/
+def id (e : Exercise) : String :=
+  s!"{e.dir}/{e.name}"
 
 def path (e : Exercise) : System.FilePath :=
   s!"courses/{e.course}/exercises/{e.dir}/{e.name}.lean"

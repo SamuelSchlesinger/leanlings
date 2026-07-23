@@ -3,7 +3,7 @@ import Rat.Ops
 namespace Analysis
 open MyRat
 
-/- # Rat world — the field laws of ℚ
+/- # Rat world — the arithmetic laws of ℚ
 
 `Rat.Ops` now gives every operation on `MyRat`, plus the API you will use
 constantly:

@@ -126,9 +126,11 @@ private def introExercises : Array Exercise := #[
 
   -- 15_io
   { name := "io1", dir := "15_io",
-    hint := "`s!\"text {variable} text\"` is string interpolation.\n`IO.println` prints a line to the console." },
+    hint := "`s!\"text {variable} text\"` is string interpolation.\n`IO.println` prints a line to the console.",
+    expectedOutput := some "Hello, Lean!\n" },
   { name := "io2", dir := "15_io",
-    hint := "`List.range n` gives `[0, 1, ..., n-1]`.\nUse a `for` loop to iterate over it and print." },
+    hint := "`List.range n` gives `[0, 1, ..., n-1]`.\nUse a `for` loop to iterate over it and print.",
+    expectedOutput := some "5\n4\n3\n2\n1\n" },
 
   -- 16_implicit
   { name := "implicit1", dir := "16_implicit",
@@ -573,7 +575,7 @@ private def algebraExercises : Array Exercise := #[
     hint := "Re-associate, then commute the whole product." },
   { name := "sq_expand", dir := "CommRing",
     hint := "Expand with `mul_add_mul`, then commute the `b * a` term to `a * b`." },
-  -- Field
+  -- RealField
   { name := "mul_inv_cancel", dir := "RealField",
     hint := "This is exactly the field axiom for nonzero `a`." },
   { name := "inv_mul_cancel", dir := "RealField",
@@ -764,8 +766,8 @@ private def analysisWelcome : String :=
   "You will build the rational and real numbers from the ground up — no Mathlib —\n" ++
   "and develop their theory through Cauchy sequences toward the completeness of ℝ.\n\n" ++
   "The path: construct ℚ as a quotient of fractions (proving the equivalence\n" ++
-  "relation and that the operations are well defined), develop its ordered-field\n" ++
-  "theory (order, absolute value, the Archimedean property, density), build Cauchy\n" ++
+  "relation and that the operations are well defined), develop its arithmetic\n" ++
+  "and order theory (absolute value, the Archimedean property, density), build Cauchy\n" ++
   "sequences, and assemble ℝ as their quotient.\n\n" ++
   "Two ideas recur. (1) A statement about ℚ reduces, via `mk_eq` and the\n" ++
   "computation lemmas, to one about integers that `grind`/`omega` close. (2) A\n" ++
@@ -781,8 +783,9 @@ private def analysisFinal : String :=
   "Along the way you proved:\n" ++
   "  - that cross-multiplication is an equivalence relation, and that +, ×, −, <,\n" ++
   "    ≤ respect it, so they descend to the quotient ℚ;\n" ++
-  "  - the ordered-field theory of ℚ: the field axioms, trichotomy, the triangle\n" ++
-  "    inequality, the Archimedean property, and density;\n" ++
+  "  - the arithmetic and order theory of ℚ: algebraic laws (including inverse\n" ++
+  "    cancellation), trichotomy, the triangle inequality, the Archimedean\n" ++
+  "    property, and density;\n" ++
   "  - that constant, sum, negation sequences are Cauchy and that `CauchyEquiv` is\n" ++
   "    an equivalence relation;\n" ++
   "  - the ring theory of ℝ, built as the quotient of Cauchy sequences, with ℚ\n" ++
@@ -791,11 +794,11 @@ private def analysisFinal : String :=
   "    converges, in ℝ, to the real number it represents;\n" ++
   "  - the basics of abstract metric spaces (with ℝ as the example): that a\n" ++
   "    convergent sequence is Cauchy, proven from the axioms alone;\n" ++
-  "  - that ℝ is a field — every nonzero real has a multiplicative inverse;\n" ++
+  "  - that every nonzero real satisfies the inverse law `x * x⁻¹ = 1`;\n" ++
   "  - and the summit: ℝ is Cauchy-complete — every Cauchy sequence of reals\n" ++
   "    converges — proven by rational approximation.\n\n" ++
-  "You have built the real numbers from nothing and proved they are a complete\n" ++
-  "ordered field. That is the foundation the whole of real analysis rests on.\n"
+  "You have built the real numbers from nothing as a Cauchy-complete metric\n" ++
+  "space with commutative-ring operations and inverses for nonzero elements.\n"
 
 /-- Real analysis from scratch: construct ℚ and ℝ (via Cauchy sequences) in core
 Lean, then develop their theory. -/
@@ -805,6 +808,14 @@ def analysis : Course :=
     analysisExercises (welcome := analysisWelcome) (final := analysisFinal)
 
 def courses : Array Course := #[intro, nng, algebra, analysis]
+
+/-- Qualified exercise ids must be unique within each course; otherwise progress
+tracking would be ambiguous again. -/
+private def hasUniqueExerciseIds (course : Course) : Bool :=
+  course.exercises.all fun exercise =>
+    (course.exercises.filter (·.id == exercise.id)).size == 1
+
+#guard courses.all hasUniqueExerciseIds
 
 /-- The course used when none is selected or a stored selection is invalid. -/
 def defaultCourse : Course := intro

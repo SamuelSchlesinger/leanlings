@@ -3,7 +3,7 @@ import Real.Inv
 namespace Analysis
 open MyReal
 
-/- # Field world — ℝ is a field
+/- # RealField world — inverses for nonzero reals
 
 `Real.Inv` constructs the multiplicative inverse on ℝ (the hardest piece, given
 in full): a nonzero real is *apart* from `0` (`CauSeq.apart` — some representative
@@ -12,7 +12,7 @@ provides:
   • `mk_eq_zero_iff : mk f hf = 0 ↔ CauSeq.Null ⟨f, hf⟩`;
   • `inv_mk_of_not_null hnn : (mk f hf)⁻¹ = mk (fun n => (f n)⁻¹) _`.
 
-Prove the field axiom: a nonzero real times its inverse is `1`. After
+Prove the nonzero inverse law: a nonzero real times its inverse is `1`. After
 `induction x using MyReal.ind`, get apartness data `⟨q, hq, N, hN⟩` from
 `CauSeq.apart` (using `hnn : ¬ CauSeq.Null ⟨f, hf⟩`, which follows from `hx` and
 `mk_eq_zero_iff`). Rewrite the inverse with `inv_mk_of_not_null`, then `mul_mk`,

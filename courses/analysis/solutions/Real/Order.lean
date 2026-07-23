@@ -4,7 +4,8 @@ Infrastructure (given): the order on ℝ.
 A real is *positive* when some representative is eventually bounded below by a
 fixed positive rational (`CauSeq.Pos`); this respects `CauchyEquiv`
 (`pos_equiv`), so it descends to `MyReal.IsPos`. Then `x < y := IsPos (y - x)`
-and `x ≤ y := IsPos (y - x) ∨ x = y`.
+and `x ≤ y := Nonneg (y - x)`, where `Nonneg` means eventually bounded below
+by `-ε` for every positive rational `ε`.
 
 We also record the few ℚ "transposition" lemmas (`sub_lt_iff`, `le_sub_iff`, …)
 the well-definedness argument needs, and prove the basic order facts.

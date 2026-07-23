@@ -1,8 +1,8 @@
 /-
-Infrastructure (given): the multiplicative inverse on ℝ — the step that makes it
-a field. The idea: a real `x ≠ 0` has a representative that is eventually bounded
-away from `0` (the apartness lemma), so its termwise reciprocal is Cauchy. The
-inverse is `0` on the null sequences and the termwise reciprocal otherwise.
+Infrastructure (given): the multiplicative inverse on ℝ. The idea: a real
+`x ≠ 0` has a representative that is eventually bounded away from `0` (the
+apartness lemma), so its termwise reciprocal is Cauchy. The inverse is `0` on
+the null sequences and the termwise reciprocal otherwise.
 
 This is the most intricate construction in the course; it is given in full.
 -/

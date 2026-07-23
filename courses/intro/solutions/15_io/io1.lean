@@ -3,4 +3,3 @@ def greet (name : String) : IO Unit :=
 
 def main : IO Unit := do
   greet "Lean"
-  greet "World"
