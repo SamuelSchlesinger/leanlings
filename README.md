@@ -45,7 +45,7 @@ you edit) and a `solutions/` directory (reference answers).
 - `analysis` (62 exercises): real analysis from the ground up. You construct the
   rational numbers as a quotient of fractions — proving cross-multiplication is
   an equivalence relation and that the arithmetic and order respect it — then
-  develop ℚ's ordered-field theory (field axioms, order, absolute value, the
+  develop ℚ's arithmetic and order theory (algebraic laws, absolute value, the
   triangle inequality, the Archimedean property, density), build Cauchy
   sequences, and assemble the real numbers as their quotient, with ℚ embedded as
   the constant sequences. The construction lives in `AnalysisLib` plus a chain of
@@ -80,10 +80,11 @@ fractions are equal. You prove `r` is an equivalence relation, and that `+`, `×
 `−`, `<`, `≤` respect it — exactly what lets them descend to the quotient `MyRat`
 (assembled for you in the infrastructure modules `Rat.Quotient` and `Rat.Ops`).
 
-The theory of ℚ (worlds `Rat`, `RatOrder`): the field axioms, then the order,
-the absolute value and its triangle inequality, the Archimedean property, and the
-density of ℚ in itself. Each reduces, through `mk_eq` and the computation lemmas,
-to an integer fact that `grind`/`omega` close.
+The theory of ℚ (worlds `Rat`, `RatOrder`): arithmetic laws (including inverse
+cancellation), then the order, the absolute value and its triangle inequality,
+the Archimedean property, and the density of ℚ in itself. Each reduces, through
+`mk_eq` and the computation lemmas, to an integer fact that `grind`/`omega`
+close.
 
 Constructing ℝ (worlds `Cauchy`, `Real`): you prove the constant, sum, and
 negation of Cauchy sequences are Cauchy and that the "difference tends to zero"
@@ -101,10 +102,11 @@ The capstone (world `Capstone`) is the payoff: ℝ is complete over ℚ — ever
 Cauchy sequence of rationals converges, in ℝ, to the real number it represents.
 A `Metric` world introduces abstract metric spaces (with ℝ as the example) and
 proves, generically from the axioms, that a convergent sequence is Cauchy; and a
-`Field` world proves every nonzero real has a multiplicative inverse. The summit
+`RealField` world proves the inverse law for every nonzero real. The summit
 is the `Complete` world: ℝ is Cauchy-complete — every Cauchy sequence of reals
-converges — proven by rational approximation. The whole tower, ℚ to a complete
-ordered field, is built from nothing but core Lean.
+converges — proven by rational approximation. The whole tower — from ℚ through
+a Cauchy-complete metric model of ℝ with commutative-ring operations and a
+nonzero inverse law — is built from nothing but core Lean.
 
 ## Getting started
 
@@ -138,6 +140,10 @@ lake exe leanlings verify    # check every exercise in the current course
 lake exe leanlings courses   # list courses
 lake exe leanlings course X  # switch to course X
 ```
+
+Bare exercise names work when they are unique. If a course repeats a name, use
+the `dir/name` shown by `list` or by the ambiguity error, such as
+`Rat/add_comm`.
 
 ## Other places to learn Lean 4
 

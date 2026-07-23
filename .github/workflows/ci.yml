@@ -26,6 +26,9 @@ jobs:
       - name: Build
         run: lake build
 
+      - name: Run Leanlings regressions
+        run: lake env lean --run tests/LeanlingsRegression.lean
+
       # The `nng` course's solutions form a Lean library, so they are already
       # compiled (and thus verified) by `lake build` above. Here we check the
       # standalone `intro` solutions, compiled file-by-file together with each
@@ -51,3 +54,8 @@ jobs:
             exit 1
           fi
           echo "All intro solutions verified against their checks"
+
+      - name: Verify intro IO output
+        run: |
+          diff -u <(printf 'Hello, Lean!\n') <(lean --run courses/intro/solutions/15_io/io1.lean)
+          diff -u <(printf '5\n4\n3\n2\n1\n') <(lean --run courses/intro/solutions/15_io/io2.lean)

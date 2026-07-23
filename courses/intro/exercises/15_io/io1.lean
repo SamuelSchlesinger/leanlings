@@ -15,7 +15,11 @@
 
   TODO: 1. Implement `greet` to print "Hello, {name}!"
            using `IO.println` and string interpolation `s!"..."`.
-        2. Have `main` call `greet` with a name.
+        2. Have `main` call `greet "Lean"` exactly once.
+
+  Running this file should print exactly:
+
+    Hello, Lean!
 -/
 
 -- Print "Hello, {name}!" using IO.println and s!"..."

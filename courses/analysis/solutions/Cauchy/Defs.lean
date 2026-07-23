@@ -1,10 +1,10 @@
 /-
 Infrastructure (given): the analysis toolkit on ℚ, and the definitions of Cauchy
-sequences. With the ordered-field theory of `MyRat` in hand (which you proved),
-we record the handful of inequality lemmas that the ε–N arguments need, a
-decidable order and a binary `max`, and then define what it means for a sequence
-of rationals to be Cauchy. The `Cauchy` world then asks you to prove the basic
-facts about these sequences.
+sequences. With the arithmetic and order theory of `MyRat` in hand (which you
+proved), we record the handful of inequality lemmas that the ε–N arguments need,
+a decidable order and a binary `max`, and then define what it means for a
+sequence of rationals to be Cauchy. The `Cauchy` world then asks you to prove the
+basic facts about these sequences.
 -/
 import RatOrder.exists_between
 

@@ -10,8 +10,10 @@
     instance : Describable Nat where
       describe n := s!"the number {n}"
 
-  TODO: 1. Implement the `BEq` instance for `Suit`.
-        2. Implement the `Describable` instance for `Suit`.
+  TODO: 1. Implement the `BEq` instance for `Suit`. Two values should be equal
+           exactly when they use the same constructor.
+        2. Implement the `Describable` instance for `Suit`, returning "Hearts",
+           "Diamonds", "Clubs", and "Spades" respectively.
 -/
 
 inductive Suit where

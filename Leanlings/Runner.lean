@@ -20,6 +20,29 @@ private def runLean (path : System.FilePath) : IO ExerciseStatus := do
     return .compileError (output.stdout ++ output.stderr)
   return .success
 
+private def normalizeNewlines (s : String) : String :=
+  s.replace "\r\n" "\n"
+
+/-- Execute an IO exercise and compare its stdout with the contract in its
+metadata. This catches programs that merely type-check without doing the task. -/
+private def checkProgramOutput (exercise : Exercise) (expected : String) :
+    IO ExerciseStatus := do
+  let output ← IO.Process.output {
+    cmd := "lake"
+    args := #["env", "lean", "--run", exercise.path.toString]
+  }
+  if output.exitCode != 0 then
+    return .compileError
+      ("Your code compiles, but running it failed:\n" ++ output.stdout ++ output.stderr)
+  let actual := normalizeNewlines output.stdout
+  let expected := normalizeNewlines expected
+  if actual == expected then
+    return .success
+  return .compileError
+    ("Your code compiles, but it prints the wrong output.\n" ++
+     s!"Expected: {reprStr expected}\n" ++
+     s!"Actual:   {reprStr actual}")
+
 /-- Check a single exercise.
 
 Compiles via `lake env lean` so exercises that `import` a course library (e.g.
@@ -33,13 +56,15 @@ answers aren't shown to the learner. We check in two phases:
    real file with correct line numbers.
 2. If that is clean and a hidden test file exists, compile the exercise and the
    tests together. A failure here means the code type-checks but doesn't meet
-   the requirement; we say so without revealing the checks. -/
+   the requirement; we say so without revealing the checks.
+3. If the exercise declares expected output, execute it and compare stdout
+   exactly (apart from normalizing platform newline sequences). -/
 def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
   match ← runLean exercise.path with
   | .success =>
     let testSrc ← (try some <$> IO.FS.readFile exercise.testPath catch _ => pure none)
     match testSrc with
-    | none => return .success
+    | none => pure ()
     | some tests =>
       let exSrc ← IO.FS.readFile exercise.path
       let tmp : System.FilePath := ".leanlings-check.lean"
@@ -47,11 +72,14 @@ def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
       let result ← runLean tmp
       try IO.FS.removeFile tmp catch _ => pure ()
       match result with
-      | .success => return .success
+      | .success => pure ()
       | _ =>
         return .compileError
           "Your code compiles, but it doesn't satisfy the exercise's checks yet.\n\
            Re-read the task — the expected behaviour is described there."
+    match exercise.expectedOutput with
+    | some expected => checkProgramOutput exercise expected
+    | none => return .success
   | other => return other
 
 /-- Display the result of checking an exercise -/
