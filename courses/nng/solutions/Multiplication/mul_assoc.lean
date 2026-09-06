@@ -9,10 +9,12 @@ In other words, for all natural numbers $a$, $b$ and $c$, we have
 $(ab)c = a(bc)$. -/
 theorem mul_assoc
     (a b c : ℕ) : (a * b) * c = a * (b * c) := by
-  induction c with d hd
-  · rewrite [mul_zero, mul_zero, mul_zero]
+  induction c using MyNat.rec' with
+  | zero =>
+    rewrite [mul_zero, mul_zero, mul_zero]
     rfl
-  · rewrite [mul_succ]
+  | succ d hd =>
+    rewrite [mul_succ]
     rewrite [mul_succ]
     rewrite [hd]
     rewrite [mul_add]

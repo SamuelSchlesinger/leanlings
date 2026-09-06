@@ -7,7 +7,7 @@ namespace MyNat
 /-- If $a \neq b$ then $\operatorname{succ}(a) \neq\operatorname{succ}(b)$. -/
 theorem succ_ne_succ (m n : ℕ) (h : m ≠ n) : succ m ≠ succ n := by
   intro hs
-  apply succ_inj at hs
+  have hs := succ_inj hs
   exact h hs
 
 end MyNat

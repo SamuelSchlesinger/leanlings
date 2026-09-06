@@ -5,10 +5,10 @@ import AdvMultiplication.mul_right_eq_one
 namespace MyNat
 
 theorem mul_ne_zero (a b : ℕ) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  apply eq_succ_of_ne_zero at ha
-  apply eq_succ_of_ne_zero at hb
-  cases ha with c hc
-  cases hb with d hd
+  have ha := eq_succ_of_ne_zero _ ha
+  have hb := eq_succ_of_ne_zero _ hb
+  obtain ⟨c, hc⟩ := ha
+  obtain ⟨d, hd⟩ := hb
   rewrite [hc, hd]
   rewrite [mul_succ, add_succ]
   symm

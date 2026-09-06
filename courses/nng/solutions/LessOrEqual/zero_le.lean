@@ -6,7 +6,7 @@ namespace MyNat
 
 /-- If $x$ is a number, then $0 \le x$. -/
 theorem zero_le (x : ℕ) : 0 ≤ x := by
-  use x
+  refine ⟨x, ?_⟩
   rewrite [zero_add]
   rfl
 

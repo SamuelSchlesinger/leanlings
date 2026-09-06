@@ -6,13 +6,13 @@ namespace MyNat
 
 /-- If $x \leq y$ and $y \leq x$, then $x = y$. -/
 theorem le_antisymm (x y : ℕ) (hxy : x ≤ y) (hyx : y ≤ x) : x = y := by
-  cases hxy with a ha
-  cases hyx with b hb
+  obtain ⟨a, ha⟩ := hxy
+  obtain ⟨b, hb⟩ := hyx
   rewrite [ha]
   rewrite [ha, add_assoc] at hb
-  symm at hb
-  apply add_right_eq_self at hb
-  apply add_right_eq_zero at hb
+  have hb := Eq.symm hb
+  have hb := add_right_eq_self _ _ hb
+  have hb := add_right_eq_zero _ _ hb
   rewrite [hb, add_zero]
   rfl
 

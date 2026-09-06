@@ -6,10 +6,10 @@ namespace MyNat
 
 /-- If $\operatorname{succ}(x) \leq \operatorname{succ}(y)$ then $x \leq y$. -/
 theorem succ_le_succ (x y : ℕ) (hx : succ x ≤ succ y) : x ≤ y := by
-  cases hx with d hd
-  use d
+  obtain ⟨d, hd⟩ := hx
+  refine ⟨d, ?_⟩
   rewrite [succ_add] at hd
-  apply succ_inj at hd
+  have hd := succ_inj hd
   exact hd
 
 end MyNat

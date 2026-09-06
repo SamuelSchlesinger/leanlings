@@ -9,11 +9,12 @@ For all natural numbers $a, b$, we have
 $ \operatorname{succ}(a) + b = \operatorname{succ}(a + b)$.
 -/
 theorem succ_add (a b : ℕ) : succ a + b = succ (a + b) := by
-  induction b with d hd
-  · rewrite [add_zero]
+  induction b using MyNat.rec' with
+  | zero =>
+    rewrite [add_zero]
     rewrite [add_zero]
     rfl
-  ·
+  | succ d hd =>
     rewrite [add_succ, add_succ, hd]
     rfl
 

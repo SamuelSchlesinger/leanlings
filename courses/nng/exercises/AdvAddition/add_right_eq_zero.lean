@@ -13,11 +13,17 @@ Let's prove one of these facts in this level, and the other in the next.
 The `cases` tactic will split an object or hypothesis up into the possible ways
 that it could have been created.
 
-For example, sometimes you want to deal with the two cases `b = 0` and `b = succ d` separately,
-but don't need the inductive hypothesis `hd` that comes with `induction b with d hd`.
-In this situation you can use `cases b with d` instead. There are two ways to make
-a number: it's either zero or a successor. So you will end up with two goals, one
-with `b = 0` and one with `b = succ d`.
+Sometimes you only need to distinguish zero from a successor, without a
+proof about the predecessor. Use this outline:
+
+    cases b using MyNat.casesOn' with
+    | zero => sorry
+    | succ d => sorry
+
+The zero branch substitutes `0` for `b`; the successor branch substitutes
+`succ d`. Unlike induction, case analysis supplies no induction hypothesis.
+The course's `casesOn'` principle displays zero as the numeral `0`, so
+the arithmetic equations match the base case directly.
 
 Another example: if you have a hypothesis `h : False` then you are done, because a false statement implies
 any statement. Here `cases h` will close the goal, because there are *no* ways to

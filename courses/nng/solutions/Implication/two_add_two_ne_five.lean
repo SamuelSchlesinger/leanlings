@@ -8,8 +8,8 @@ namespace MyNat
 theorem exercise_implication_two_add_two_ne_five : succ (succ 0) + succ (succ 0) ≠ succ (succ (succ (succ (succ 0)))) := by
   intro h
   rewrite [add_succ, add_succ, add_zero] at h
-  repeat apply succ_inj at h
-  apply zero_ne_succ at h
+  repeat have h := succ_inj h
+  have h := zero_ne_succ _ h
   exact h
 
 end MyNat

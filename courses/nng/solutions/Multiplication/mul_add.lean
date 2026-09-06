@@ -9,10 +9,12 @@ In other words, for all natural numbers $a$, $b$ and $c$, we have
 $a(b + c) = ab + ac$. -/
 theorem mul_add
     (a b c : ℕ) : a * (b + c) = a * b + a * c := by
-  induction c with d hd
-  rewrite [add_zero, mul_zero, add_zero]
-  rfl
-  rewrite [add_succ, mul_succ, hd, mul_succ, add_assoc]
-  rfl
+  induction c using MyNat.rec' with
+  | zero =>
+    rewrite [add_zero, mul_zero, add_zero]
+    rfl
+  | succ d hd =>
+    rewrite [add_succ, mul_succ, hd, mul_succ, add_assoc]
+    rfl
 
 end MyNat

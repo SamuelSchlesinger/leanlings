@@ -6,27 +6,27 @@ namespace MyNat
 
 /-- If $x$ and $y$ are numbers, then either $x \leq y$ or $y \leq x$. -/
 theorem le_total (x y : ℕ) : x ≤ y ∨ y ≤ x := by
-  induction y with d hd
-  right
-  exact zero_le x
-  cases hd with h1 h2
-  left
-  cases h1 with e h1
-  rewrite [h1]
-  use e + 1
-  rewrite [succ_eq_add_one, add_assoc]
-  rfl
-  cases h2 with e he
-  cases e with a
-  rewrite [he]
-  left
-  rewrite [add_zero]
-  use 1
-  exact succ_eq_add_one d
-  right
-  use a
-  rewrite [add_succ] at he
-  rewrite [succ_add]
-  exact he
+  induction y using MyNat.rec' with
+  | zero => exact Or.inr (zero_le x)
+  | succ d hd =>
+    rcases hd with hxd | hdx
+    · left
+      obtain ⟨e, he⟩ := hxd
+      rewrite [he]
+      refine ⟨e + 1, ?_⟩
+      rewrite [succ_eq_add_one, add_assoc]
+      rfl
+    · obtain ⟨e, he⟩ := hdx
+      cases e using MyNat.casesOn' with
+      | zero =>
+        rewrite [add_zero] at he
+        rewrite [he]
+        exact Or.inl (le_succ_self d)
+      | succ a =>
+        right
+        refine ⟨a, ?_⟩
+        rewrite [add_succ] at he
+        rewrite [succ_add]
+        exact he
 
 end MyNat

@@ -24,9 +24,16 @@ automatically. Reference answers often use `rewrite` followed by `rfl` to
 make those two steps visible. If Lean says there are no goals left, the last
 tactic may already have finished your proof.
 
-Some shorthand belongs to this course: `use`, `apply … at`, `nth_rewrite`,
-`induction n with d hd`, and `cases n with d`. The explicit branch syntax
-shown in the unit notes transfers more directly to other Lean projects.
+The course uses standard Lean tactics. `refine ⟨witness, ?_⟩` starts an
+existence proof; `obtain ⟨witness, evidence⟩ := h` opens one. `rcases h with
+hleft | hright` creates two branches from a disjunction. Applying an
+implication is ordinary function application: from `step : P → Q` and
+`hp : P`, the term `step hp` proves `Q`.
+
+`MyNat.rec'` is the induction principle for this course's natural numbers.
+The surrounding `induction ... using ... with` syntax is standard Lean.
+The final world defines one small tactic, `simp_add`, to show how a proof
+strategy you understand can be packaged as automation.
 
 Adapted from the Natural Number Game. See `NOTICE` and `LICENSE` in this
 course for the original authors, license, and changes made in this port.

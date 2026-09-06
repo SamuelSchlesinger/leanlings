@@ -6,9 +6,9 @@ namespace MyNat
 
 /-- If $x \leq 0$, then $x=0$. -/
 theorem le_zero (x : ℕ) (hx : x ≤ 0) : x = 0 := by
-  cases hx with y hy
-  symm at hy
-  apply add_right_eq_zero at hy
+  obtain ⟨y, hy⟩ := hx
+  have hy := Eq.symm hy
+  have hy := add_right_eq_zero _ _ hy
   exact hy
 
 end MyNat

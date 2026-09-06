@@ -6,10 +6,10 @@ namespace MyNat
 
 theorem mul_right_eq_one (x y : ℕ) (h : x * y = 1) : x = 1 := by
   have h2 : x * y ≠ 0 := by rewrite [h]; exact one_ne_zero
-  apply le_mul_right at h2
+  have h2 := le_mul_right _ _ h2
   rewrite [h] at h2
-  apply le_one at h2
-  cases h2 with h0 h1
+  have h2 := le_one _ h2
+  rcases h2 with h0 | h1
   · rewrite [h0, zero_mul] at h
     exact absurd h.symm one_ne_zero
   · exact h1

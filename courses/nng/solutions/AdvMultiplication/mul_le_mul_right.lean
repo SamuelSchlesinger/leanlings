@@ -5,8 +5,8 @@ import LessOrEqual.le_two
 namespace MyNat
 
 theorem mul_le_mul_right (a b t : ℕ) (h : a ≤ b) : a * t ≤ b * t := by
-  cases h with d hd
-  use d * t
+  obtain ⟨d, hd⟩ := h
+  refine ⟨d * t, ?_⟩
   rewrite [hd, add_mul]
   rfl
 

@@ -10,8 +10,9 @@ means "there exists". So `a ≤ b` means that there exists
 a number `c` such that `b = a + c`. This definition works
 because there are no negative numbers in this game.
 
-To *prove* an "exists" statement, use the `use` tactic.
-Let's see an example.
+To prove an existence statement, supply a witness and its evidence with
+`refine ⟨c, ?_⟩`. Lean then asks you to prove the equality for that choice
+of `c`. Which gap takes `x` to itself?
 -/
 /-- If $x$ is a number, then $x \le x$. -/
 theorem le_refl (x : ℕ) : x ≤ x := by

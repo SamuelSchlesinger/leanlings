@@ -6,9 +6,9 @@ namespace MyNat
 
 /-- If $x \leq y$ and $y \leq z$, then $x \leq z$. -/
 theorem le_trans (x y z : ℕ) (hxy : x ≤ y) (hyz : y ≤ z) : x ≤ z := by
-  cases hxy with a ha
-  cases hyz with b hb
-  use a + b
+  obtain ⟨a, ha⟩ := hxy
+  obtain ⟨b, hb⟩ := hyz
+  refine ⟨a + b, ?_⟩
   rewrite [hb, ha]
   exact add_assoc x a b
 

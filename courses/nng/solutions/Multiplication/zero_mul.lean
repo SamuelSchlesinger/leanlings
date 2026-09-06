@@ -7,10 +7,12 @@ namespace MyNat
 /-- For all natural numbers $m$, we have $ 0 \times m = 0$. -/
 theorem zero_mul
     (m : ℕ) : 0 * m = 0 := by
-  induction m with d hd
-  · rewrite [mul_zero]
+  induction m using MyNat.rec' with
+  | zero =>
+    rewrite [mul_zero]
     rfl
-  · rewrite [mul_succ]
+  | succ d hd =>
+    rewrite [mul_succ]
     rewrite [hd]
     rewrite [add_zero]
     rfl

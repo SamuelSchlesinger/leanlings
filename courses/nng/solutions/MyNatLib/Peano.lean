@@ -18,8 +18,8 @@ def pred : ℕ → ℕ
 
 theorem pred_succ (n : ℕ) : pred (succ n) = n := rfl
 
-/-- `succ` is injective. (`a`, `b` are implicit so that `apply succ_inj at h`
-works the way the levels expect.) -/
+/-- `succ` is injective. Its implicit arguments are inferred from the equality
+when you write `succ_inj h`. -/
 theorem succ_inj {a b : ℕ} (h : succ a = succ b) : a = b := by
   rw [← pred_succ a, h, pred_succ]
 

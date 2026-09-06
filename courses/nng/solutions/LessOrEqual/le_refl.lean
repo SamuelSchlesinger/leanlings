@@ -6,7 +6,7 @@ namespace MyNat
 
 /-- If $x$ is a number, then $x \le x$. -/
 theorem le_refl (x : ℕ) : x ≤ x := by
-  use 0
+  refine ⟨0, ?_⟩
   rewrite [add_zero]
   rfl
 

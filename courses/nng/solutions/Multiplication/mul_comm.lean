@@ -7,11 +7,13 @@ namespace MyNat
 /-- Multiplication is commutative. -/
 theorem mul_comm
     (a b : ℕ) : a * b = b * a := by
-  induction b with d hd
-  · rewrite [zero_mul]
+  induction b using MyNat.rec' with
+  | zero =>
+    rewrite [zero_mul]
     rewrite [mul_zero]
     rfl
-  · rewrite [succ_mul]
+  | succ d hd =>
+    rewrite [succ_mul]
     rewrite [← hd]
     rewrite [mul_succ]
     rfl

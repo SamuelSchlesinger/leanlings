@@ -6,14 +6,16 @@ namespace MyNat
 
 /-- $a+n=b+n\implies a=b$. -/
 theorem add_right_cancel (a b n : ℕ) : a + n = b + n → a = b := by
-  induction n with d hd
-  intro h
-  repeat rewrite [add_zero] at h
-  exact h
-  intro h
-  repeat rewrite [add_succ] at h
-  apply succ_inj at h
-  apply hd at h
-  exact h
+  induction n using MyNat.rec' with
+  | zero =>
+    intro h
+    repeat rewrite [add_zero] at h
+    exact h
+  | succ d hd =>
+    intro h
+    repeat rewrite [add_succ] at h
+    have h := succ_inj h
+    have h := hd h
+    exact h
 
 end MyNat

@@ -6,7 +6,7 @@ namespace MyNat
 
 /- If $x=y$ and $x \neq y$ then we can deduce a contradiction. -/
 theorem exercise_implication_ne (x y : ℕ) (h1 : x = y) (h2 : x ≠ y) : False := by
-  apply h2 at h1
+  have h1 := h2 h1
   exact h1
 
 end MyNat

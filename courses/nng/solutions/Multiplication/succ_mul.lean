@@ -8,12 +8,14 @@ namespace MyNat
 $(\operatorname{succ}\ a) \times b = a\times b + b$. -/
 theorem succ_mul
     (a b : ℕ) : succ a * b = a * b + b := by
-  induction b with d hd
-  · rewrite [mul_zero]
+  induction b using MyNat.rec' with
+  | zero =>
+    rewrite [mul_zero]
     rewrite [mul_zero]
     rewrite [add_zero]
     rfl
-  · rewrite [mul_succ]
+  | succ d hd =>
+    rewrite [mul_succ]
     rewrite [mul_succ]
     rewrite [hd]
     rewrite [add_succ]

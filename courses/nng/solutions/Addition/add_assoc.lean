@@ -8,10 +8,12 @@ namespace MyNat
 In other words, if $a, b$ and $c$ are arbitrary natural numbers, we have
 $ (a + b) + c = a + (b + c). $ -/
 theorem add_assoc (a b c : ℕ) : a + b + c = a + (b + c) := by
-  induction c with d hd
-  · rewrite [add_zero, add_zero]
+  induction c using MyNat.rec' with
+  | zero =>
+    rewrite [add_zero, add_zero]
     rfl
-  · rewrite [add_succ, add_succ, hd, add_succ]
+  | succ d hd =>
+    rewrite [add_succ, add_succ, hd, add_succ]
     rfl
 
 end MyNat

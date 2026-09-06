@@ -8,10 +8,12 @@ namespace MyNat
 In other words, if `a` and `b` are arbitrary natural numbers, then
 $a + b = b + a$. -/
 theorem add_comm (a b : ℕ) : a + b = b + a := by
-  induction b with d hd
-  · rewrite [add_zero, zero_add]
+  induction b using MyNat.rec' with
+  | zero =>
+    rewrite [add_zero, zero_add]
     rfl
-  · rewrite [add_succ, succ_add, hd]
+  | succ d hd =>
+    rewrite [add_succ, succ_add, hd]
     rfl
 
 end MyNat

@@ -7,10 +7,12 @@ namespace MyNat
 /-- For all naturals $m$, $1 ^ m = 1$. -/
 theorem one_pow
     (m : ℕ) : (1 : ℕ) ^ m = 1 := by
-  induction m with t ht
-  · rewrite [pow_zero]
+  induction m using MyNat.rec' with
+  | zero =>
+    rewrite [pow_zero]
     rfl
-  · rewrite [pow_succ]
+  | succ t ht =>
+    rewrite [pow_succ]
     rewrite [ht]
     rewrite [mul_one]
     rfl

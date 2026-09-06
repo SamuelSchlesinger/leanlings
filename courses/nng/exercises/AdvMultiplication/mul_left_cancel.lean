@@ -10,7 +10,7 @@ several reasons. One of these is that
 we need to introduce a new idea: we will need to understand the concept of
 mathematical induction a little better.
 
-Starting with `induction b with d hd` is too naive, because in the inductive step
+Starting with `induction b using MyNat.rec'` is too naive, because in the inductive step
 the hypothesis is `a * d = a * c → d = c` but what we know is `a * succ d = a * c`,
 so the induction hypothesis does not apply!
 

@@ -5,8 +5,8 @@ import LessOrEqual.zero_le
 namespace MyNat
 
 /-
-If you `use` the wrong number, you get stuck with a goal you can't prove.
-What number will you `use` here?
+If you choose the wrong witness, you get stuck with a goal you can't prove.
+What gap will you supply with `refine ⟨gap, ?_⟩` here?
 -/
 /-- If $x$ is a number, then $x \le \operatorname{succ}(x)$. -/
 theorem le_succ_self (x : ℕ) : x ≤ succ x := by

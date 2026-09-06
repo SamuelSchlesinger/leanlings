@@ -8,7 +8,7 @@ namespace MyNat
 theorem exercise_implication_succ_inj (x : ℕ) (h : x + 1 = 4) : x = 3 := by
   rewrite [four_eq_succ_three] at h
   rewrite [←succ_eq_add_one] at h
-  apply succ_inj at h
+  have h := succ_inj h
   exact h
 
 end MyNat

@@ -6,7 +6,7 @@ namespace MyNat
 
 /- $2+2=4$. -/
 theorem exercise_tutorial_twoaddtwo : (2 : ℕ) + 2 = 4 := by
-  nth_rewrite 2 [two_eq_succ_one]
+  rewrite (config := { occs := .pos [2] }) [two_eq_succ_one]
   rewrite [add_succ]
   rewrite [one_eq_succ_zero]
   rewrite [add_succ]

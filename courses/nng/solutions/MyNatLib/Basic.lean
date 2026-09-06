@@ -24,10 +24,10 @@ namespace MyNat
 instance : Inhabited MyNat where
   default := MyNat.zero
 
-/-- Convert a core `Nat` numeral into a `MyNat`. Marked `@[reducible]` so that
-`(0 : MyNat)` is definitionally `MyNat.zero` at the transparency `rw`/`rfl` use:
-this lets the levels use core `induction`/`cases` (which handle dependent
-hypotheses correctly) while `rewrite [add_zero]` still fires on the base case. -/
+/-- Convert a core `Nat` numeral into a `MyNat`. Numeral identities can be
+proved by computation with `rfl`. The principles `rec'` and `casesOn'` below
+present their base case as the literal `0`, so arithmetic rewrites match it
+without an extra conversion from the constructor `MyNat.zero`. -/
 @[reducible] def ofNat (x : Nat) : MyNat :=
   match x with
   | Nat.zero   => MyNat.zero

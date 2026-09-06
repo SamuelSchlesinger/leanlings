@@ -11,8 +11,8 @@ example (a b gap : ℕ) (h : b = a + gap) : a ≤ b := by
   exact ⟨gap, h⟩
 ```
 
-The local `use gap` tactic supplies the same witness and leaves its equation
-as a goal. For transitivity, extract two gaps and add them. For antisymmetry,
+`refine ⟨gap, ?_⟩` supplies the same witness and leaves its equation
+as a goal. Use `obtain ⟨gap, hgap⟩ := h` to extract a witness from a hypothesis. For transitivity, extract two gaps and add them. For antisymmetry,
 going forward and back gives a total gap of zero.
 
 Totality requires a choice between `a ≤ b` and `b ≤ a`. A disjunction in

@@ -8,7 +8,7 @@ namespace MyNat
 theorem add_left_cancel (a b n : ℕ) : n + a = n + b → a = b := by
   repeat rewrite [add_comm n]
   intro h
-  apply add_right_cancel at h
+  have h := add_right_cancel _ _ _ h
   exact h
 
 end MyNat

@@ -17,7 +17,7 @@ progress: `left` and `right`. But don't choose a direction unless your
 hypotheses guarantee that it's the correct one.
 
 3) If you have an "or" statement as a *hypothesis* `h`, then
-`cases h with h1 h2` will create two goals, one where you went left,
+`rcases h with h1 | h2` will create two goals, one where you went left,
 and the other where you went right.
 -/
 /- If $x=37$ or $y=42$, then $y=42$ or $x=37$. -/

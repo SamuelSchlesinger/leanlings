@@ -7,8 +7,8 @@ namespace MyNat
 /-- $x + y = y\implies x=0.$ -/
 theorem add_left_eq_self (x y : ℕ) : x + y = y → x = 0 := by
   intro h
-  nth_rewrite 2 [← zero_add y] at h
-  apply add_right_cancel at h
+  rewrite (config := { occs := .pos [2] }) [← zero_add y] at h
+  have h := add_right_cancel _ _ _ h
   exact h
 
 end MyNat

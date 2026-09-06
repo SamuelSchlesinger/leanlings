@@ -7,10 +7,12 @@ namespace MyNat
 /-- For all naturals $a$, $m$, $n$, we have $(a ^ m) ^ n = a ^ {mn}$. -/
 theorem pow_pow
     (a m n : ℕ) : (a ^ m) ^ n = a ^ (m * n) := by
-  induction n with t Ht
-  · rewrite [mul_zero, pow_zero, pow_zero]
+  induction n using MyNat.rec' with
+  | zero =>
+    rewrite [mul_zero, pow_zero, pow_zero]
     rfl
-  · rewrite [pow_succ, Ht, mul_succ, pow_add]
+  | succ t Ht =>
+    rewrite [pow_succ, Ht, mul_succ, pow_add]
     rfl
 
 end MyNat

@@ -28,8 +28,8 @@ In the second branch, `hd : 0 + d = d` is available. First use `add_succ`
 to expose `0 + d`, then use `hd`. `MyNat.rec'` is the induction principle
 for our copy of the naturals, with its base case displayed as `0`.
 
-The shorthand `induction n with d hd` also works in this course; it is a
-local convenience, followed by one `·` bullet per case.
+The branch names keep the two obligations separate. Finish the zero case
+before using the induction hypothesis in the successor case.
 -/
 /-- For all natural numbers $n$, we have $0 + n = n$. -/
 theorem zero_add (n : ℕ) : 0 + n = n := by

@@ -6,7 +6,7 @@ namespace MyNat
 
 /-
 This is I think the toughest level yet. Tips: if `a` is a number
-then `cases a with b` will split into cases `a = 0` and `a = succ b`.
+then `cases a using MyNat.casesOn' with` and name the `zero` and `succ b` branches will split into cases `a = 0` and `a = succ b`.
 And don't go left or right until your hypotheses guarantee that
 you can prove the resulting goal!
 -/
