@@ -7,7 +7,9 @@
     let name := "Lean"
     s!"Hello, {name}!" = "Hello, Lean!"
 
-  TODO: Replace each `sorry` with a string expression.
+  TODO: Make both `hello` and `greeting` equal "Hello, Lean!".
+  Use concatenation for `hello` and interpolation for `greeting`.
+  Include the comma, space, and exclamation mark in both results.
 -/
 
 -- Use `++` to concatenate two strings

@@ -1,0 +1,1 @@
+example : False → False := @task

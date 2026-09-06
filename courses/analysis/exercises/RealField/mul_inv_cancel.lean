@@ -6,8 +6,8 @@ open MyReal
 /- # RealField world — inverses for nonzero reals
 
 `Real.Inv` constructs the multiplicative inverse on ℝ (the hardest piece, given
-in full): a nonzero real is *apart* from `0` (`CauSeq.apart` — some representative
-is eventually `≥ q > 0`), so its termwise reciprocal is Cauchy. The library
+in full): a nonzero real is *apart* from `0` (`CauSeq.apart` — the absolute value
+of its representative is eventually `≥ q > 0`), so its termwise reciprocal is Cauchy. The library
 provides:
   • `mk_eq_zero_iff : mk f hf = 0 ↔ CauSeq.Null ⟨f, hf⟩`;
   • `inv_mk_of_not_null hnn : (mk f hf)⁻¹ = mk (fun n => (f n)⁻¹) _`.

@@ -6,7 +6,7 @@ namespace MyNat
 
 /- If $a, b,\ldots h$ are arbitrary natural numbers, we have
 $(d + f) + (h + (a + c)) + (g + e + b) = a + b + c + d + e + f + g + h$. -/
-example (a b c d e f g h : ℕ) :
+theorem exercise_algorithm_add_algo2 (a b c d e f g h : ℕ) :
     (d + f) + (h + (a + c)) + (g + e + b) = a + b + c + d + e + f + g + h := by
   simp only [add_left_comm, add_comm]
 

@@ -21,7 +21,7 @@ are either `0` or successors.
 Our job now is to *prove* that this algorithm always gives the correct answer. The proof that
 `0 = 0` is `rfl`. The proof that `0 ≠ succ n` is `zero_ne_succ n`, and the proof
 that `succ m ≠ 0` is `succ_ne_zero m`. The proof that if `h : m = n` then
-`succ m = succ n` is `rw [h]` and then `rfl`. This level is a proof of the one
+`succ m = succ n` is `rw [h]` (or `rewrite [h]` followed by `rfl`). This level proves the one
 remaining job we have to do: if `a ≠ b` then `succ a ≠ succ b`.
 -/
 /-- If $a \neq b$ then $\operatorname{succ}(a) \neq\operatorname{succ}(b)$. -/

@@ -16,10 +16,14 @@
         | h :: t => (if h == x then 1 else 0) + myCount x t
     end
 
-  Note: `α` and `[BEq α]` are automatically added as
-  parameters to every definition in the section.
+  A declaration includes the section parameters it actually uses,
+  including parameters needed by its type or type class instances.
+  An unrelated definition such as `def answer : Nat := 42` would
+  not acquire `α` or `[BEq α]` just because it is in this section.
 
-  TODO: Complete the definitions in the section.
+  TODO: `myElem x xs` should say whether `x` occurs in `xs`.
+  `myRemoveAll x xs` should remove every occurrence of `x`, leaving
+  the other elements in their original order.
 -/
 
 section

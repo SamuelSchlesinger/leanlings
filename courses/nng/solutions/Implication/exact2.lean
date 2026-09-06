@@ -5,7 +5,7 @@ import Implication.exact
 namespace MyNat
 
 /- Assuming $0+x=(0+y)+2$, we have $x=y+2$. -/
-example (x y : ℕ) (h : 0 + x = 0 + y + 2) : x = y + 2 := by
+theorem exercise_implication_exact2 (x y : ℕ) (h : 0 + x = 0 + y + 2) : x = y + 2 := by
   rewrite [zero_add] at h
   rewrite [zero_add] at h
   exact h

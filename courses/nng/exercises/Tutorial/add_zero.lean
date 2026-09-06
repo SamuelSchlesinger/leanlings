@@ -5,9 +5,8 @@ import Tutorial.rw_backwards
 namespace MyNat
 
 /-
-We'd like to prove `2 + 2 = 4` but right now
-we can't even *state* it
-because we haven't yet defined addition.
+We'd like to prove `2 + 2 = 4`. Addition notation is already available;
+now we introduce the equations that let us prove facts about it.
 
 ## Defining addition.
 
@@ -19,9 +18,8 @@ Let's start with adding `0`.
 
 ### Adding 0
 
-To make addition agree with our intuition, we should *define* `37 + 0`
-to be `37`. More generally, we should define `a + 0` to be `a` for
-any number `a`. The name of this proof in Lean is `add_zero a`.
+Our first addition axiom says `37 + 0 = 37`. More generally,
+`a + 0 = a` for any number `a`. Its proof is named `add_zero a`.
 For example `add_zero 37` is a proof of `37 + 0 = 37`,
 `add_zero x` is a proof of `x + 0 = x`, and `add_zero` is a proof
 of `? + 0 = ?`.
@@ -29,7 +27,7 @@ of `? + 0 = ?`.
 We write `add_zero x : x + 0 = x`, so `proof : statement`.
 -/
 /- $a+(b+0)+(c+0)=a+b+c.$ -/
-example (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
+theorem exercise_tutorial_add_zero (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
   sorry
 
 end MyNat

@@ -12,6 +12,7 @@ open Leanlings
 #guard (Config.analysis.getExercise "RealField/mul_inv_cancel").map (·.dir) ==
   some "RealField"
 #guard (Config.analysis.getExercise "ofRat_add").map (·.id) == some "Real/ofRat_add"
+#guard (Config.algebra.getExercise "mul_inv_cancel").map (·.id) == some "Field/mul_inv_cancel"
 
 def migratedLegacy : Array String :=
   AppState.normalizeCompleted Config.courses
@@ -54,6 +55,18 @@ private def outputFixture (name expected : String) : Exercise :=
     expectedOutput := some expected }
 
 def main : IO UInt32 := do
+  let fixture := fun name => { name, dir := "Runner", course := "../tests/fixtures" : Exercise }
+  match ← Runner.checkExercise (fixture "changed_statement") with
+  | .compileError _ => pure ()
+  | other => throw <| IO.userError s!"Changed theorem statement accepted: {repr other}"
+  match ← Runner.checkExercise (fixture "quiet_sorry") with
+  | .hasSorry => pure ()
+  | other => throw <| IO.userError s!"Suppressed sorry warning bypassed the contract: {repr other}"
+  match ← Runner.checkExercise (fixture "mixed_errors") with
+  | .compileError message =>
+    unless message.toLower.contains "type mismatch" do
+      throw <| IO.userError s!"Missing type error: {message}"
+  | other => throw <| IO.userError s!"Type error hidden behind sorry: {repr other}"
   let goodStatus ← Runner.checkExercise (outputFixture "good" "expected\n")
   let silentStatus ← Runner.checkExercise (outputFixture "silent" "expected\n")
   match goodStatus, silentStatus with

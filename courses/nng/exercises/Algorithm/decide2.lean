@@ -8,7 +8,7 @@ namespace MyNat
 We gave a pretty unsatisfactory proof of `2 + 2 ≠ 5` earlier on; now give a nicer one.
 -/
 /- $2+2 \neq 5.$ -/
-example : (2 : ℕ) + 2 ≠ 5 := by
+theorem exercise_algorithm_decide2 : (2 : ℕ) + 2 ≠ 5 := by
   sorry
 
 end MyNat

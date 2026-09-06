@@ -1,14 +1,15 @@
 /-
-The one tactic convenience the `nng` levels need that core Lean lacks: `use`.
+Tactic conveniences used by this port: `use`, the game's short induction and
+case syntax, `apply … at`, `nth_rewrite`, and equality reversal at a hypothesis.
 
 Ported in spirit from leanprover-community/NNG4 (Apache-2.0); the upstream
 version wraps Mathlib's `use`, this is a small core-only macro. See
 `courses/nng/LICENSE` and `courses/nng/NOTICE`.
 
-Everything else NNG customises (`induction … with`, `cases … with`, a
-rewrite-style `rw`) is expressed directly in core Lean by the solutions:
-`induction n using MyNat.rec' with | zero | succ d hd`, and `rewrite`
-(which, unlike `rw`, does not auto-close with `rfl`).
+The solutions generally use core Lean's explicit branch syntax, such as
+`induction n using MyNat.rec' with | zero => … | succ d hd => …`, and `rewrite`
+(which, unlike `rw`, does not auto-close with `rfl`). The short forms below are
+local extensions; they are not syntax to assume in an unrelated Lean project.
 -/
 import Lean
 import MyNatLib.Basic

@@ -5,7 +5,7 @@ import Tutorial.rw_backwards
 namespace MyNat
 
 /- $a+(b+0)+(c+0)=a+b+c.$ -/
-example (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
+theorem exercise_tutorial_add_zero (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
   rewrite [add_zero]
   rewrite [add_zero]
   rfl

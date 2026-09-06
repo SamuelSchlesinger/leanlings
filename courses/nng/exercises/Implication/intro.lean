@@ -11,7 +11,7 @@ To prove this goal, we need to know how to say "let's assume `P` and deduce `Q`"
 in Lean. We do this with the `intro` tactic.
 -/
 /- $x=37\implies x=37$. -/
-example (x : ℕ) : x = 37 → x = 37 := by
+theorem exercise_implication_intro (x : ℕ) : x = 37 → x = 37 := by
   sorry
 
 end MyNat

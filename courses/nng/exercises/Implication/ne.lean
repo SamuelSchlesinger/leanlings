@@ -20,7 +20,7 @@ So if your goal is `False` then you had better hope that your hypotheses
 are contradictory, which they are in this level.
 -/
 /- If $x=y$ and $x \neq y$ then we can deduce a contradiction. -/
-example (x y : ℕ) (h1 : x = y) (h2 : x ≠ y) : False := by
+theorem exercise_implication_ne (x y : ℕ) (h1 : x = y) (h2 : x ≠ y) : False := by
   sorry
 
 end MyNat

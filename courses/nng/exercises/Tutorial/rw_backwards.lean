@@ -16,7 +16,7 @@ after $0$ again, this time by changing `succ (succ 0)`
 into `2`.
 -/
 /- $2$ is the number after the number after $0$. -/
-example : 2 = succ (succ 0) := by
+theorem exercise_tutorial_rw_backwards : 2 = succ (succ 0) := by
   sorry
 
 end MyNat

@@ -13,8 +13,9 @@
     Use when: the goal can be checked by trying all cases
     (e.g., comparisons of specific numbers, finite Bool logic).
 
-  Each exercise below is labeled with the RIGHT tactic.
-  Try using the WRONG one too — see what happens!
+  Each exercise suggests a tactic to practice. Their abilities overlap:
+  more than one tactic may solve a goal. Try an alternative and inspect
+  what it does; a different complete proof is still a valid proof.
 
   TODO: Complete the proofs using the indicated tactic.
 -/

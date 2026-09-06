@@ -26,7 +26,7 @@ The *proof* that `2 = succ 1` is called `two_eq_succ_one`.
 Let's prove that $2$ is the number after the number after zero.
 -/
 /- $2$ is the number after the number after $0$. -/
-example
+theorem exercise_tutorial_two_eq_ss0
     : 2 = succ (succ 0) := by
   sorry
 

@@ -37,6 +37,9 @@ def catalog : List Book := [
 #guard (findBook "Cosmos" catalog).isSome == true
 #guard (findBook "Moby Dick" catalog).isSome == false
 #guard (findBook "Dune" catalog).map (·.pages) == some 412
+#guard (findBook "Twin" [
+  ⟨"Twin", "First", 10, .science, .unrated⟩,
+  ⟨"Twin", "Second", 20, .history, .unrated⟩]).map (·.author) == some "First"
 #guard (booksOfGenre .science catalog).length == 2
 #guard (booksOfGenre .fantasy catalog).length == 1
 #guard titles catalog == ["Dune", "Sapiens", "Cosmos", "The Hobbit", "SPQR"]
@@ -46,4 +49,3 @@ def catalog : List Book := [
 #guard starBar (.stars 1) == "*"
 #guard starBar (.stars 0) == ""
 #guard starBar .unrated == ""
-

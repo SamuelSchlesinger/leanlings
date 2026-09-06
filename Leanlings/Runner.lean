@@ -10,14 +10,15 @@ private def containsSubstr (s sub : String) : Bool :=
 and classify the result. -/
 private def runLean (path : System.FilePath) : IO ExerciseStatus := do
   let output ← IO.Process.output { cmd := "lake", args := #["env", "lean", path.toString] }
-  -- Check for sorry first — if sorry is present, that's the primary issue
-  -- (test failures caused by sorry are noise the user doesn't need to see).
-  if containsSubstr output.stderr "declaration uses `sorry`" ||
-     containsSubstr output.stdout "declaration uses `sorry`" then
-    return .hasSorry
+  -- Show real errors even when other holes remain. Otherwise a learner fixing
+  -- a multi-part exercise cannot see a type error until every sorry is gone.
   if output.exitCode != 0 then
-    -- Lean writes its diagnostics to stdout; include stderr too just in case.
     return .compileError (output.stdout ++ output.stderr)
+  if containsSubstr output.stderr "declaration uses `sorry`" ||
+     containsSubstr output.stdout "declaration uses `sorry`" ||
+     (output.stdout.splitOn "\n").any (fun line =>
+       containsSubstr line "depends on axioms:" && containsSubstr line "sorryAx") then
+    return .hasSorry
   return .success
 
 private def normalizeNewlines (s : String) : String :=
@@ -49,34 +50,39 @@ Compiles via `lake env lean` so exercises that `import` a course library (e.g.
 the `nng` course's `MyNat` development) resolve against the built package; the
 `intro` course imports nothing and is unaffected. Requires `lake build` first.
 
-Correctness checks (`#guard`s) are kept in a hidden test file so the expected
-answers aren't shown to the learner. We check in two phases:
+Behavioral checks (`#guard`s) and generated theorem-type contracts are kept
+outside the file the learner edits. They are not secret tests; browser clients
+need the same checks. We check in three phases:
 
 1. Compile the exercise alone, so `sorry`/type errors are reported against the
    real file with correct line numbers.
-2. If that is clean and a hidden test file exists, compile the exercise and the
-   tests together. A failure here means the code type-checks but doesn't meet
-   the requirement; we say so without revealing the checks.
+2. If that is clean, compile the exercise together with its checks and theorem
+   contracts. This also rejects deleting a theorem or changing its statement.
 3. If the exercise declares expected output, execute it and compare stdout
    exactly (apart from normalizing platform newline sequences). -/
 def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
   match ← runLean exercise.path with
   | .success =>
-    let testSrc ← (try some <$> IO.FS.readFile exercise.testPath catch _ => pure none)
-    match testSrc with
-    | none => pure ()
-    | some tests =>
+    let mut tests := ""
+    for path in [exercise.testPath, exercise.contractPath] do
+      try
+        if ← path.pathExists then
+          tests := tests ++ "\n" ++ (← IO.FS.readFile path)
+      catch e =>
+        return .compileError s!"Could not read the exercise checks: {e}"
+    if !tests.trimAscii.isEmpty then
       let exSrc ← IO.FS.readFile exercise.path
-      let tmp : System.FilePath := ".leanlings-check.lean"
-      IO.FS.writeFile tmp (exSrc ++ "\n\n" ++ tests)
-      let result ← runLean tmp
-      try IO.FS.removeFile tmp catch _ => pure ()
+      let result ← IO.FS.withTempDir fun dir => do
+        let tmp := dir / "Check.lean"
+        IO.FS.writeFile tmp (exSrc ++ "\n\n" ++ tests)
+        runLean tmp
       match result with
       | .success => pure ()
+      | .hasSorry => return .hasSorry
       | _ =>
         return .compileError
           "Your code compiles, but it doesn't satisfy the exercise's checks yet.\n\
-           Re-read the task — the expected behaviour is described there."
+           Check the task's requirements and keep the supplied theorem statements."
     match exercise.expectedOutput with
     | some expected => checkProgramOutput exercise expected
     | none => return .success

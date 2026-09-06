@@ -38,6 +38,11 @@ use inside leanlings, a standalone command-line exercise runner. In particular:
     game's `xyzzy`/`sorry` cheat) has been omitted. Some advanced/WIP worlds
     from the original are not included.
 
+  * Anonymous exercise statements have been given stable theorem names so
+    generated checks can require that the stated task was proved. Hints and
+    explanations are being revised for the standalone Lean 4 course, with
+    the distinction between core tactics and local conveniences made explicit.
+
 Individual ported files carry a short header noting this provenance, per
 section 4(b) of the License. Original tactic/theorem documentation and the full
 interactive experience remain available in the upstream game.

@@ -14,7 +14,7 @@ to change `c + 0` first by giving `add_zero` an
 explicit input.
 -/
 /- $a+(b+0)+(c+0)=a+b+c.$ -/
-example (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
+theorem exercise_tutorial_add_zero2 (a b c : ℕ) : a + (b + 0) + (c + 0) = a + b + c := by
   sorry
 
 end MyNat

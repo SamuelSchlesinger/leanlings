@@ -5,7 +5,7 @@ import Implication.intro2
 namespace MyNat
 
 /- If $x=y$ and $x \neq y$ then we can deduce a contradiction. -/
-example (x y : ℕ) (h1 : x = y) (h2 : x ≠ y) : False := by
+theorem exercise_implication_ne (x y : ℕ) (h1 : x = y) (h2 : x ≠ y) : False := by
   apply h2 at h1
   exact h1
 

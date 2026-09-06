@@ -10,7 +10,7 @@
     def safeDivide (a b : Nat) : Option Nat :=
       if b == 0 then none else some (a / b)
 
-    def example : Option Nat := do
+    def divideAndAdd : Option Nat := do
       let x ← safeDivide 10 2    -- x = 5, or short-circuit to none
       let y ← safeDivide x 1     -- y = 5
       return x + y                -- some 10

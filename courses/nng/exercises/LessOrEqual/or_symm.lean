@@ -21,7 +21,7 @@ hypotheses guarantee that it's the correct one.
 and the other where you went right.
 -/
 /- If $x=37$ or $y=42$, then $y=42$ or $x=37$. -/
-example (x y : ℕ) (h : x = 37 ∨ y = 42) : y = 42 ∨ x = 37 := by
+theorem exercise_lessorequal_or_symm (x y : ℕ) (h : x = 37 ∨ y = 42) : y = 42 ∨ x = 37 := by
   sorry
 
 end MyNat

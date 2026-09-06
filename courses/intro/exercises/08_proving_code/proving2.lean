@@ -8,10 +8,10 @@
       tactic_here
 
   Useful tactics:
-  • `rfl` — closes the goal when both sides are equal
+  • `rfl` — closes an equality when the sides are equal by definition
   • `unfold f` — replaces `f` with its definition, so you can keep working
   • `simp [f]` — unfolds function `f` and simplifies
-  • `omega` — solves arithmetic about natural numbers
+  • `omega` — solves linear arithmetic over natural numbers and integers
 
   TODO: Complete the proofs. Hints are in the comments.
 -/

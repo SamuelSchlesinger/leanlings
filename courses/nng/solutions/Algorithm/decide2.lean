@@ -5,7 +5,7 @@ import Algorithm.decide
 namespace MyNat
 
 /- $2+2 \neq 5.$ -/
-example : (2 : ℕ) + 2 ≠ 5 := by
+theorem exercise_algorithm_decide2 : (2 : ℕ) + 2 ≠ 5 := by
   simp only [ofNat_succ, add_succ, add_zero]
   decide
 

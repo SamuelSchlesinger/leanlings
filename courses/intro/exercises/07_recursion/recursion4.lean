@@ -21,8 +21,9 @@
 
   This is called **structural recursion**: every recursive call
   is on a structurally smaller part of the input. Lean verifies
-  this automatically — if your recursion isn't structural, it
-  will reject the definition.
+  this automatically for the functions in this lesson. Other recursive
+  definitions can be accepted with a different termination argument;
+  we will stay with structural recursion here.
 
   TODO: Implement `eval` and `countNums`.
 -/

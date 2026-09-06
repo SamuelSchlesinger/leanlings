@@ -9,8 +9,10 @@
 
     def add (a b : Nat) : Nat := a + b
 
-  TODO: Implement `average` that returns the average of two
-        natural numbers (integer division is fine).
+  On `Nat`, division rounds down: `5 / 2` is 2.
+
+  TODO: Implement `average` as the sum of its inputs divided by two,
+        rounded down. For example, `average 2 3` should be 2.
 -/
 
 def average (a b : Nat) : Nat := sorry

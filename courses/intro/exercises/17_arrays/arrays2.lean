@@ -2,7 +2,7 @@
 
   You can build arrays programmatically:
 
-    Array.mkArray 5 0        -- #[0, 0, 0, 0, 0]
+    Array.replicate 5 0      -- #[0, 0, 0, 0, 0]
     Array.range 5             -- #[0, 1, 2, 3, 4]
     #[1, 2] ++ #[3, 4]       -- #[1, 2, 3, 4]
 

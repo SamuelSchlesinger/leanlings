@@ -2,7 +2,13 @@
 
   This capstone exercise tests everything you've learned:
   recursive types, structural recursion, induction proofs,
-  existentials, iff-proofs, and tactic automation.
+  existentials, and tactic automation. Work through the four parts
+  in order and check each definition before proving facts about it.
+
+  The last theorem uses `A ↔ B`, read "A if and only if B".
+  To prove it, use `constructor`: one goal is `A → B`, the other
+  is `B → A`. Introduce the assumption in each direction, just as
+  you did when proving implications earlier.
 
   TODO: Complete all definitions and proofs.
 -/
@@ -17,10 +23,11 @@ inductive Tree (α : Type) where
   | node (left : Tree α) (value : α) (right : Tree α) : Tree α
   deriving Repr, BEq
 
--- 1. Count the nodes in a tree (recursive).
+-- 1. Count the value-carrying `node` constructors. A `leaf` contributes 0.
 def Tree.size : Tree α → Nat := sorry
 
--- 2. Collect all values into a list (in-order traversal).
+-- 2. Collect the left subtree's values, then this node's value, then
+--    the right subtree's values. A leaf contributes an empty list.
 def Tree.toList : Tree α → List α := sorry
 
 -- 3. Mirror a tree: swap left and right subtrees recursively.

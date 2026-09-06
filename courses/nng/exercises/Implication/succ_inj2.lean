@@ -8,12 +8,11 @@ namespace MyNat
 In the last level, we manipulated the hypothesis `x + 1 = 4`
   until it became the goal `x = 3`. In this level we'll manipulate
   the goal until it becomes our hypothesis! In other words, we
-  will "argue backwards". The `apply` tactic can do this too.
-  Again I will walk you through this one (assuming you're in
-  command line mode).
+  will "argue backwards". `apply succ_inj` changes the goal to
+  `succ x = succ 3`. Which rewrites turn this into the type of `h`?
 -/
 /- If $x+1=4$ then $x=3$. -/
-example (x : ℕ) (h : x + 1 = 4) : x = 3 := by
+theorem exercise_implication_succ_inj2 (x : ℕ) (h : x + 1 = 4) : x = 3 := by
   sorry
 
 end MyNat

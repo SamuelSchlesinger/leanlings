@@ -5,7 +5,7 @@ import Tutorial.succ_eq_add_one
 namespace MyNat
 
 /- $2+2=4$. -/
-example : (2 : ℕ) + 2 = 4 := by
+theorem exercise_tutorial_twoaddtwo : (2 : ℕ) + 2 = 4 := by
   nth_rewrite 2 [two_eq_succ_one]
   rewrite [add_succ]
   rewrite [one_eq_succ_zero]

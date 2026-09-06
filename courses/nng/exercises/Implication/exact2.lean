@@ -9,7 +9,7 @@ If the goal is not *exactly* a hypothesis, we can sometimes
 use rewrites to fix things up.
 -/
 /- Assuming $0+x=(0+y)+2$, we have $x=y+2$. -/
-example (x y : ℕ) (h : 0 + x = 0 + y + 2) : x = y + 2 := by
+theorem exercise_implication_exact2 (x y : ℕ) (h : 0 + x = 0 + y + 2) : x = y + 2 := by
   sorry
 
 end MyNat

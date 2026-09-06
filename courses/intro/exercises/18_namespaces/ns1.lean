@@ -33,4 +33,5 @@ end MyMath
 --   def foo (...) : ... :=
 --     open MyMath in
 --     ...use square, cube without prefix...
+-- Return n squared plus n cubed; for example, sumOfPowers 2 = 4 + 8.
 def sumOfPowers (n : Nat) : Nat := sorry

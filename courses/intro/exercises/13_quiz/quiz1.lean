@@ -1,8 +1,9 @@
 /- # Quiz 1: Library Catalog
 
   Build a small library catalog system! This quiz combines
-  concepts from the first twelve units. There are no hints —
-  you have all the tools you need.
+  concepts from the preceding units. Work through one numbered part
+  at a time, checking your code as you go. Earlier lessons remain useful
+  references; this is practice combining ideas, not a memory test.
 
   TODO: Complete all definitions and proofs.
 -/
@@ -45,7 +46,7 @@ instance : ToString Rating where
 -- Part 2: Functions (Units 2, 3, 4)
 -- =============================================
 
--- 3. Return the genre name as a String.
+-- 3. Return "science", "history", or "fantasy", all lowercase.
 def Genre.name : Genre → String := sorry
 
 -- 4. Extract the star count from a Rating (0 if unrated).
@@ -64,7 +65,7 @@ def Book.describe (b : Book) : String := sorry
 -- 8. Return a copy of the book with a new rating.
 def Book.withRating (b : Book) (r : Rating) : Book := sorry
 
--- 9. Find a book by title. Return none if not found.
+-- 9. Find the first book with this exact title. Return none if not found.
 def findBook (title : String) : List Book → Option Book := sorry
 
 -- =============================================

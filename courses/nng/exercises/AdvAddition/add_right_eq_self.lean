@@ -6,7 +6,8 @@ namespace MyNat
 
 /-
 `add_right_eq_self x y` is the theorem that $x + y = x\implies y=0.$
-Two ways to do it spring to mind; I'll mention them when you've solved it.
+You can use cancellation directly, or commute the sum and reuse the
+previous theorem. Try one approach, then explain how the other would work.
 -/
 /-- $x+y=x\implies y=0$. -/
 theorem add_right_eq_self (x y : ℕ) : x + y = x → y = 0 := by

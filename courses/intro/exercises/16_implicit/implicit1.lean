@@ -7,8 +7,12 @@
     #check identity 42        -- Nat
     #check identity "hello"   -- String
 
-  Without implicit args, you'd have to write:
-    identity Nat 42    -- tedious!
+  Compare this version with an explicit type parameter:
+
+    def identityExplicit (α : Type) (x : α) : α := x
+    #check identityExplicit Nat 42
+
+  Here the caller supplies `Nat` before the value 42.
 
   You can also use `(α : Type)` for explicit type arguments
   and `[inst : BEq α]` for type class arguments.

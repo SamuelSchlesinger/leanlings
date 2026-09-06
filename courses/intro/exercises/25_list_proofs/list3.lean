@@ -3,7 +3,7 @@
   When you define your own list functions, you prove properties
   about them using induction and `simp [your_function]`.
 
-  TODO: Define the function and prove its properties.
+  TODO: Keep the supplied function definition and prove its properties.
 -/
 
 -- Custom append (to practice induction, not using ++)

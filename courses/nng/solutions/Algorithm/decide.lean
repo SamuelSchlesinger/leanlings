@@ -5,7 +5,7 @@ import Algorithm.succ_ne_succ
 namespace MyNat
 
 /- $20+20=40$. -/
-example : (20 : ℕ) + 20 = 40 := by
+theorem exercise_algorithm_decide : (20 : ℕ) + 20 = 40 := by
   simp only [ofNat_succ, add_succ, add_zero]
 
 end MyNat

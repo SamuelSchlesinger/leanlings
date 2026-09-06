@@ -5,7 +5,7 @@ import Implication.intro
 namespace MyNat
 
 /- $x+1=y+1 \implies x=y$. -/
-example (x y : ℕ) : x + 1 = y + 1 → x = y := by
+theorem exercise_implication_intro2 (x y : ℕ) : x + 1 = y + 1 → x = y := by
   intro h
   repeat rewrite [← succ_eq_add_one] at h
   apply succ_inj at h

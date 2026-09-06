@@ -9,8 +9,9 @@
   Each step uses `rw [h]` to rewrite with a hypothesis.
   This makes complex proofs readable and structured.
 
-  When goals involve function applications (not just arithmetic),
-  `omega` can't help — you need `rw` to step through the chain.
+  Here the hypotheses tell us how to rewrite function applications.
+  Use those equations to expose the intermediate steps. Arithmetic
+  automation may finish a numerical step once those rewrites are done.
 
   TODO: Fill in each `sorry` with `rw [...]` using the right hypothesis.
 -/

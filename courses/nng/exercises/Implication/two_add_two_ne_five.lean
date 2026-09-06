@@ -10,7 +10,7 @@ To make it a bit less painful, I have unfolded all of the numerals for you.
 See if you can use `zero_ne_succ` and `succ_inj` to prove this.
 -/
 /- $2+2≠5$. -/
-example : succ (succ 0) + succ (succ 0) ≠ succ (succ (succ (succ (succ 0)))) := by
+theorem exercise_implication_two_add_two_ne_five : succ (succ 0) + succ (succ 0) ≠ succ (succ (succ (succ (succ 0)))) := by
   sorry
 
 end MyNat

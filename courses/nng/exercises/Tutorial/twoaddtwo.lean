@@ -12,7 +12,7 @@ Good luck!
   `nth_rewrite 3 [h]`.
 -/
 /- $2+2=4$. -/
-example : (2 : ℕ) + 2 = 4 := by
+theorem exercise_tutorial_twoaddtwo : (2 : ℕ) + 2 = 4 := by
   sorry
 
 end MyNat

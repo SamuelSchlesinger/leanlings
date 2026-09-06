@@ -25,6 +25,13 @@ Progress is tracked separately for each course, so switching back and forth
 does not lose your place. Every course has an `exercises/` directory (the files
 you edit) and a `solutions/` directory (reference answers).
 
+The [Natural Number Game guide](courses/nng/guide.md),
+[algebra guide](courses/algebra/guide.md), and
+[analysis guide](courses/analysis/guide.md) explain prerequisites and proof
+strategies. Their `units/` directories contain short introductions and
+standalone worked examples. Introductory explanations are in the exercise
+files themselves.
+
 - `intro` (70 exercises): Lean 4 as a programming language and as a proof
   assistant. It runs from strings and arithmetic through inductive types,
   recursion, and IO, and then into propositions, tactics, induction, and a few
@@ -94,9 +101,10 @@ ring theory, each fact reducing pointwise to the ℚ theorem you already proved.
 
 The construction is deliberately split so that the conceptually central steps —
 the equivalence relations and well-definedness behind each quotient — are yours
-to prove, while the fiddliest bookkeeping is provided. There is no Mathlib and no
-`ring`/`linarith`: `grind` plays the role of `ring` and `omega` that of
-`linarith`, both over `ℤ`, with a small curated lemma toolkit for the rest.
+to prove, while the fiddliest bookkeeping is provided. There is no Mathlib.
+Integer goals use `omega` for linear arithmetic and `grind` for equality
+reasoning and polynomial normalization, with a small curated lemma toolkit
+for the remaining steps.
 
 The capstone (world `Capstone`) is the payoff: ℝ is complete over ℚ — every
 Cauchy sequence of rationals converges, in ℝ, to the real number it represents.
@@ -146,6 +154,9 @@ the `dir/name` shown by `list` or by the ambiguity error, such as
 `Rat/add_comm`.
 
 ## Other places to learn Lean 4
+
+For course authors and frontend integrations, see the
+[curriculum export and validation guide](docs/curriculum-format.md).
 
 A few resources worth knowing about, depending on what you are after:
 

@@ -2,4 +2,6 @@
 #guard isReady == true
 #guard count > 0
 #guard message == "hello"
-
+#check (isReady : Bool)
+#check (count : Nat)
+#check (message : String)

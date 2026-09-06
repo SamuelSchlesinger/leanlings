@@ -32,10 +32,15 @@ def path (e : Exercise) : System.FilePath :=
 def solutionPath (e : Exercise) : System.FilePath :=
   s!"courses/{e.course}/solutions/{e.dir}/{e.name}.lean"
 
-/-- Hidden correctness checks (`#guard`s) for an exercise, kept out of the file
-the learner edits so the expected answers aren't given away. May not exist. -/
+/-- Behavioral checks (`#guard`s), separate from the learner's editable file.
+They are distributed with the curriculum and are not secret. May not exist. -/
 def testPath (e : Exercise) : System.FilePath :=
   s!"courses/{e.course}/tests/{e.dir}/{e.name}.lean"
+
+/-- Generated checks requiring the reference's theorem statements to remain
+present. Separate from behavioral tests so regeneration cannot erase them. -/
+def contractPath (e : Exercise) : System.FilePath :=
+  s!"courses/{e.course}/contracts/{e.dir}/{e.name}.lean"
 
 end Exercise
 end Leanlings

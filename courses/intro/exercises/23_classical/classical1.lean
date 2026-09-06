@@ -3,10 +3,11 @@
   Lean supports classical reasoning via:
   • `Classical.em (P : Prop) : P ∨ ¬P` — excluded middle
   • `Classical.byContradiction : (¬P → False) → P`
-  • `Decidable.decide` for decidable props
+  • `decide` computes a Bool when a proposition has a decidable instance
 
   Not all propositions are decidable constructively,
-  but classically, every proposition is either true or false.
+  but excluded middle supplies a proof of `P ∨ ¬P` for any proposition.
+  It does not supply an executable procedure that decides every `P`.
 
   TODO: Prove using classical reasoning.
 -/

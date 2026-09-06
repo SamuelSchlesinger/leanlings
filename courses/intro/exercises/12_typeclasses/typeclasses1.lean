@@ -17,7 +17,8 @@
     instance : ToString Foo where
       toString f := s!"Foo({f.x})"
 
-  TODO: Add a `ToString` instance for `Color`.
+  TODO: Add a `ToString` instance for `Color`. Return the lowercase
+  names "red", "green", and "blue" for the corresponding constructors.
 -/
 
 inductive Color where

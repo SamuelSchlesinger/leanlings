@@ -2,7 +2,7 @@
 
   `have name : type := proof` introduces an intermediate result:
 
-    theorem example (h : P ∧ Q) : Q ∧ P := by
+    theorem swap_parts (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
       have hp : P := h.left
       have hq : Q := h.right
       exact ⟨hq, hp⟩

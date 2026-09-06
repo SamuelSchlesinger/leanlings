@@ -4,7 +4,9 @@
     changes the goal to `A` (working backwards).
 
   • `constructor` — splits a goal `A ∧ B` into two subgoals.
-    Also works for other multi-constructor types.
+    `And` has one constructor requiring a proof of each part.
+    For a disjunction, the two constructors are alternatives: you must
+    choose which side to prove, rather than prove both sides.
 
   TODO: Complete the proofs.
 -/

@@ -5,38 +5,24 @@ import Algorithm.succ_ne_succ
 namespace MyNat
 
 /-
-Implementing the algorithm for equality of naturals, and the proof that it is correct,
-looks like this:
+A decision procedure for equality of `MyNat` values compares constructors:
+zero equals zero; zero cannot equal a successor; two successors are equal
+exactly when their predecessors are equal. Each branch returns a proof of
+its answer. The foundation supplies this as `DecidableEq MyNat`.
 
-```
-instance instDecidableEq : DecidableEq ℕ
-| 0, 0 => isTrue <| by
-  show 0 = 0
-  rfl
-| succ m, 0 => isFalse <| by
-  show succ m ≠ 0
-  exact succ_ne_zero m
-| 0, succ n => isFalse <| by
-  show 0 ≠ succ n
-  exact zero_ne_succ n
-| succ m, succ n =>
-  match instDecidableEq m n with
-  | isTrue (h : m = n) => isTrue <| by
-    show succ m = succ n
-    rw [h]
-    rfl
-  | isFalse (h : m ≠ n) => isFalse <| by
-    show succ m ≠ succ n
-    exact succ_ne_succ m n h
-```
+For example, `example : (3 : ℕ) ≠ 4 := by decide` is checked by computation.
 
-This Lean code is a formally verified algorithm for deciding equality
-between two naturals. I've typed it in already, behind the scenes.
-Because the algorithm is formally verified to be correct, we can
-use it in Lean proofs. You can run the algorithm with the `decide` tactic.
+Our `+` is opaque and specified by axioms, so `decide` cannot compute a sum
+on its own. First rewrite a numeral sum using `ofNat_succ`, `add_succ`, and
+`add_zero`. These rules replace it with a chain of successors. For this
+positive equality, simplification can finish the proof itself. In the next
+exercise, `decide` will finish a remaining inequality between constructors.
+
+Try `simp only [...]` with those three rules. Explain which rule unfolds a
+numeral, which moves a successor out of a sum, and which stops the recursion.
 -/
 /- $20+20=40$. -/
-example : (20 : ℕ) + 20 = 40 := by
+theorem exercise_algorithm_decide : (20 : ℕ) + 20 = 40 := by
   sorry
 
 end MyNat

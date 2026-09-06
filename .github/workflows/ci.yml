@@ -24,38 +24,20 @@ jobs:
           key: lake-${{ hashFiles('lean-toolchain', 'lakefile.lean', 'lake-manifest.json') }}
 
       - name: Build
-        run: lake build
+        run: |
+          lake build
+          lake build Leanlings.Contracts
 
       - name: Run Leanlings regressions
         run: lake env lean --run tests/LeanlingsRegression.lean
 
-      # The `nng` course's solutions form a Lean library, so they are already
-      # compiled (and thus verified) by `lake build` above. Here we check the
-      # standalone `intro` solutions, compiled file-by-file together with each
-      # exercise's hidden correctness checks (courses/intro/tests/), so the
-      # reference answers are verified to actually satisfy the `#guard`s.
-      - name: Verify intro solutions
+      - name: Verify contract generation
         run: |
-          failed=0
-          for f in $(find courses/intro/solutions -path '*/*.lean' | sort); do
-            rel=${f#courses/intro/solutions/}
-            test="courses/intro/tests/$rel"
-            tmp=$(mktemp /tmp/leanlings-XXXXXX.lean)
-            cat "$f" > "$tmp"
-            if [ -f "$test" ]; then printf '\n\n' >> "$tmp"; cat "$test" >> "$tmp"; fi
-            if ! lean "$tmp" 2>&1; then
-              echo "FAIL: $f"
-              failed=$((failed + 1))
-            fi
-            rm -f "$tmp"
-          done
-          if [ $failed -gt 0 ]; then
-            echo "$failed solution(s) failed"
-            exit 1
-          fi
-          echo "All intro solutions verified against their checks"
+          python3 tests/ContractGeneration.py
+          python3 scripts/generate-contracts.py --check
 
-      - name: Verify intro IO output
+      - name: Verify every course and its checks
         run: |
-          diff -u <(printf 'Hello, Lean!\n') <(lean --run courses/intro/solutions/15_io/io1.lean)
-          diff -u <(printf '5\n4\n3\n2\n1\n') <(lean --run courses/intro/solutions/15_io/io2.lean)
+          python3 scripts/validate-courses.py
+          lake env lean tests/TeachingExamples.lean
+          python3 scripts/validate-guides.py

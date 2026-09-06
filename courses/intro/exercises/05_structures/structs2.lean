@@ -1,12 +1,15 @@
 /- # Structures 2: Using Fields
 
-  Access structure fields with dot notation:
-    let p : Point := ⟨3.0, 4.0⟩
-    p.x    -- 3.0
-    p.y    -- 4.0
+  For the `Person` structure defined below, `p.firstName` is a String
+  and `p.age` is a Nat. Dot notation selects one field of a value.
 
-  You can also create a modified copy with `{ s with field := val }`:
-    let p2 := { p with age := 26 }  -- same name, new age
+  You can also create a modified copy with `{ s with field := val }`.
+  Try this example after the Person declaration:
+
+    def younger (p : Person) : Person := { p with age := 10 }
+
+  It keeps both names and changes only the age. It produces a new
+  value; the original `p` is unchanged.
 
   TODO: Implement all three functions; each has a comment
         saying what it should do.

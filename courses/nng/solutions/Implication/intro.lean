@@ -5,7 +5,7 @@ import Implication.succ_inj2
 namespace MyNat
 
 /- $x=37\implies x=37$. -/
-example (x : ℕ) : x = 37 → x = 37 := by
+theorem exercise_implication_intro (x : ℕ) : x = 37 → x = 37 := by
   intro h
   exact h
 

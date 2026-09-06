@@ -8,7 +8,7 @@ namespace MyNat
 `add_mul` is just as fiddly to prove by induction; but there's a trick
 which avoids it. Can you spot it?
 -/
-/-- Addition is distributive over multiplication.
+/-- Multiplication distributes over addition on the right.
 In other words, for all natural numbers $a$, $b$ and $c$, we have
 $(a + b) \times c = ac + bc$. -/
 theorem add_mul

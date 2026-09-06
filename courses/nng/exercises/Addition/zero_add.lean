@@ -18,7 +18,18 @@ The base case will require us to prove `0 + 0 = 0`, and the inductive step
 will ask us to show that if `0 + d = d` then `0 + succ d = succ d`. Because
 `0` and successor are the only way to make numbers, this will cover all the cases.
 
-See if you can do your first induction proof in Lean.
+Use this outline, filling each hole separately:
+
+    induction n using MyNat.rec' with
+    | zero => sorry
+    | succ d hd => sorry
+
+In the second branch, `hd : 0 + d = d` is available. First use `add_succ`
+to expose `0 + d`, then use `hd`. `MyNat.rec'` is the induction principle
+for our copy of the naturals, with its base case displayed as `0`.
+
+The shorthand `induction n with d hd` also works in this course; it is a
+local convenience, followed by one `·` bullet per case.
 -/
 /-- For all natural numbers $n$, we have $0 + n = n$. -/
 theorem zero_add (n : ℕ) : 0 + n = n := by
