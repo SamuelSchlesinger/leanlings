@@ -1,24 +1,29 @@
-import Complete.approx
+import Complete.tendsto_of_approx
 
 namespace Analysis
 open MyReal
 
-/- The completeness theorem — every Cauchy sequence of reals converges. The
-strategy is rational approximation:
+/- # Assemble the completeness proof
 
-  1. For each `k`, choose a rational `q k` with
-     `|x k - ofRat (q k)| < ofRat (tolSeq k)` (`approx` + `Classical.choose`).
-  2. Show `q` is a Cauchy sequence of rationals: `|q m - q n|` is small because
-     `|ofRat(q m) - ofRat(q n)| ≤ |ofRat(q m) - x m| + |x m - x n| + |x n - ofRat(q n)|`,
-     with the outer terms bounded by `tolSeq` and the middle by `hx`. Move between
-     ℚ and ℝ with `ofRat_lt_iff`, `ofRat_abs`, `ofRat_sub`, and split the tolerance
-     with `MyRat.exists_half` (twice, for the three pieces).
-  3. The limit is `mk q hqcauchy`; `x k → it` because `|x k - ofRat (q k)| → 0` and
-     `ofRat (q k) → mk q hqcauchy` (`cauchy_seq_converges`).
+Every Cauchy sequence of reals has a limit. You now have the two estimates
+needed to prove it:
 
-The skeleton builds the approximating sequence; fill in the two ε–N arguments.
-(`MyReal.add_lt_add`, `MyReal.lt_trans`, `add_le_add_left`, and `abs_sub_le` are
-the ℝ-order tools; `dist (x m) (x n)` is definitionally `|x m - x n|`.) -/
+1. `approx_isCauchy` turns rational approximations of `x` into a rational
+   Cauchy sequence `q`.
+2. `cauchy_seq_converges` says that `ofRat (q k)` converges to `mk q hqcauchy`.
+3. `tendsto_of_approx` transfers that limit to `x`.
+
+The skeleton chooses `q k` using `approx` and records its error bound.
+This is classical choice, not an executable approximation algorithm.
+Fill the first hole by supplying a proof that `q` is Cauchy. Then choose
+the real represented by `q` as the limit and combine the convergence
+lemmas. The epsilon arguments are already in the theorems you proved;
+the final task is to connect their hypotheses and conclusions.
+
+Before finishing, explain the distinction between constructing the limit
+of a rational Cauchy sequence and proving completeness for sequences of
+reals. The approximation step is the bridge between these statements.
+-/
 theorem MyReal.complete : IsComplete MyReal := by
   intro x hx
   let q : ℕ → MyRat := fun k => Classical.choose (MyReal.approx (x k) (tolSeq_pos k))

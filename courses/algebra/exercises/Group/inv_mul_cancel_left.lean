@@ -1,8 +1,13 @@
-/- Group world.
-   A group adds inverses, via `Group.inv_mul_cancel : a⁻¹ * a = 1` and
-   `Group.mul_inv_cancel : a * a⁻¹ = 1`. Naming convention: axioms outside the
-   multiplicative core are written qualified (`Group....`, `CommGroup....`,
-   `Ring....`); `mul_assoc`, `one_mul`, `mul_one` are available unqualified. -/
+/- # Inverses undo an action
+
+A group adds inverses, with `Group.inv_mul_cancel : a⁻¹ * a = 1`
+and `Group.mul_inv_cancel : a * a⁻¹ = 1`.
+
+Group `a⁻¹` with `a`, apply the inverse law, then remove the identity.
+The laws are written qualified because similar names will appear in
+rings and fields; `mul_assoc`, `one_mul`, and `mul_one` remain available
+unqualified. Keep the factors in their original order.
+-/
 import Monoid.bool_one
 
 namespace Algebra

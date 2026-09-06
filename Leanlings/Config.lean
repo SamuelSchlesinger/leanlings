@@ -757,8 +757,12 @@ private def analysisExercises : Array Exercise := #[
   -- Complete
   { name := "approx", dir := "Complete",
     hint := "`induction x using MyReal.ind`. `cauchy_seq_converges f hf ε hε` gives `N`; use `q := f N`, then `rw [MyReal.abs_sub_comm]` and apply the bound at `N`." },
+  { name := "approx_isCauchy", dir := "Complete",
+    hint := "The path has three pieces: q m to x m, x m to x n, and x n to q n. Use `abs_sub_le` twice; reverse the first bound with `abs_sub_comm`. Combine hAm, hB, hAn with `MyReal.add_lt_add`, then use hμμ and hηη to add up the tolerances." },
+  { name := "tendsto_of_approx", dir := "Complete",
+    hint := "Use `abs_sub_le` with middle point `ofRat (q k)`. Bound the first distance using `hqspec k` and `hK0`, and the second using `hK1`. Both thresholds are below their maximum. Finish with `← ofRat_add` and hηη." },
   { name := "complete", dir := "Complete",
-    hint := "Two ε–N proofs. For `IsCauchy q`: split `ε` twice (`exists_half`), get `K0` from `tolSeq_lt`, `K1` from `hx`; bound `|q m - q n|` by converting to ℝ (`ofRat_lt_iff`, `ofRat_abs`, `ofRat_sub`) and a 3-term triangle (`abs_sub_le`, `add_le_add_left`, `MyReal.add_lt_add`). For convergence: `|x k - L| ≤ |x k - ofRat (q k)| + |ofRat (q k) - L|`, with the second term from `cauchy_seq_converges q hqcauchy`." }
+    hint := "Apply `approx_isCauchy` to hx and hqspec. For the final limit, `cauchy_seq_converges q hqcauchy` supplies the second hypothesis needed by `tendsto_of_approx`." }
 ]
 
 private def analysisWelcome : String :=

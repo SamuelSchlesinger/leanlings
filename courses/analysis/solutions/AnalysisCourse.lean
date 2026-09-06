@@ -1,9 +1,5 @@
 /-
-Root module for the `analysis` course. It imports the final level, which (via
-the import Complete.complete
-`lake build` checks the whole course.
-
-During development this temporarily points at the latest module; it is updated
-to the last level as the worlds are added.
+Root of the analysis course. Import the final theorem to include the entire
+construction and its exercise solutions in dependency order.
 -/
-import Cauchy.Defs
+import Complete.complete

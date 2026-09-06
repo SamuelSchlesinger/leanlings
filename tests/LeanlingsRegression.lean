@@ -4,7 +4,7 @@ open Leanlings
 
 /-! Regression checks for course identity, state migration, and runner output. -/
 
-#guard Config.analysis.exercises.size == 62
+#guard Config.analysis.exercises.size == 64
 #guard (Config.analysis.getExercise "add_comm").isNone
 #guard (Config.analysis.getExercise "mul_inv_cancel").isNone
 #guard (Config.analysis.getExercise "Rat/add_comm").map (·.dir) == some "Rat"

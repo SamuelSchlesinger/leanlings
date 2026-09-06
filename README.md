@@ -7,7 +7,7 @@ Each exercise is a Lean file with a `sorry` (or a deliberate mistake) for you to
 fix. Run it in watch mode and the compiler rechecks your work every time you
 save, then moves you on to the next exercise.
 
-There are four courses and 281 exercises in total. None of them depend on
+There are four courses and 283 exercises in total. None of them depend on
 Mathlib; everything is plain core Lean 4.
 
 ## Courses
@@ -49,7 +49,7 @@ files themselves.
   each level's basic theory from its axioms. The hierarchy is defined from
   scratch in core Lean (`AlgebraLib`), and each exercise proves a theorem that
   holds in every structure of that kind.
-- `analysis` (62 exercises): real analysis from the ground up. You construct the
+- `analysis` (64 exercises): real analysis from the ground up. You construct the
   rational numbers as a quotient of fractions — proving cross-multiplication is
   an equivalence relation and that the arithmetic and order respect it — then
   develop ℚ's arithmetic and order theory (algebraic laws, absolute value, the
@@ -79,7 +79,7 @@ what came before.
 
 ## The analysis course
 
-Its 62 exercises run across ten worlds, each building on the last.
+Its 64 exercises run across ten worlds, each building on the last.
 
 Constructing ℚ (worlds `Setoid`, `WellDef`): a rational is a fraction with a
 positive denominator, and `PreRat.r a b := a.num * b.den = b.num * a.den` says two
@@ -111,7 +111,8 @@ Cauchy sequence of rationals converges, in ℝ, to the real number it represents
 A `Metric` world introduces abstract metric spaces (with ℝ as the example) and
 proves, generically from the axioms, that a convergent sequence is Cauchy; and a
 `RealField` world proves the inverse law for every nonzero real. The summit
-is the `Complete` world: ℝ is Cauchy-complete — every Cauchy sequence of reals
+is the `Complete` world, where two separate approximation exercises prepare
+the final assembly: ℝ is Cauchy-complete — every Cauchy sequence of reals
 converges — proven by rational approximation. The whole tower — from ℚ through
 a Cauchy-complete metric model of ℝ with commutative-ring operations and a
 nonzero inverse law — is built from nothing but core Lean.

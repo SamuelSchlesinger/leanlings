@@ -30,3 +30,37 @@ shown in the unit notes transfers more directly to other Lean projects.
 
 Adapted from the Natural Number Game. See `NOTICE` and `LICENSE` in this
 course for the original authors, license, and changes made in this port.
+
+## A route through the worlds
+
+| Worlds | Question to answer before moving on |
+| --- | --- |
+| Tutorial | Which subexpression does my rewrite change? |
+| Addition | Why does induction on the right input expose the addition equations? |
+| Multiplication, Power | Where does the induction step become a theorem from an earlier world? |
+| Implication | Am I supplying evidence, transforming it, or assuming it for a contradiction? |
+| AdvAddition | Why is constructor injectivity enough to cancel addition? |
+| LessOrEqual | What is the witness for this inequality? |
+| AdvMultiplication | Where is the nonzero assumption used, and why must another variable stay general? |
+| Algorithm | What proof rules does the automation repeatedly apply? |
+
+You do not need to finish the programming parts of Intro before starting this
+course. If the distinction between a proposition and its proof is unfamiliar,
+review Intro's propositions and tactics units alongside Implication world.
+
+## When a tactic gets stuck
+
+- **The rewrite found no match:** write down the left side of the lemma and
+  look for that exact grouping in the goal. Try explicit arguments before
+  adding more rewrite rules.
+- **There are no goals left:** `rw` may already have closed a reflexive goal.
+  Remove the next tactic, or use `rewrite` to inspect the intermediate equality.
+- **The induction hypothesis does not apply:** compare its variables and
+  hypotheses with the current goal. Later cancellation needs `generalizing`
+  because a recursive step changes the other factor too.
+- **Arithmetic automation does nothing:** `ℕ` here is `MyNat`; its arithmetic
+  is opaque. Use the six arithmetic equations and the theorems you have built.
+
+After each world, retry one proof with the solution hidden. First predict the
+base case, witness, or intermediate equation on paper. A successful check is
+most useful when you can also explain why those choices worked.
