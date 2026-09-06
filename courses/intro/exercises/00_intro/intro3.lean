@@ -1,18 +1,20 @@
 /- # Intro 3: Reading Error Messages
 
-  When your code has a problem, Lean tells you what went wrong.
-  Learning to read these messages is an essential skill!
+  Practice reading a type mismatch one definition at a time.
+  In each error, find the type of the value you supplied and the
+  type Lean expected. Then use the task to decide what to change.
 
-  Each definition below has an error. Your editor will underline
-  the problem — hover over it to see the message, or run
-  `lake exe leanlings run` to see it in the terminal.
+  A new type here is `Bool`: its two values are `true` and `false`.
+  Neither value has quotes. The text "true" would be a `String`.
 
-  Common errors:
-  • "type mismatch" — the value doesn't match the expected type
-  • "unknown identifier" — you used a name that doesn't exist
-  • "function expected" — you tried to call a non-function
+  TODO: Keep all three names, and make these definitions satisfy
+  the requirements below:
+  - `isReady` has type `Bool` and equals `true`.
+  - `count` has type `Nat` and is greater than zero.
+  - `message` has type `String` and equals "hello".
 
-  TODO: Fix each definition so the file compiles.
+  Fix the first definition, check again, and then move to the next.
+  The first two need a new value; the last needs a new type annotation.
 -/
 
 -- Error: "type mismatch" — "yes" is a String, but Bool is expected.

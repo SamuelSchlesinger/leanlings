@@ -3,14 +3,23 @@
   In Lean, you can *prove* things about your code.
   A `theorem` states a fact, and you must provide a proof.
 
-  When both sides of an equation compute to the same value,
-  `rfl` ("reflexivity") is a proof. Lean evaluates both
-  sides and checks they match — no cleverness needed.
+  A theorem has the shape `theorem name : statement := proof`.
+  For an equality whose sides reduce by definition to the same
+  expression, `rfl` ("reflexivity") supplies a proof. For example:
+
+    theorem three_plus_one : 3 + 1 = 4 := rfl
+
+  Lean checks that this proof has the stated type. This is different
+  from `#eval`, which asks Lean to run code and display a result.
+  `rfl` does not prove every true equation: some equations need
+  reasoning about variables, which we will learn next.
 
   This is the bridge between programming and proving:
   functions you write become things you can reason about.
 
-  TODO: Replace each `sorry` with `rfl`.
+  TODO: For each theorem, first work out what both sides reduce to.
+  Then replace `sorry` with `rfl` and check your prediction.
+  Keep the function definitions and theorem statements as written.
 -/
 
 def double (n : Nat) : Nat := n + n

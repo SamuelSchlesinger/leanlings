@@ -6,7 +6,7 @@ namespace Leanlings.Config
 private def introExercises : Array Exercise := #[
   -- 00_intro
   { name := "intro1", dir := "00_intro",
-    hint := "In Lean, strings are written between double quotes, like \"hello\".\nWhat string does the #guard check for?" },
+    hint := "A String is text between double quotes, like \"hello\".\nReplace only `sorry` with the greeting requested in the task, including its punctuation." },
   { name := "intro2", dir := "00_intro",
     hint := "Look at the type after the colon — it says `Nat` (natural number).\nWhat kind of value is \"seven\"? Change it to match the type." },
   { name := "intro3", dir := "00_intro",

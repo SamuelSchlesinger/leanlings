@@ -1,14 +1,20 @@
 /- # Intro 2: Type Errors
 
-  Lean is a strongly typed language. Every value has a type,
-  and the compiler checks that types match.
+  A type tells Lean what kind of value belongs in a definition.
+  `String` is text; `Nat` is a natural number: 0, 1, 2, and so on.
 
-  The code below has a type error — it tries to assign a String
-  where a Nat (natural number) is expected.
+  Quotes make a difference: "7" is text, while 7 can be a `Nat`.
 
-  TODO: Change the value from the String "seven" to the number 7,
-        so it matches the type `Nat`.
-        (Keep the type annotation as `Nat`.)
+  Read the definition below before changing it. The annotation
+  `: Nat` asks for a number, but "seven" supplies text. When you
+  check it, Lean reports a type mismatch: the supplied expression
+  has type `String`, but the expected type is `Nat`.
+
+  TODO: Make `favoriteNumber` equal the number 7.
+  Keep its name and its type `Nat`; change the value after `:=`.
+
+  Changing the type to `String` would make the original definition
+  type-check, but would not meet this exercise's requirement.
 -/
 
 def favoriteNumber : Nat := "seven"

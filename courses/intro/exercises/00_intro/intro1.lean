@@ -1,14 +1,25 @@
 /- # Intro 1: Hello, Lean!
 
-  Welcome to Leanlings! Each exercise is a Lean file with
-  something that needs to be fixed.
+  Your first task is to give a name to a piece of text.
+  Here is a complete example:
 
-  `sorry` is a special keyword that fills any hole in your code.
-  It lets Lean accept incomplete definitions, but it means the
-  code isn't finished yet. Your job is to replace each `sorry`
-  with a real implementation.
+    def animal : String := "otter"
 
-  TODO: Replace `sorry` with the string "Hello, Lean!"
+  Read this as: define `animal`, with type `String`, to have the
+  value "otter". A `String` is text enclosed in double quotes.
+  The colon introduces the type; `:=` introduces the value.
+
+  The definition below has the same shape, but its value is missing.
+  `sorry` is a temporary placeholder. Lean warns about it, and
+  Leanlings keeps the exercise incomplete until you fill it in.
+  That warning is expected in an unfinished exercise.
+
+  TODO: Replace only `sorry` with the string "Hello, Lean!".
+  Keep the name `greeting` and its type `String`.
+  Capitalization, the comma, the space, and the exclamation mark matter.
+
+  Check your work. Once it passes, you have written your first Lean
+  definition. To inspect its value in an editor, try `#eval greeting`.
 -/
 
 def greeting : String := sorry

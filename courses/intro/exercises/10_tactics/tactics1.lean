@@ -7,12 +7,18 @@
 
   Enter tactic mode with `by`:
 
-    theorem foo : P → P := by
+    theorem repeat_assumption (P : Prop) : P → P := by
       intro h    -- introduces hypothesis `h : P`
       exact h    -- closes the goal with `h`
 
-  • `intro h` moves the hypothesis from the goal into context
-  • `exact term` closes the goal when `term` has the right type
+  Follow the proof state in this example:
+  - Before `intro h`, the goal is `P → P`.
+  - After `intro h`, you have an assumption `h : P`, and the goal is `P`.
+  - After `exact h`, no goals remain: `h` proves exactly what was needed.
+
+  The context lists what you may use; the goal is what remains to prove.
+  `intro` gives a name to an input of an implication.
+  `exact term` finishes a goal when the term has the required type.
 
   TODO: Complete the proofs using `intro` and `exact`.
 -/
@@ -25,6 +31,7 @@ theorem self_implication (P : Prop) : P → P := by
 theorem use_second (P Q : Prop) : P → Q → Q := by
   sorry
 
--- Function composition
+-- Name the three assumptions in order. If `f : P → Q`, `g : Q → R`,
+-- and `hp : P`, what can you feed to `g` to obtain a proof of `R`?
 theorem compose (P Q R : Prop) : (P → Q) → (Q → R) → P → R := by
   sorry
