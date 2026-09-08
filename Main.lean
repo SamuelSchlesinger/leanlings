@@ -17,6 +17,8 @@ def showHelp : IO Unit := do
   IO.println "  run <name>   Check a specific exercise (use dir/name if ambiguous)"
   IO.println "  watch        Watch mode, auto-checks on save"
   IO.println "  verify       Check all exercises in the current course"
+  IO.println "  guide        Read the course overview and current unit's notes"
+  IO.println "  guide <name> Read the overview and notes for a specific exercise"
   IO.println "  hint         Show a hint for the current exercise"
   IO.println "  hint <name>  Show a hint for a specific exercise"
   IO.println "  solution     Show the solution for the current exercise"
@@ -42,6 +44,34 @@ def showExerciseLookupError (course : Course) (target : String) : IO Unit := do
   else
     IO.println s!"{UI.red "Error"}: exercise '{target}' not found in course '{course.id}'"
 
+/-- Put the teaching material beside the file learners are asked to edit. -/
+def showLearningResources (course : Course) (ex : Exercise) : IO Unit := do
+  IO.println s!"Unit: {ex.dir}"
+  if ← course.guidePath.pathExists then
+    IO.println s!"Course guide: {course.guidePath}"
+  if ← ex.unitGuidePath.pathExists then
+    IO.println s!"Unit notes: {ex.unitGuidePath}"
+  IO.println s!"Read with: lake exe leanlings guide {ex.id}"
+
+/-- Reading a guide never moves the learner or reveals an exercise solution. -/
+def showGuide (target : Option String) : IO UInt32 := do
+  let (state, course) ← loadActive
+  let name := target.getD state.currentExercise
+  match course.getExercise name with
+  | none =>
+    showExerciseLookupError course name
+    return 1
+  | some ex =>
+    IO.println s!"\n{UI.bold course.title} — {ex.dir}\n"
+    if ← course.guidePath.pathExists then
+      IO.println (← IO.FS.readFile course.guidePath)
+    if ← ex.unitGuidePath.pathExists then
+      IO.println (← IO.FS.readFile ex.unitGuidePath)
+    else
+      IO.println "This unit's lesson is in the opening comments of each exercise file."
+    IO.println s!"Exercise: {ex.path}"
+    return 0
+
 def showStatus : IO Unit := do
   let (state, course) ← loadActive
   let done := state.countDone course
@@ -59,6 +89,7 @@ def showStatus : IO Unit := do
     | some ex =>
       IO.println s!"Current exercise: {UI.bold (course.displayName ex)}"
       IO.println s!"  → {ex.path}"
+      showLearningResources course ex
       IO.println ""
       IO.println "Open this file in your editor and follow the instructions!"
       IO.println "Then run: lake exe leanlings run"
@@ -77,9 +108,14 @@ def runExercise (name : String) : IO UInt32 := do
       let state := state.markCompleted course.id ex.id
       state.save
       IO.println s!"\n{UI.progressBar (state.countDone course) course.exercises.size}"
-      IO.println s!"\nRun `lake exe leanlings next` to continue."
+      if state.allDone course then
+        IO.println s!"\n{course.final}"
+      else
+        IO.println "\nRun `lake exe leanlings next` to continue."
       return 0
-    | _ => return 1
+    | _ =>
+      (state.markIncomplete course.id ex.id).save
+      return 1
   | none =>
     showExerciseLookupError course name
     return 1
@@ -101,7 +137,11 @@ def showHint (target : Option String) : IO Unit := do
 def listExercises : IO Unit := do
   let (state, course) ← loadActive
   IO.println s!"\n{UI.bold "Exercises"} — {course.title}:\n"
+  let mut lastUnit := ""
   for ex in course.exercises do
+    if ex.dir != lastUnit then
+      IO.println s!"\n{UI.cyan ex.dir}"
+      lastUnit := ex.dir
     let marker := if state.isCompleted course.id ex.id then UI.green "✓"
                   else if state.currentExercise == ex.id then UI.yellow "→"
                   else "  "
@@ -125,6 +165,7 @@ def nextExercise : IO Unit := do
       state.save
       IO.println s!"Current exercise: {UI.bold (course.displayName next)}"
       IO.println s!"  → {next.path}"
+      showLearningResources course next
     else
       IO.println "You're already on the last exercise!"
   | none =>
@@ -198,6 +239,9 @@ partial def watchLoop (course : Course) (state : AppState) (lastContent : String
       IO.print UI.clearScreen
       IO.println s!"{UI.bold "Leanlings"} — Watch Mode ({course.title})\n"
       IO.println s!"{UI.progressBar (state.countDone course) course.exercises.size}\n"
+      IO.println s!"Exercise: {ex.path}"
+      showLearningResources course ex
+      IO.println ""
       IO.println s!"Checking {UI.bold (course.displayName ex)}...\n"
       let status ← Runner.checkExercise ex
       Runner.displayResult ex status
@@ -260,10 +304,13 @@ def selectCourse (id : String) : IO UInt32 := do
     let state := state.switchCourse course
     state.save
     IO.println s!"{UI.green "✓"} Switched to course {UI.bold course.title}"
+    if state.countDone course == 0 then
+      IO.println course.welcome
     match course.getExercise state.currentExercise with
     | some ex =>
       IO.println s!"Current exercise: {UI.bold (course.displayName ex)}"
       IO.println s!"  → {ex.path}"
+      showLearningResources course ex
     | none =>
       IO.println s!"Current exercise: {UI.bold state.currentExercise}"
     return 0
@@ -279,6 +326,8 @@ def main (args : List String) : IO UInt32 := do
   | ["run", name] => runExercise name
   | ["watch"] => watchMode
   | ["verify"] => verifyAll
+  | ["guide"] => showGuide none
+  | ["guide", name] => showGuide (some name)
   | ["hint"] => showHint none; return 0
   | ["hint", name] => showHint (some name); return 0
   | ["solution"] => showSolution none; return 0

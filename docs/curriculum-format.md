@@ -11,7 +11,10 @@ Schema version 1 contains `provider`, `leanToolchain`, and an ordered `courses`
 array. Each course has an `id`, title, description, welcome/conclusion text,
 an optional Markdown `guide` (empty when absent), ordered `units`, and ordered
 `exercises`. Each unit has its directory `id` and optional Markdown `guide`.
-The introductory course currently puts its explanations in the exercise files.
+The introductory course has a course guide and puts its unit explanations in
+the exercise files. Display the course guide when starting a course, and offer
+each unit's guide alongside its first exercise. Empty unit guides mean the
+teaching material is in the exercise comments; they do not indicate an error.
 
 An exercise contains:
 
@@ -75,6 +78,13 @@ and empty submissions, verifies IO output, and tests runner regressions.
 It also compiles the complete Lean examples in Markdown guides and selected
 examples from introductory comments. Every `lean` fence in a guide must be
 a standalone example with its own imports; use `text` for incomplete outlines.
+
+`python3 tests/LearnerWorkflow.py` checks course switching, guide discovery,
+failure feedback, progress correction, watch mode, and course completion in a
+temporary learner workspace. Add `--all` to replay every exercise in order
+through the CLI, submitting the reference answers. This tests the interaction
+and reference path; assessing the explanations and difficulty still requires
+reading the lessons and trying the techniques they teach.
 
 Validation can be scoped while editing with `--course intro` (or another
 course ID) on the contract generator and course validator. Before publishing,

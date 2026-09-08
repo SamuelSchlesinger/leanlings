@@ -32,6 +32,10 @@ def path (e : Exercise) : System.FilePath :=
 def solutionPath (e : Exercise) : System.FilePath :=
   s!"courses/{e.course}/solutions/{e.dir}/{e.name}.lean"
 
+/-- Teaching notes for this exercise's unit, when supplied. -/
+def unitGuidePath (e : Exercise) : System.FilePath :=
+  s!"courses/{e.course}/units/{e.dir}.md"
+
 /-- Behavioral checks (`#guard`s), separate from the learner's editable file.
 They are distributed with the curriculum and are not secret. May not exist. -/
 def testPath (e : Exercise) : System.FilePath :=

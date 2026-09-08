@@ -2,6 +2,5 @@ import Rat.zero_add
 namespace Analysis
 open MyRat
 theorem MyRat.add_zero (x : MyRat) : x + 0 = x := by
-  induction x using ind with | _ a b hb =>
-  rw [zero_def, add_mk, mk_eq]; grind
+  rw [MyRat.add_comm, MyRat.zero_add]
 end Analysis

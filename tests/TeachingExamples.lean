@@ -11,6 +11,8 @@ def identityExplicit (α : Type) (x : α) : α := x
 end ImplicitArguments
 
 namespace Arrays
+#guard #[1, 2, 3][0]? == some 1
+#guard #[1, 2, 3][3]? == none
 #guard Array.replicate 5 0 == #[0, 0, 0, 0, 0]
 #guard Array.range 5 == #[0, 1, 2, 3, 4]
 #guard #[1, 2] ++ #[3, 4] == #[1, 2, 3, 4]
@@ -41,6 +43,23 @@ structure Person where
 def younger (p : Person) : Person := { p with age := 10 }
 #guard younger ⟨"Jane", "Doe", 30⟩ == ⟨"Jane", "Doe", 10⟩
 end Structures
+
+namespace BasicNotation
+#guard (3 - 5 : Nat) == 0
+#guard (5 / 2 : Nat) == 2
+#guard (7 % 3 : Nat) == 1
+def isAdult (age : Nat) : Bool := age >= 18
+def isAdultExplicit (age : Nat) : Bool := decide (age >= 18)
+example (age : Nat) : isAdult age = isAdultExplicit age := rfl
+def pair : Nat × String := (7, "seven")
+#guard pair.1 == 7
+#guard pair.2 == "seven"
+example (P : Prop) (hp : P) : P ∧ True := by
+  constructor
+  · exact hp
+  · exact True.intro
+example (x : α) : x ∈ [x] := by simp
+end BasicNotation
 
 theorem swap_parts (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
   have hp : P := h.left

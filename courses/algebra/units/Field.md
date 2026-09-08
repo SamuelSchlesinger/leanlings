@@ -1,7 +1,7 @@
 # Why cancellation needs a hypothesis
 
 A **field** is a nontrivial commutative ring in which every nonzero element
-has a multiplicative inverse. Here `0⁻¹` is defined to be `0`, but
+has a multiplicative inverse. Here the field axioms require `0⁻¹ = 0`, but
 `a * a⁻¹ = 1` requires `a ≠ 0`. The assumption `0 ≠ 1` rules out a
 one-element ring.
 

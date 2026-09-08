@@ -21,3 +21,8 @@ relation and the operation to see the corresponding integer equations.
 For order, multiplying an inequality by a denominator also needs its sign.
 Scale by positive products, use the input relations, then cancel a positive
 factor. Keep equality rearrangement separate from order reasoning.
+
+The order exercises prove one implication. To obtain the reverse implication,
+apply the same theorem with the representatives exchanged and the equivalence
+proofs reversed by `PreRat.r_symm`. Together the two implications give the
+iff required to put a relation on the quotient.

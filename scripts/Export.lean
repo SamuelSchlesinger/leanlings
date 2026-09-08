@@ -34,7 +34,7 @@ def main : IO Unit := do
     return Json.mkObj [
       ("id", toJson course.id), ("title", toJson course.title),
       ("description", toJson course.description), ("welcome", toJson course.welcome),
-      ("guide", toJson (← readOptional s!"courses/{course.id}/guide.md")),
+      ("guide", toJson (← readOptional course.guidePath)),
       ("units", toJson units),
       ("conclusion", toJson course.final), ("exercises", toJson exercises)]
   IO.println <| (Json.mkObj [

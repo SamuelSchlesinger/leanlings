@@ -25,12 +25,15 @@ Progress is tracked separately for each course, so switching back and forth
 does not lose your place. Every course has an `exercises/` directory (the files
 you edit) and a `solutions/` directory (reference answers).
 
-The [Natural Number Game guide](courses/nng/guide.md),
+The [Intro guide](courses/intro/guide.md),
+[Natural Number Game guide](courses/nng/guide.md),
 [algebra guide](courses/algebra/guide.md), and
 [analysis guide](courses/analysis/guide.md) explain prerequisites and proof
 strategies. Their `units/` directories contain short introductions and
 standalone worked examples. Introductory explanations are in the exercise
-files themselves.
+files themselves. Run `lake exe leanlings guide` to read the active course's
+overview and current unit's notes. Course switching and watch mode also show
+where to find them.
 
 - `intro` (70 exercises): Lean 4 as a programming language and as a proof
   assistant. It runs from strings and arithmetic through inductive types,
@@ -59,6 +62,12 @@ files themselves.
   infrastructure modules; each exercise reduces a fact about ℚ to one about ℤ
   (closed by `grind`/`omega`) or a fact about ℝ to one about its
   Cauchy-sequence representatives. There is more on this course below.
+
+Start with Intro for programming and proof basics, or NNG for a proof-focused
+route through natural numbers. Algebra assumes Intro's proof and type-class
+skills. Analysis also assumes mathematical experience with inequalities and
+epsilon arguments; its guides explain which construction steps you prove and
+which proved infrastructure the imports provide.
 
 ## The intro course
 
@@ -133,6 +142,12 @@ Run `lake build` once before you start; it compiles the tool and the course
 libraries. Open the exercise file the watcher points you to, fix the code, and
 save. It rechecks on every save and moves on once the exercise passes.
 
+For intermediate proof states, open this directory in a Lean-enabled editor.
+In VS Code's Lean 4 extension, place the cursor after a tactic to inspect its
+remaining goals in the Infoview. The terminal checker reports errors and
+completion; the editor lets you watch a proof take shape. See the
+[Intro guide](courses/intro/guide.md) for notation and a suggested study loop.
+
 ## Commands
 
 ```
@@ -140,6 +155,8 @@ lake exe leanlings           # show the current exercise and your progress
 lake exe leanlings run       # check the current exercise
 lake exe leanlings run <ex>  # check a specific exercise
 lake exe leanlings watch     # recheck automatically on save
+lake exe leanlings guide     # read the course and current unit's teaching notes
+lake exe leanlings guide <ex> # read the notes for a specific exercise
 lake exe leanlings hint      # show a hint for the current exercise
 lake exe leanlings solution  # show the reference solution
 lake exe leanlings list      # list the current course's exercises

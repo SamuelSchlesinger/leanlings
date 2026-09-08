@@ -79,10 +79,14 @@ def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
       match result with
       | .success => pure ()
       | .hasSorry => return .hasSorry
-      | _ =>
+      | .compileError details =>
         return .compileError
-          "Your code compiles, but it doesn't satisfy the exercise's checks yet.\n\
-           Check the task's requirements and keep the supplied theorem statements."
+          ("Your code compiles, but it doesn't satisfy the exercise's checks yet.\n\
+            Check the task's requirements and keep the supplied theorem statements.\n\n" ++
+           details ++
+           s!"\nThese diagnostics come from your source followed by the exercise checks.\n\
+               Inspect {exercise.testPath} (when present) and {exercise.contractPath};\n\
+               make your correction in {exercise.path}.")
     match exercise.expectedOutput with
     | some expected => checkProgramOutput exercise expected
     | none => return .success
@@ -92,7 +96,7 @@ def checkExercise (exercise : Exercise) : IO ExerciseStatus := do
 def displayResult (exercise : Exercise) (status : ExerciseStatus) : IO Unit := do
   match status with
   | .success =>
-    IO.println s!"{UI.green "✓"} Exercise {UI.bold exercise.name} compiled successfully!"
+    IO.println s!"{UI.green "✓"} Exercise {UI.bold exercise.name} passed all checks!"
   | .compileError output =>
     IO.println s!"{UI.red "✗"} Exercise {UI.bold exercise.name} has errors:\n"
     IO.println output

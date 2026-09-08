@@ -22,6 +22,8 @@ Similarly let's define `2 = succ 1`, `3 = succ 2` and `4 = succ 3`.
 This gives us plenty of numbers to be getting along with.
 
 The *proof* that `2 = succ 1` is called `two_eq_succ_one`.
+The proof that `1 = succ 0` is called `one_eq_succ_zero`.
+Use `#check one_eq_succ_zero` to inspect a supplied theorem's type.
 
 Let's prove that $2$ is the number after the number after zero.
 -/

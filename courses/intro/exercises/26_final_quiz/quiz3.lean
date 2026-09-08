@@ -10,6 +10,15 @@
   is `B → A`. Introduce the assumption in each direction, just as
   you did when proving implications earlier.
 
+  Tree induction has two recursive hypotheses, one per subtree:
+
+    induction t with
+    | leaf => ...
+    | node l v r ihl ihr => ...
+
+  `ihl` proves the property for `l`; `ihr` proves it for `r`.
+  Compare their types with the two recursive calls in your function.
+
   TODO: Complete all definitions and proofs.
 -/
 
@@ -96,6 +105,10 @@ theorem Tree.depth_le_size (t : Tree α) : t.depth ≤ t.size := by
 
 -- 15. A node tree always contains at least one element.
 --     Provide a witness and prove it's in the list.
+--     `x ∈ xs` means that x occurs in the list xs (type \in for ∈).
+--     For example, `example (x : α) : x ∈ [x] := by simp`.
+--     `simp` also splits membership in an append into membership in
+--     either list. Choose a witness, then unfold `Tree.toList` with simp.
 theorem Tree.node_has_element (l : Tree α) (v : α) (r : Tree α) :
     ∃ x, x ∈ (Tree.node l v r).toList := by
   sorry

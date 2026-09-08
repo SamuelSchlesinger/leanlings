@@ -5,9 +5,9 @@ import Algorithm.add_left_comm
 namespace MyNat
 
 /-
-In some later worlds, we're going to see some much nastier levels,
-like `(a + a + 1) + (b + b + 1) = (a + b + 1) + (a + b + 1)`.
-Brackets need to be moved around, and variables need to be swapped.
+Longer sums require the same rearrangements many times. For example,
+`(a + a + 1) + (b + b + 1) = (a + b + 1) + (a + b + 1)` needs changes
+to both grouping and order. This world turns those steps into automation.
 
 In this level, `(a + b) + (c + d) = ((a + c) + d) + b`,
 let's forget about the brackets and just think about

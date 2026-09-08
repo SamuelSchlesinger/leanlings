@@ -13,6 +13,14 @@
   • `simp [f]` — unfolds function `f` and simplifies
   • `omega` — solves linear arithmetic over natural numbers and integers
 
+  A variable alone does not prevent `rfl`: `triple n` unfolds to
+  `3 * n`, so those expressions are equal by definition for any `n`.
+  For `double_add`, unfolding instead leaves additions grouped in
+  different ways; that is where arithmetic reasoning is needed.
+
+  Inspect the goal after each tactic. `simp` may already finish it.
+  Put a following `omega` on a new line only if a goal remains.
+
   TODO: Complete the proofs. Hints are in the comments.
 -/
 

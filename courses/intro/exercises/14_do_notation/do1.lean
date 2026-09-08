@@ -18,6 +18,11 @@
   `←` extracts the value from `some`. If any step returns `none`,
   the entire `do` block returns `none`.
 
+  Compare `let x := safeDivide 10 2` with `let x ← safeDivide 10 2`.
+  With `:=`, `x` has type `Option Nat`; with `←`, later lines receive
+  `x : Nat` only in the successful case. `return x` wraps the result
+  in `some`. You can type the arrow as `<-`.
+
   TODO: Fill in the do blocks below.
 -/
 

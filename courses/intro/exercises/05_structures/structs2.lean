@@ -26,6 +26,8 @@ structure Person where
 def fullName (p : Person) : String := sorry
 
 -- A person is an adult if their age is at least 18.
+-- `p.age >= 18` is a decidable proposition. Lean can convert it to Bool
+-- here; `decide (p.age >= 18)` makes that conversion explicit.
 def isAdult (p : Person) : Bool := sorry
 
 -- Return a new Person with age incremented by 1.

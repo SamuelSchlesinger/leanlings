@@ -29,7 +29,9 @@ jobs:
           lake build Leanlings.Contracts
 
       - name: Run Leanlings regressions
-        run: lake env lean --run tests/LeanlingsRegression.lean
+        run: |
+          lake env lean --run tests/LeanlingsRegression.lean
+          python3 tests/LearnerWorkflow.py
 
       - name: Verify contract generation
         run: |

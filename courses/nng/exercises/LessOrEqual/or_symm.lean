@@ -19,6 +19,10 @@ hypotheses guarantee that it's the correct one.
 3) If you have an "or" statement as a *hypothesis* `h`, then
 `rcases h with h1 | h2` will create two goals, one where you went left,
 and the other where you went right.
+
+After that split, write two `·` bullets (type `\cdot`), with an indented
+proof under each. The first has `h1`; the second has `h2`. Use the available
+evidence to choose which side of the goal to prove in each branch.
 -/
 /- If $x=37$ or $y=42$, then $y=42$ or $x=37$. -/
 theorem exercise_lessorequal_or_symm (x y : ℕ) (h : x = 37 ∨ y = 42) : y = 42 ∨ x = 37 := by

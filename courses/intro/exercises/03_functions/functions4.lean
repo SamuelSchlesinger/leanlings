@@ -12,6 +12,16 @@
     [1, 2, 3, 4].filter (· > 2)  = [3, 4]
     [1, 2, 3].foldl (· + ·) 0    = 6   (0+1+2+3)
 
+  `List Nat` is a list of natural numbers; `[]` is an empty list.
+  A fold's function takes the accumulator first and the next element
+  second. Starting at 0, the last example visits 1, then 3, then 6.
+
+  For the even-number task, `%` gives the remainder after division:
+  `7 % 3` is 1. An even number has remainder 0 when divided by 2.
+  Use `==` to turn that comparison into the Bool a filter expects.
+  Lean also converts decidable comparisons such as `n > 2` to Bool
+  when a Boolean predicate is expected.
+
   TODO: Use `map`, `filter`, and `foldl` to transform the lists.
 -/
 

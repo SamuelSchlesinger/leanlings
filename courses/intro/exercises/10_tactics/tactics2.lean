@@ -8,6 +8,16 @@
     For a disjunction, the two constructors are alternatives: you must
     choose which side to prove, rather than prove both sides.
 
+  Use a `·` bullet (type \cdot) to focus each subgoal:
+
+    example (P : Prop) (hp : P) : P ∧ True := by
+      constructor
+      · exact hp
+      · exact True.intro
+
+  Each indented branch must finish its own goal. Here the first
+  branch proves `P` and the second proves `True`.
+
   TODO: Complete the proofs.
 -/
 

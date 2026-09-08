@@ -16,6 +16,10 @@ applied to `p = a*d`, `q = c*b`, combined with `Int.natAbs_mul` and the fact tha
 un-scaled inequality `key` first, then scale it by `b * d ≥ 0` with
 `Int.mul_le_mul_of_nonneg_right`.
 
+`Int.natAbs_add_le` gives a Nat inequality. Use `exact_mod_cast` to
+transport it to Int, then `push_cast` to distribute casts through its sum
+and products. The RatOrder unit guide gives small examples of both tactics.
+
 A skeleton with the right intermediate goal is provided. -/
 theorem MyRat.abs_add_le (x y : MyRat) : |x + y| ≤ |x| + |y| := by
   induction x using ind with | _ a b hb =>

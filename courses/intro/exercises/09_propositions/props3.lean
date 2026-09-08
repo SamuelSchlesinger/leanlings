@@ -9,8 +9,8 @@
   • `absurd : α → ¬α → β` derives anything from a contradiction.
 
   These proofs are written as function expressions (term-mode).
-  In the next module, you'll learn tactic mode — an alternative
-  way to build proofs step by step.
+  In the next module, you'll extend the tactic mode from unit 8
+  to build these logical proofs step by step.
 
   TODO: Provide proofs for each theorem using `fun`.
 -/

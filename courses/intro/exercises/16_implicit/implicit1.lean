@@ -14,6 +14,11 @@
 
   Here the caller supplies `Nat` before the value 42.
 
+  The tasks also use pairs: `α × β` contains an `α` and a `β`.
+  Construct a pair with `(a, b)` or `⟨a, b⟩`; read its components
+  with `p.1` and `p.2`. For example, `(7, "seven")` has type
+  `Nat × String`.
+
   You can also use `(α : Type)` for explicit type arguments
   and `[inst : BEq α]` for type class arguments.
 

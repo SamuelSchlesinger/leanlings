@@ -2,7 +2,8 @@
 
 Associativity and commutativity rearrange sums. Supplying them to
 `simp only` packages repeated rearrangements into a normalization procedure.
-The custom `simp_add` tactic is a small wrapper around that procedure.
+The `add_algo3` exercise supplies the custom `simp_add` tactic as a small
+wrapper around that procedure. It becomes available at its declaration.
 
 ```lean
 import Algorithm.add_left_comm

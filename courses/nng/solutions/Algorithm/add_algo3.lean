@@ -4,10 +4,13 @@ import Algorithm.add_algo2
 
 namespace MyNat
 
+macro "simp_add" : tactic =>
+  `(tactic| simp only [add_assoc, add_left_comm, add_comm])
+
 /- If $a, b,\ldots h$ are arbitrary natural numbers, we have
 $(d + f) + (h + (a + c)) + (g + e + b) = a + b + c + d + e + f + g + h$. -/
 theorem exercise_algorithm_add_algo3 (a b c d e f g h : ℕ) :
     (d + f) + (h + (a + c)) + (g + e + b) = a + b + c + d + e + f + g + h := by
-  simp only [add_left_comm, add_comm]
+  simp_add
 
 end MyNat

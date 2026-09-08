@@ -57,7 +57,9 @@ private def outputFixture (name expected : String) : Exercise :=
 def main : IO UInt32 := do
   let fixture := fun name => { name, dir := "Runner", course := "../tests/fixtures" : Exercise }
   match ← Runner.checkExercise (fixture "changed_statement") with
-  | .compileError _ => pure ()
+  | .compileError message =>
+    unless message.toLower.contains "type mismatch" do
+      throw <| IO.userError s!"Exercise check hid the type mismatch: {message}"
   | other => throw <| IO.userError s!"Changed theorem statement accepted: {repr other}"
   match ← Runner.checkExercise (fixture "quiet_sorry") with
   | .hasSorry => pure ()

@@ -9,7 +9,9 @@ This level proves `x * y = 1 → x = 1`, the multiplicative analogue of Advanced
 World's `x + y = 0 → x = 0`. The strategy is to prove that `x ≤ 1` and then use the
 lemma `le_one` from `≤` world.
 
-We'll prove it using a new and very useful tactic called `have`.
+It helps to name intermediate facts with `have name : statement := by ...`.
+First prove that the product is nonzero, then use that proof to bound `x`.
+Each `have` requires its own proof; it does not add an assumption for free.
 -/
 theorem mul_right_eq_one (x y : ℕ) (h : x * y = 1) : x = 1 := by
   sorry

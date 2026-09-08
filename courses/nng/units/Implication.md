@@ -18,3 +18,8 @@ Negation `¬ P` is `P → False`; inequality is negated equality. A proof of
 `x ≠ y` therefore starts by assuming `x = y` and deriving a contradiction.
 The constructor facts about `0` and `succ` give you contradictions for the
 numeral exercises.
+
+You can name intermediate evidence with `have hq : Q := step hp` and then
+use `hq` later. This does not assume `Q`: Lean checks `step hp` as its proof.
+Reading such a line in a reference answer is just reading a named step
+in the argument, like a local definition in a program.

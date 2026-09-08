@@ -29,6 +29,10 @@ def mkCourse (id title description : String) (exercises : Array Exercise)
 
 namespace Course
 
+/-- The course overview, shared by the CLI and curriculum export. -/
+def guidePath (c : Course) : System.FilePath :=
+  s!"courses/{c.id}/guide.md"
+
 /-- All exercises with a given bare name. -/
 def exercisesNamed (c : Course) (name : String) : Array Exercise :=
   c.exercises.filter (·.name == name)

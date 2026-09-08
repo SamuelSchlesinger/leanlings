@@ -38,7 +38,7 @@ private def introExercises : Array Exercise := #[
   { name := "functions3", dir := "03_functions",
     hint := "Anonymous functions start with `fun`, followed by parameters, then `=>`.\nFor example: `fun x => x + 1`." },
   { name := "functions4", dir := "03_functions",
-    hint := "`.map` applies a function to each element.\n`.filter` keeps elements matching a predicate.\n`.foldl f init` combines elements: `foldl (· + ·) 0` sums a list.\nThe `·` shorthand represents the argument." },
+    hint := "For the filter, n % 2 is the remainder after dividing n by 2.\nUse == to compare it with zero. A fold receives its accumulator first, then the next element." },
 
   -- 04_control_flow
   { name := "if1", dir := "04_control_flow",
@@ -66,7 +66,7 @@ private def introExercises : Array Exercise := #[
 
   -- 07_recursion
   { name := "recursion1", dir := "07_recursion",
-    hint := "Every recursive function on Nat needs two cases:\n• base case (0): what should it return?\n• recursive case (n+1): how does it relate to the result for n?\nLean requires structurally decreasing recursion." },
+    hint := "Match 0 and n + 1. The base case is an empty product; the step combines n + 1 with factorial n.\nThe recursive call on n is structurally smaller, so Lean can check termination." },
   { name := "recursion2", dir := "07_recursion",
     hint := "Recursion on List also needs two cases:\n• empty list []: what's the base value?\n• head :: tail: how do you combine the head with the recursive result?" },
   { name := "recursion3", dir := "07_recursion",
@@ -98,7 +98,7 @@ private def introExercises : Array Exercise := #[
   { name := "tactics3", dir := "10_tactics",
     hint := "`rw [h]` replaces the left side of `h` with the right side in your goal.\n`rw [← h]` goes the other direction." },
   { name := "tactics4", dir := "10_tactics",
-    hint := "Try the most powerful tactic for each goal:\n`omega` for arithmetic, `simp` for simplification,\n`decide` for finite/decidable propositions." },
+    hint := "Choose a tactic whose reasoning fits the goal: omega for linear arithmetic, simp for known rewrite laws, and decide for a computable decision procedure.\nAfter it succeeds, explain what fact it used." },
 
   -- 11_induction
   { name := "induction1", dir := "11_induction",
@@ -120,7 +120,7 @@ private def introExercises : Array Exercise := #[
   { name := "do1", dir := "14_do_notation",
     hint := "Use `←` to extract values from Option in a `do` block.\nIf any step returns `none`, the whole block returns `none`." },
   { name := "do2", dir := "14_do_notation",
-    hint := "Chain the two checks with `do` notation.\nThe `←` operator short-circuits on `none`." },
+    hint := "Bind the result of checkPositive n with `let x ← ...`, then pass x to checkSmall.\nExcept short-circuits on `.error message`; a successful final `return` wraps its value in `.ok`." },
   { name := "do3", dir := "14_do_notation",
     hint := "Use `let mut` for a mutable variable,\n`for x in list do` for iteration,\nand `return` for the final value." },
 
@@ -136,7 +136,7 @@ private def introExercises : Array Exercise := #[
   { name := "implicit1", dir := "16_implicit",
     hint := "`p.1` is the first element of a pair, `p.2` is the second.\nUse them to build the return value." },
   { name := "implicit2", dir := "16_implicit",
-    hint := "Recurse on the list. At each step, check the head\nagainst the target using `==`." },
+    hint := "For myContains, compare the head with the target and recurse on the tail.\nFor myDedup, check whether the head occurs later in the tail. If so, discard this earlier occurrence; otherwise keep it." },
 
   -- 17_arrays
   { name := "arrays1", dir := "17_arrays",
@@ -212,8 +212,8 @@ private def introWelcome : String :=
   "Or use `lake exe leanlings watch` for auto-checking!\n"
 
 private def introFinal : String :=
-  "Congratulations! You've completed all Leanlings exercises!\n\n" ++
-  "You now have a solid foundation in Lean 4, including:\n" ++
+  "Congratulations! You've completed the Introduction to Lean 4 course!\n\n" ++
+  "You have practiced the foundations of Lean 4, including:\n" ++
   "  - Basic types, definitions, and functions\n" ++
   "  - Control flow and pattern matching\n" ++
   "  - Structures and inductive types\n" ++
@@ -428,7 +428,7 @@ private def nngFinal : String :=
   "  - laws of powers\n" ++
   "  - injectivity of succ and the basic theory of ≤\n\n" ++
   "For the full interactive experience (with the original tactic descriptions and\n" ++
-  "the worlds you skipped here), play the original at\n" ++
+  "worlds not included in this port), play the original at\n" ++
   "https://adam.math.hhu.de/#/g/leanprover-community/nng4\n"
 
 /-- The Natural Number Game: building ℕ and its basic theory from the Peano
@@ -528,9 +528,9 @@ private def algebraExercises : Array Exercise := #[
     hint := "Unfold `/`, re-associate, then `b⁻¹ * b = 1`." },
   -- Hom
   { name := "map_one", dir := "Hom",
-    hint := "`f 1 = f (1 * 1) = f 1 * f 1`, so `f 1` is idempotent; cancel it." },
+    hint := "Use `f.map_mul 1 1` to relate `f.toFun 1` to `f.toFun 1 * f.toFun 1`.\nCompare the latter with `f.toFun 1 * 1` and use cancellation in the target group." },
   { name := "map_inv", dir := "Hom",
-    hint := "Show `f a * f a⁻¹ = f (a * a⁻¹) = f 1 = 1`, then use `eq_inv_of_mul_eq_one`." },
+    hint := "Show `f.toFun a * f.toFun (a⁻¹) = 1` by reversing `f.map_mul` and using the inverse law and `map_one`.\nThen use `eq_inv_of_mul_eq_one` in the target group." },
   { name := "map_mul_inv", dir := "Hom",
     hint := "Use `f.map_mul` to split, then `map_inv` on the second factor." },
   { name := "map_div", dir := "Hom",
@@ -545,11 +545,11 @@ private def algebraExercises : Array Exercise := #[
   { name := "zero_mul", dir := "Ring",
     hint := "`0 * a + 0 * a = (0 + 0) * a = 0 * a`, so cancel one copy with `add_left_cancel`." },
   { name := "mul_zero", dir := "Ring",
-    hint := "Mirror of `zero_mul`, using `left_distrib`." },
+    hint := "Use `Ring.left_distrib` backwards to turn two copies of `a * 0` into `a * (0 + 0)`. Compare with `a * 0 + 0` and cancel additively." },
   { name := "neg_mul", dir := "Ring",
     hint := "Both `-a * b` and `-(a * b)` add to `a * b` to give `0`; cancel on the right." },
   { name := "mul_neg", dir := "Ring",
-    hint := "Mirror of `neg_mul`, using `left_distrib` and `mul_zero`." },
+    hint := "Compare `a * -b + a * b` with `-(a * b) + a * b`. Use `Ring.left_distrib`, `Ring.neg_add_cancel`, and `mul_zero`, then cancel on the right." },
   { name := "neg_neg", dir := "Ring",
     hint := "`- -a` is the additive inverse of `-a`; the additive analogue of `inv_inv`." },
   { name := "neg_mul_neg", dir := "Ring",
@@ -557,7 +557,7 @@ private def algebraExercises : Array Exercise := #[
   { name := "mul_add_mul", dir := "Ring",
     hint := "Distribute the right factor, then each piece. (No commutativity needed yet.)" },
   { name := "neg_zero", dir := "Ring",
-    hint := "From `-0 + 0 = 0`, simplify the left side with `add_zero`." },
+    hint := "Specialize `Ring.neg_add_cancel` to zero, then simplify `-0 + 0` with `Ring.add_zero`." },
   { name := "neg_eq_of_add_eq_zero", dir := "Ring",
     hint := "The additive analogue of `inv_eq_of_mul_eq_one`." },
   { name := "neg_add", dir := "Ring",
@@ -565,7 +565,7 @@ private def algebraExercises : Array Exercise := #[
   { name := "sub_self", dir := "Ring",
     hint := "Unfold `-` with `sub_eq`, then `a + -a = 0`." },
   { name := "sub_zero", dir := "Ring",
-    hint := "Unfold `-`, use `neg_zero`, then `add_zero`." },
+    hint := "Expand with `sub_eq`, simplify with `neg_zero`, then use `Ring.add_zero`." },
   { name := "mul_sub", dir := "Ring",
     hint := "Unfold `-`, distribute, push the negation out with `mul_neg`, then fold `-` back." },
   { name := "sub_mul", dir := "Ring",
@@ -604,8 +604,9 @@ private def algebraWelcome : String :=
   "*every* structure of that kind. Replace the `sorry` with a proof.\n\n" ++
   "Naming: the axioms are referred to by their full names, like\n" ++
   "`Group.inv_mul_cancel`, `CommGroup.mul_comm`, `Ring.add_assoc`. Only\n" ++
-  "`mul_assoc`, `one_mul`, and `mul_one` are available unqualified. (Run\n" ++
-  "`lake exe leanlings solution` if you get stuck on which lemma to use.)\n\n" ++
+  "`mul_assoc`, `one_mul`, and `mul_one` are exported as unqualified axioms;\n" ++
+  "earlier exercise theorems are also available in the Algebra namespace.\n" ++
+  "Use `#check` to inspect a theorem and `lake exe leanlings guide` for context.\n\n" ++
   "This course assumes the proof tactics from the `intro` course, especially\n" ++
   "`rw`, `calc`, `intro`, `exact`, and `cases`. If those are new to you, do the\n" ++
   "`intro` course first (`lake exe leanlings course intro`).\n"
@@ -614,7 +615,7 @@ private def algebraFinal : String :=
   "Congratulations! You've climbed the algebraic hierarchy from magmas to fields,\n" ++
   "proving — from the axioms — cancellation, uniqueness and laws of inverses,\n" ++
   "homomorphism properties, the sign rules of rings, and that a field has no zero\n" ++
-  "divisors. You now have a working, formal grasp of the Bourbaki tower.\n"
+  "divisors. Revisit a cancellation proof and explain which structure laws it uses.\n"
 
 /-- Abstract algebra a la Bourbaki: a from-scratch climb up the algebraic
 hierarchy, magmas through fields, proving each level's theory from its axioms. -/
@@ -629,7 +630,7 @@ private def analysisExercises : Array Exercise := #[
   { name := "r_refl", dir := "Setoid",
     hint := "`PreRat.r a a` unfolds to `a.num * a.den = a.num * a.den`. One tactic proves any `X = X`." },
   { name := "r_symm", dir := "Setoid",
-    hint := "`unfold PreRat.r at *` gives integer equations; `omega` finishes." },
+    hint := "The hypothesis is an equality with the two sides reversed from the goal.\nTry `exact h.symm`; Lean unfolds PreRat.r when checking the type." },
   { name := "r_trans", dir := "Setoid",
     hint := "After the given `apply`, prove `a.num*c.den*b.den = c.num*a.den*b.den` with a `calc` that uses `Int.mul_right_comm` and rewrites by `hab`/`hbc`." },
   -- WellDef
@@ -645,42 +646,42 @@ private def analysisExercises : Array Exercise := #[
     hint := "Mirror of `lt_imp` with `Int.mul_le_mul_of_nonneg_right` and `Int.mul_le_mul_right`." },
   -- Rat
   { name := "add_comm", dir := "Rat",
-    hint := "`induction x using MyRat.ind`, `induction y`, `rw [add_mk, add_mk, mk_eq]`, `grind`." },
+    hint := "Start with `induction x using MyRat.ind with | _ a b hb =>`, and do the same for y using fresh names.\nNow add_mk can compute both sums. Before grind, read the cross-multiplication equation from mk_eq." },
   { name := "add_assoc", dir := "Rat",
-    hint := "Three inductions; `rw` `add_mk` four times, then `mk_eq`, `grind`." },
+    hint := "Choose representatives for x, y, and z using MyRat.ind. Compute both nested sums with add_mk before applying mk_eq.\nWhich numerator and denominator describe each side?" },
   { name := "zero_add", dir := "Rat",
-    hint := "`rw [zero_def, add_mk, mk_eq]; grind`." },
+    hint := "First use `induction x using MyRat.ind with | _ a b hb =>`. Now zero_def exposes the other fraction, so add_mk and mk_eq apply.\nThe remaining task is an integer identity." },
   { name := "add_zero", dir := "Rat",
-    hint := "Like `zero_add`." },
+    hint := "Commute x + 0 with MyRat.add_comm, then reuse MyRat.zero_add. You can stay at the rational level." },
   { name := "neg_add_cancel", dir := "Rat",
-    hint := "Expose `-x` with `neg_mk` and `0` with `zero_def`, then `mk_eq`, `grind`." },
+    hint := "Choose a representative for x with MyRat.ind. Expose its negative with neg_mk and zero with zero_def; compute the sum before applying mk_eq." },
   { name := "neg_neg", dir := "Rat",
-    hint := "Two `neg_mk`s, then `mk_eq`, `grind`." },
+    hint := "Choose a representative with MyRat.ind. Apply neg_mk twice, then use mk_eq to compare the resulting fractions." },
   { name := "mul_comm", dir := "Rat",
-    hint := "Like `add_comm` with `mul_mk`." },
+    hint := "Choose representatives for both inputs with MyRat.ind. Use mul_mk on both sides, then mk_eq. The integer products differ only in factor order." },
   { name := "mul_assoc", dir := "Rat",
-    hint := "Like `add_assoc` with `mul_mk`." },
+    hint := "Choose three representatives with MyRat.ind and compute both nested products with mul_mk. Apply mk_eq once both sides are fractions." },
   { name := "one_mul", dir := "Rat",
-    hint := "`rw [one_def, mul_mk, mk_eq]; grind`." },
+    hint := "Choose a representative for x with MyRat.ind first. Then one_def exposes 1, mul_mk computes the product, and mk_eq gives an integer equation." },
   { name := "mul_one", dir := "Rat",
-    hint := "Like `one_mul`." },
+    hint := "Commute x * 1 with MyRat.mul_comm and reuse MyRat.one_mul. No new fraction calculation is needed." },
   { name := "mul_zero", dir := "Rat",
-    hint := "`rw [zero_def, mul_mk, mk_eq]; grind`." },
+    hint := "First choose a representative for x with MyRat.ind. Then zero_def, mul_mk, and mk_eq reduce the goal to an integer identity." },
   { name := "left_distrib", dir := "Rat",
-    hint := "Use both `add_mk` and `mul_mk`, then `mk_eq`, `grind`." },
+    hint := "Choose representatives for all three rationals. Compute the inner sum before the outer product on the left; compute the two products before their sum on the right. Then use mk_eq." },
   { name := "right_distrib", dir := "Rat",
-    hint := "Like `left_distrib`." },
+    hint := "Commute the outside product, apply MyRat.left_distrib, then commute each smaller product with explicit arguments. Reuse the laws at the rational level." },
   { name := "mul_inv_cancel", dir := "Rat",
     hint := "After the given `ha`, `rw [inv_mk_of_ne hb ha, mul_mk, one_def, mk_eq]`, add `Int.sign_mul_natAbs a`, then `grind`." },
   -- RatOrder
   { name := "lt_irrefl", dir := "RatOrder",
-    hint := "`induction`, `rw [lt_mk]`, `omega`." },
+    hint := "Use MyRat.ind to choose a fraction representative. After `rw [lt_mk]`, both sides of the strict inequality are identical; omega can finish." },
   { name := "lt_trans", dir := "RatOrder",
-    hint := "Scale both hypotheses by positive denominators, chain with `Int.lt_trans`, cancel with `Int.mul_lt_mul_right`. `grind` proves the rearrangement equalities." },
+    hint := "Choose representatives for x, y, and z with MyRat.ind and rewrite lt_mk in the hypotheses and goal. Scale the hypotheses by positive denominators, chain them, then cancel the common positive factor." },
   { name := "lt_trichotomy", dir := "RatOrder",
-    hint := "`simp only [lt_mk, mk_eq]` then `omega`." },
+    hint := "Choose two fraction representatives with MyRat.ind, then simplify with lt_mk and mk_eq. The three alternatives compare the same two integer products." },
   { name := "le_refl", dir := "RatOrder",
-    hint := "`rw [le_mk]; omega`." },
+    hint := "First use `induction x using MyRat.ind with | _ a b hb =>`. The rewrite le_mk now applies and leaves a reflexive integer inequality." },
   { name := "le_trans", dir := "RatOrder",
     hint := "Like `lt_trans` with the `≤` lemmas (`Int.mul_le_mul_of_nonneg_right`, `Int.le_trans`)." },
   { name := "add_lt_add_left", dir := "RatOrder",
@@ -688,28 +689,28 @@ private def analysisExercises : Array Exercise := #[
   { name := "add_le_add_left", dir := "RatOrder",
     hint := "Like `add_lt_add_left` with `Int.mul_le_mul_of_nonneg_right`." },
   { name := "mul_pos", dir := "RatOrder",
-    hint := "`0 < mk a b` is `0 < a`; use `Int.mul_pos` for `0 < a*c`." },
+    hint := "Choose representatives for both rationals with MyRat.ind. Use zero_def and lt_mk in the hypotheses to get positive numerators; Int.mul_pos proves their product is positive." },
   { name := "abs_nonneg", dir := "RatOrder",
-    hint := "`rw [abs_mk, zero_def, le_mk]; omega` (`natAbs` ≥ 0)." },
+    hint := "Choose a representative with MyRat.ind first. The rewrites abs_mk, zero_def, and le_mk leave an integer inequality; omega knows that a cast natural absolute value is nonnegative." },
   { name := "abs_neg", dir := "RatOrder",
-    hint := "Use `Int.natAbs_neg` in the `rw` chain after `mk_eq`." },
+    hint := "Choose a representative with MyRat.ind. Compute negation and both absolute values; after mk_eq, use Int.natAbs_neg." },
   { name := "abs_mul", dir := "RatOrder",
-    hint := "Use `Int.natAbs_mul`, then `push_cast`, then `grind`." },
+    hint := "Choose two representatives with MyRat.ind. Compute products and absolute values, then use mk_eq and Int.natAbs_mul. push_cast moves the Nat-to-Int cast across the product." },
   { name := "abs_add_le", dir := "RatOrder",
-    hint := "Prove the un-scaled `key` (via `Int.natAbs_add_le`, `Int.natAbs_mul`, and `den.natAbs = den`), then scale by `b*d ≥ 0`." },
+    hint := "Inside key, start from Int.natAbs_add_le applied to a*d and c*b. Rewrite natAbs_mul; exact_mod_cast transports the Nat inequality to Int. After push_cast, positivity lets you replace the absolute values of the denominators." },
   { name := "abs_lt", dir := "RatOrder",
-    hint := "`simp only [abs_mk, neg_mk, lt_mk, Int.neg_mul]`, `by_cases 0 ≤ a`, rewrite `↑a.natAbs * d`, then `omega` with the sign of `a*d`." },
+    hint := "Choose representatives for x and y with MyRat.ind. After the computation lemmas, use `by_cases h : 0 ≤ a`. In each branch, replace the cast absolute value of a by a or -a and track the sign of a*d." },
   { name := "archimedean", dir := "RatOrder",
-    hint := "Witness `a.natAbs + 1`; after `ofInt_def, lt_mk, push_cast`, use `Int.mul_le_mul_of_nonneg_left` and `omega`." },
+    hint := "Choose x = mk a b hb with MyRat.ind. The natural witness a.natAbs + 1 is bigger than a, while positivity of the integer denominator implies b ≥ 1. Scale using Int.mul_le_mul_of_nonneg_left." },
   { name := "exists_between", dir := "RatOrder",
-    hint := "Midpoint `(a*d + c*b) / (2*b*d)`; each inequality follows from scaling `h` and `omega`." },
+    hint := "Choose representatives x = a/b and y = c/d with MyRat.ind. Build the midpoint using MyRat.mk with numerator a*d + c*b and positive denominator 2*(b*d). Prove each bound by scaling the original strict inequality." },
   -- Cauchy
   { name := "const_isCauchy", dir := "Cauchy",
-    hint := "`intro ε hε; refine ⟨0, ...⟩; simp only [constSeq]; rw [MyRat.sub_self, MyRat.abs_zero]; exact hε`." },
+    hint := "After `intro ε hε`, any threshold works. Use `refine ⟨0, fun m n _ _ => ?_⟩`. The constant difference is zero, so the final bound is the given hε." },
   { name := "add_isCauchy", dir := "Cauchy",
     hint := "After the given setup, `calc` via `MyRat.add_sub_add`, `abs_add_le`, `MyRat.add_lt_add`, ending `= ε` by `hδδ`. Use the `Nat.le_max_*`/`Nat.le_trans` bounds." },
   { name := "neg_isCauchy", dir := "Cauchy",
-    hint := "Same `N`; `rw [MyRat.neg_sub_neg, MyRat.abs_sub_comm]; exact hN ...`." },
+    hint := "Introduce ε and its positivity proof, then obtain N from hf at that same tolerance. Reuse N for the negated sequence: neg_sub_neg and abs_sub_comm turn the required bound into the one hf supplied." },
   { name := "equiv_refl", dir := "Cauchy",
     hint := "Like `const_isCauchy`: `f n - f n = 0`." },
   { name := "equiv_symm", dir := "Cauchy",
@@ -718,27 +719,27 @@ private def analysisExercises : Array Exercise := #[
     hint := "`exists_half`, `Nat.max`, then `calc` with `MyRat.abs_sub_le` and `MyRat.add_lt_add`." },
   -- Real
   { name := "add_comm", dir := "Real",
-    hint := "`induction x using MyReal.ind`, `induction y`, `rw [add_mk, add_mk]`, then `exact eq_of_equiv (equiv_of_eq (fun n => MyRat.add_comm _ _))`." },
+    hint := "Choose representatives for both reals with MyReal.ind. Use add_mk on both sides, then eq_of_equiv and equiv_of_eq to reduce to MyRat.add_comm at each index." },
   { name := "add_assoc", dir := "Real",
-    hint := "Three inductions, `add_mk` ×4, then `eq_of_equiv (equiv_of_eq (fun n => MyRat.add_assoc _ _ _))`." },
+    hint := "Choose three Cauchy-sequence representatives with MyReal.ind. Compute the nested sums with add_mk, then prove the rational identity at each index using MyRat.add_assoc." },
   { name := "zero_add", dir := "Real",
-    hint := "`rw [zero_def, add_mk]`, then `MyRat.zero_add` pointwise." },
+    hint := "Choose a representative for x with MyReal.ind before using zero_def and add_mk. The resulting sequences are equivalent because MyRat.zero_add holds at each index." },
   { name := "add_zero", dir := "Real",
-    hint := "Like `zero_add`." },
+    hint := "Use MyReal.add_comm, then MyReal.zero_add. The previous exercises already did the work of descending these laws to the quotient." },
   { name := "neg_add_cancel", dir := "Real",
-    hint := "`rw [neg_mk, add_mk, zero_def]`, then `MyRat.neg_add_cancel` pointwise." },
+    hint := "Choose a representative with MyReal.ind. Compute with neg_mk, add_mk, and zero_def, then use MyRat.neg_add_cancel at each index." },
   { name := "mul_comm", dir := "Real",
-    hint := "`rw [mul_mk, mul_mk]`, then `MyRat.mul_comm` pointwise." },
+    hint := "Choose representatives for both reals with MyReal.ind. After computing with mul_mk, use eq_of_equiv and equiv_of_eq with MyRat.mul_comm." },
   { name := "mul_assoc", dir := "Real",
-    hint := "`mul_mk` ×4, then `MyRat.mul_assoc` pointwise." },
+    hint := "Choose three representatives with MyReal.ind. Compute all nested products, then use MyRat.mul_assoc pointwise to establish equivalence." },
   { name := "one_mul", dir := "Real",
-    hint := "`rw [one_def, mul_mk]`, then `MyRat.one_mul` pointwise." },
+    hint := "Choose a representative for x with MyReal.ind. Use one_def and mul_mk, then prove equivalence from the pointwise theorem MyRat.one_mul." },
   { name := "mul_one", dir := "Real",
-    hint := "Like `one_mul`." },
+    hint := "Use MyReal.mul_comm and MyReal.one_mul directly. This is the same reuse pattern as Real/add_zero." },
   { name := "left_distrib", dir := "Real",
-    hint := "`add_mk`, `mul_mk` ×3, `add_mk`, then `MyRat.left_distrib` pointwise." },
+    hint := "Choose representatives for all three reals with MyReal.ind. Compute sums and products until both sides are mk expressions, then use MyRat.left_distrib pointwise." },
   { name := "ofRat_add", dir := "Real",
-    hint := "`rw [ofRat_def ×3, add_mk]`, then `eq_of_equiv (equiv_of_eq (fun n => rfl))`." },
+    hint := "Rewrite with ofRat_def three times, then add_mk. Use eq_of_equiv and equiv_of_eq; the constant sequences agree at every index by rfl." },
   { name := "ofRat_mul", dir := "Real",
     hint := "Like `ofRat_add` with `mul_mk`." },
   -- Capstone
@@ -767,7 +768,7 @@ private def analysisExercises : Array Exercise := #[
 
 private def analysisWelcome : String :=
   "Welcome to Real Analysis from Scratch!\n\n" ++
-  "You will build the rational and real numbers from the ground up — no Mathlib —\n" ++
+  "You will construct the rational and real numbers with supplied core-Lean libraries,\n" ++
   "and develop their theory through Cauchy sequences toward the completeness of ℝ.\n\n" ++
   "The path: construct ℚ as a quotient of fractions (proving the equivalence\n" ++
   "relation and that the operations are well defined), develop its arithmetic\n" ++
@@ -779,11 +780,13 @@ private def analysisWelcome : String :=
   "representatives — often pointwise to the ℚ fact you already proved.\n\n" ++
   "Each level opens with an explanation and names the lemmas you need. Replace the\n" ++
   "`sorry` with a proof, then run `lake exe leanlings run` (or use watch mode).\n" ++
-  "This course assumes the tactics from the `intro` course (`rw`, `calc`,\n" ++
-  "`induction`, `omega`); quotients are introduced as you go.\n"
+  "This is an advanced course: bring the tactics from Intro plus confidence with\n" ++
+  "fractions, inequalities, and epsilon arguments. The guides introduce quotients.\n" ++
+  "The imports supply proved infrastructure for operations, bounds, and inverses;\n" ++
+  "your exercises prove the selected steps connecting them to completeness.\n"
 
 private def analysisFinal : String :=
-  "Congratulations! You built ℚ and ℝ from scratch.\n\n" ++
+  "Congratulations! You completed the construction course for ℚ and ℝ.\n\n" ++
   "Along the way you proved:\n" ++
   "  - that cross-multiplication is an equivalence relation, and that +, ×, −, <,\n" ++
   "    ≤ respect it, so they descend to the quotient ℚ;\n" ++
@@ -801,8 +804,10 @@ private def analysisFinal : String :=
   "  - that every nonzero real satisfies the inverse law `x * x⁻¹ = 1`;\n" ++
   "  - and the summit: ℝ is Cauchy-complete — every Cauchy sequence of reals\n" ++
   "    converges — proven by rational approximation.\n\n" ++
-  "You have built the real numbers from nothing as a Cauchy-complete metric\n" ++
-  "space with commutative-ring operations and inverses for nonzero elements.\n"
+  "Together with the supplied proved infrastructure, these results give a\n" ++
+  "Cauchy-complete metric model of the reals, with commutative-ring operations\n" ++
+  "and inverses for nonzero elements. Explain how rational approximations\n" ++
+  "connect the two completeness arguments before leaving the course.\n"
 
 /-- Real analysis from scratch: construct ℚ and ℝ (via Cauchy sequences) in core
 Lean, then develop their theory. -/

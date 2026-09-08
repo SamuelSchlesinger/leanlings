@@ -5,7 +5,8 @@ import LessOrEqual.le_one
 namespace MyNat
 
 /-
-We'll need this lemma to prove that two is prime!
+This classifies every possible value bounded by two. It is the same pattern
+as the preceding bound by one, with one additional successor case.
 
 You'll need to know that `∨` is right associative. This means that
 `x = 0 ∨ x = 1 ∨ x = 2` actually means `x = 0 ∨ (x = 1 ∨ x = 2)`.
