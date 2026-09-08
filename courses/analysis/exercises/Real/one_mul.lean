@@ -3,7 +3,7 @@ import Real.mul_assoc
 namespace Analysis
 open MyReal
 
-/- `1 * x = x`. Use `one_def`; pointwise `MyRat.one_mul`. -/
+/- `1 * x = x`. -/
 theorem MyReal.one_mul (x : MyReal) : 1 * x = x := by
   sorry
 

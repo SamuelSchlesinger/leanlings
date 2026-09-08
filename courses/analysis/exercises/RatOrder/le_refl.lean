@@ -3,7 +3,7 @@ import RatOrder.lt_trichotomy
 namespace Analysis
 open MyRat
 
-/- `x ≤ x`. After `le_mk`, finish with `omega`. -/
+/- `x ≤ x`. -/
 theorem MyRat.le_refl (x : MyRat) : x ≤ x := by
   sorry
 

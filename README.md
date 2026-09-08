@@ -113,7 +113,10 @@ the equivalence relations and well-definedness behind each quotient — are your
 to prove, while the fiddliest bookkeeping is provided. There is no Mathlib.
 Integer goals use `omega` for linear arithmetic and `grind` for equality
 reasoning and polynomial normalization, with a small curated lemma toolkit
-for the remaining steps.
+for the remaining steps. That toolkit is listed once per world in the unit
+notes; the exercise files state the theorem and at most a sentence of
+strategy, so choosing the tools is part of the work. `lake exe leanlings hint`
+gives a next step on request.
 
 The capstone (world `Capstone`) is the payoff: ℝ is complete over ℚ — every
 Cauchy sequence of rationals converges, in ℝ, to the real number it represents.

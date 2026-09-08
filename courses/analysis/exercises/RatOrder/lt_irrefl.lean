@@ -5,15 +5,11 @@ open MyRat
 
 /- # RatOrder world — order, absolute value, and the Archimedean property
 
-The order on `MyRat` has its own computation lemmas:
+The order on `MyRat` has its own computation lemmas, `lt_mk` and `le_mk`,
+which turn an order goal on fractions into one on integers. The unit notes
+list them, together with the integer facts this world needs.
 
-  • `lt_mk : (mk a b hb < mk c d hd) ↔ a * d < c * b`
-  • `le_mk : (mk a b hb ≤ mk c d hd) ↔ a * d ≤ c * b`
-
-so an order goal on rationals becomes one on integers, closed by `omega`
-(linear) or the `grind`/scaling techniques below.
-
-Warm-up: `<` is irreflexive. After `lt_mk`, it's an integer fact for `omega`. -/
+Warm-up: `<` is irreflexive. -/
 theorem MyRat.lt_irrefl (x : MyRat) : ¬ x < x := by
   sorry
 

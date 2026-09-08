@@ -22,6 +22,14 @@ order tools. You prove the statements in the exercise files using that
 infrastructure. A completed exercise does not mean that you independently
 constructed every supporting theorem.
 
+Exercise files state the theorem, its role, and at most a sentence of
+strategy. The unit notes carry the toolkit: every lemma a world needs is
+listed there once, with its statement, next to a worked example on a
+statement that is not one of the exercises. Choosing which tool to use, and
+in what order, is the exercise. `#check @name` shows a lemma's statement,
+`exact?` in place of a proof searches for a lemma that closes the goal, and
+`lake exe leanlings hint` gives a next step when you are stuck.
+
 Before starting a proof, write its mathematical plan in two or three
 sentences. In a quotient proof, name the representatives and the relation
 you must establish. In a convergence proof, name the tolerance, threshold,

@@ -5,24 +5,12 @@ open MyRat
 
 /- # Rat world — the arithmetic laws of ℚ
 
-`Rat.Ops` now gives every operation on `MyRat`, plus the API you will use
-constantly:
+`Rat.Ops` gives every operation on `MyRat`. The unit notes show the pattern:
+choose representatives, compute the operations with the `_mk` lemmas, turn
+the equation of rationals into one of integers, and close it. Read the
+integer equation before letting automation check it.
 
-  • `induction x using MyRat.ind with | _ a b hb =>`  replaces a rational `x`
-     by a concrete fraction `mk a b hb` (with `hb : 0 < b`);
-  • computation lemmas rewrite operations on `mk`s:
-     `add_mk`, `mul_mk`, `neg_mk`, `sub_mk`, `zero_def`, `one_def`;
-  • `mk_eq : mk a b hb = mk c d hd ↔ a * d = c * b` turns an equation of
-     rationals into one of integers, which `grind` then closes.
-
-THE PATTERN (used in almost every Rat-world level):
-
-    induction x using MyRat.ind with | _ a b hb =>
-    induction y using MyRat.ind with | _ c d hd =>
-    rw [add_mk, add_mk, mk_eq]
-    grind
-
-Prove commutativity of addition with it. -/
+Commutativity of addition. -/
 theorem MyRat.add_comm (x y : MyRat) : x + y = y + x := by
   sorry
 
